@@ -33,7 +33,11 @@ final router = GoRouter(
       builder: (context, state, child) {
         return DashboardScreen(state: state, child: child);
       },
-      routes: const [],
+      routes: [
+        GoRoute(path: HomeView.path,
+        builder: (_, __) => const HomeView(),
+        ),
+      ],
     ),
   ],
 );
