@@ -1,8 +1,11 @@
 import 'package:compair_hub/core/res/styles/colours.dart';
-import 'package:compair_hub/core/res/styles/text.dart';
+import 'package:compair_hub/core/services/injection_container.dart';
+import 'package:compair_hub/core/services/router.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await init();
   runApp(const MyApp());
 }
 
@@ -22,8 +25,9 @@ class MyApp extends StatelessWidget {
       ),
       useMaterial3: true,
     );
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Compair',
+      routerConfig: router,
       themeMode: ThemeMode.system,
       theme: theme,
       darkTheme: theme.copyWith(
@@ -31,15 +35,8 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           backgroundColor: Colours.darkThemeBGDark,
           foregroundColor: Colours.lightThemeWhiteColour,
-        )
-      ),
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!', style: TextStyles.headingRegular.copyWith(
-            color: Colours.classicAdaptiveTextColour(context),
-          ),),
         ),
-      )
+      ),
     );
   }
 }
