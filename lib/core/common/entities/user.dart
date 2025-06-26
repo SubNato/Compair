@@ -1,5 +1,6 @@
 
 import 'package:compair_hub/core/common/entities/address.dart';
+import 'package:compair_hub/src/wishlist/domain/entities/wishlist_product.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -37,5 +38,3 @@ class User extends Equatable {
   @override
   List<Object?> get props => [id, name, email, isAdmin, isBusiness, wishlist.length];
 }
-
-class WishlistProduct {}
