@@ -15,4 +15,12 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+GENERAL NOTES WHILE BUILDING THE APP
 
+
+RIVERPOD NOTES
+
+Use dart run build_runner build watch --delete-conflicting-outputs for 'auto' tracking riverpod changes. So it keeps running and 
+tracking changes!
+
+' dart run build_runner build watch --delete-conflicting-outputs ' for Just building riverpod stuff.

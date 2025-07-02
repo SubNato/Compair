@@ -1,4 +1,3 @@
-
 import 'package:compair_hub/core/utils/typedefs.dart';
 
 abstract class UsecaseWithParams<Type, Params> {

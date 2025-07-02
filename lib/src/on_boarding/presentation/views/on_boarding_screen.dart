@@ -1,4 +1,4 @@
-import 'package:compair_hub/src/on_boarding/presentation/on_boarding_info_section.dart';
+import 'package:compair_hub/src/on_boarding/presentation/widgets/on_boarding_info_section.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardingScreen extends StatefulWidget {
