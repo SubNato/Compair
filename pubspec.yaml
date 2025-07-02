@@ -44,6 +44,9 @@ dependencies:
   http: ^1.4.0
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
+  gap: ^3.0.1
+  country_picker: ^2.0.27
+  flutter_multi_formatter: ^2.13.7
 
 dev_dependencies:
   flutter_test:

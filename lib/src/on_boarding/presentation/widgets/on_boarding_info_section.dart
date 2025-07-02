@@ -1,4 +1,5 @@
 import 'package:compair_hub/core/common/app/cache_helper.dart';
+import 'package:compair_hub/core/common/widgets/rounded_button.dart';
 import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/media.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
@@ -63,13 +64,13 @@ class OnBoardingInfoSection extends StatelessWidget {
                 ),
               ),
             },
-            // RoundedButton(
-            //   text: 'Get Started',
-            //   onPressed: () {
-            //     sl<CacheHelper>().cacheFirstTimer();
-            //     context.go(LoginScreen.path);
-            //   },
-            // ),
+            RoundedButton(
+              text: 'Get Started',
+              onPressed: () {
+                sl<CacheHelper>().cacheFirstTimer();
+                context.go(LoginScreen.path);
+              },
+            ),
           ],
         ),
       ],
