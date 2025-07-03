@@ -1,8 +1,10 @@
 import 'package:compair_hub/core/common/widgets/rounded_button.dart';
 import 'package:compair_hub/core/common/widgets/vertical_label_field.dart';
 import 'package:compair_hub/core/extensions/widget_extensions.dart';
+import 'package:compair_hub/src/auth/presentation/views/verify_otp_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class ForgotPasswordForm extends StatefulWidget {
   const ForgotPasswordForm({super.key});
@@ -39,6 +41,10 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             onPressed: () {
               if (formKey.currentState!.validate()) {
                 // TODO(Forgot-Password): Implement Email Submission here
+                context.push(
+                  VerifyOTPScreen.path,
+                  extra: emailController.text.trim(),
+                );
               }
             },
           ).loading(false),
