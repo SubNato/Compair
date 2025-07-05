@@ -12,7 +12,8 @@ class UserRepoImpl implements UserRepo {
   final UserRemoteDataSrc _remoteDataSrc;
 
   @override
-  ResultFuture<User> getUser(String userId) async { //Same for all datasources. Keep in mind, they have to be similar to their implementation or what they return from the server! So Pay attention to that.
+  ResultFuture<User> getUser(String userId) async {
+    //Same for all datasources. Keep in mind, they have to be similar to their implementation or what they return from the server! So Pay attention to that.
     try {
       final result = await _remoteDataSrc.getUser(userId);
       return Right(result);
@@ -37,7 +38,10 @@ class UserRepoImpl implements UserRepo {
     required DataMap updateData,
   }) async {
     try {
-      final result = await _remoteDataSrc.updateUser(userId: userId, updateData: updateData,);
+      final result = await _remoteDataSrc.updateUser(
+        userId: userId,
+        updateData: updateData,
+      );
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

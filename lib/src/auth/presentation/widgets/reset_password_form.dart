@@ -1,24 +1,42 @@
 import 'package:compair_hub/core/common/widgets/rounded_button.dart';
 import 'package:compair_hub/core/common/widgets/vertical_label_field.dart';
 import 'package:compair_hub/core/extensions/widget_extensions.dart';
+import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/src/auth/presentation/app/adapter/auth_adapter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
-class ResetPasswordForm extends StatefulWidget {
+class ResetPasswordForm extends ConsumerStatefulWidget {
   const ResetPasswordForm({required this.email, super.key});
 
   final String email;
 
   @override
-  State<ResetPasswordForm> createState() => _ResetPasswordFormState();
+  ConsumerState<ResetPasswordForm> createState() => _ResetPasswordFormState();
 }
 
-class _ResetPasswordFormState extends State<ResetPasswordForm> {
+class _ResetPasswordFormState extends ConsumerState<ResetPasswordForm> {
   final formKey = GlobalKey<FormState>();
+  final familyKey = GlobalKey();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final obscurePasswordNotifier = ValueNotifier(true);
   final obscureConfirmPasswordNotifier = ValueNotifier(true);
+
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(authAdapterProvider(familyKey), (previous, next) {
+      if (next is AuthError) {
+        final AuthError(:message) = next;
+        CoreUtils.showSnackBar(context, message: message);
+      } else if (next is PasswordReset) {
+        context.go('/');
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -31,6 +49,8 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authAdapterProvider(familyKey));
+
     return Form(
       key: formKey,
       child: Column(
@@ -95,10 +115,13 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
             text: 'Submit',
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                // TODO(Reset-Password): Implement resetPassword functionality.
+                ref.read(authAdapterProvider(familyKey).notifier).resetPassword(
+                  email: widget.email,
+                  newPassword: passwordController.text.trim(),
+                );
               }
             },
-          ).loading(false),
+          ).loading(authState is AuthLoading),
         ],
       ),
     );

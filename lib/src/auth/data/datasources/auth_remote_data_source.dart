@@ -110,7 +110,8 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
       final user = UserModel.fromMap(payload);
       await sl<CacheHelper>().cacheUserId(user.id);
       return user;
-    } on ServerException {
+    } on ServerException  catch(se) {
+      debugPrint('Error ${se.statusCode}: ${se.message}');
       rethrow;
     } catch (e, s) {
       debugPrint(e.toString());

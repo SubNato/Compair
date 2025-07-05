@@ -3,18 +3,22 @@ import 'package:compair_hub/core/common/widgets/input_field.dart';
 import 'package:compair_hub/core/common/widgets/rounded_button.dart';
 import 'package:compair_hub/core/common/widgets/vertical_label_field.dart';
 import 'package:compair_hub/core/extensions/widget_extensions.dart';
+import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/src/auth/presentation/app/adapter/auth_adapter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
-class RegistrationForm extends StatefulWidget {
+class RegistrationForm extends ConsumerStatefulWidget {
   const RegistrationForm({super.key});
 
   @override
-  State<RegistrationForm> createState() => _RegistrationFormState();
+  ConsumerState<RegistrationForm> createState() => _RegistrationFormState();
 }
 
-class _RegistrationFormState extends State<RegistrationForm> {
+class _RegistrationFormState extends ConsumerState<RegistrationForm> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -46,6 +50,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
         countryController.text = '+${countryNotifier.value!.phoneCode}';
       }
     });
+
+    ref.listenManual(authAdapterProvider(), (previous, next) {
+      if (next is AuthError) {
+        final AuthError(:message) = next;
+        CoreUtils.showSnackBar(context, message: message);
+      } else if (next is Registered) {
+        context.go('/');
+      }
+    });
   }
 
   @override
@@ -64,6 +77,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authAdapterProvider());
+
     return Form(
       key: formKey,
       child: Column(
@@ -114,13 +129,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       child: const Icon(Icons.arrow_drop_down),
                     ),
                     suffixIconConstraints: const BoxConstraints(),
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          !isPhoneValid(
-                            value,
-                            defaultCountryCode: country?.countryCode,
-                          )) {
+                    validator: (_) {
+                      if (!isPhoneValid(
+                        phoneController.text,
+                        defaultCountryCode: country?.countryCode,
+                      )) {
                         return '';
                       }
                       return null;
@@ -186,10 +199,25 @@ class _RegistrationFormState extends State<RegistrationForm> {
             text: 'Sign Up',
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                // TODO(Registration): Implement Sign up Functionality here
+                final phoneNumber = phoneController.text.trim();
+                final country = countryNotifier.value!;
+                final formattedNumber = '+${country.phoneCode}'
+                    '${toNumericString(phoneNumber)}';
+
+                final email = emailController.text.trim();
+                final password = passwordController.text.trim();
+                final fullName = fullNameController.text.trim();
+
+                ref.read(authAdapterProvider().notifier).register(
+                  name: fullName,
+                  email: email,
+                  password: password,
+                  phone: formattedNumber,
+                  parish: '',//parish,
+                );
               }
             },
-          ).loading(false),
+          ).loading(authState is AuthLoading),
         ],
       ),
     );

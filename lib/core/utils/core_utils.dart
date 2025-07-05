@@ -27,7 +27,7 @@ abstract class CoreUtils {
   }
 
   static void postFrameCall(VoidCallback callback) {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       callback();
     });
   }

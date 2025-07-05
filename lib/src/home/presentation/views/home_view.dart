@@ -1,5 +1,6 @@
 import 'package:compair_hub/core/common/app/riverpod/current_user_provider.dart';
 import 'package:compair_hub/core/extensions/context_extensions.dart';
+import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,7 +18,7 @@ class HomeView extends ConsumerWidget {
         child: Center(
           child: Text(
             user!.name,
-            style: context.theme.textTheme.bodyLarge,
+            style: context.theme.textTheme.bodyLarge?.adaptiveColour(context),
           ),
         ),
       ),

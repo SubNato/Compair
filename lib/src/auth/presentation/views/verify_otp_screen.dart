@@ -5,14 +5,16 @@ import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/extensions/widget_extensions.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/src/auth/presentation/app/adapter/auth_adapter.dart';
 import 'package:compair_hub/src/auth/presentation/views/reset_password_screen.dart';
 import 'package:compair_hub/src/auth/presentation/widgets/otp_fields.dart';
 import 'package:compair_hub/src/auth/presentation/widgets/otp_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class VerifyOTPScreen extends StatefulWidget {
+class VerifyOTPScreen extends ConsumerStatefulWidget {
   const VerifyOTPScreen({required this.email, super.key});
 
   static const path = '/verify-otp';
@@ -20,11 +22,28 @@ class VerifyOTPScreen extends StatefulWidget {
   final String email;
 
   @override
-  State<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
+  ConsumerState<VerifyOTPScreen> createState() => _VerifyOTPScreenState();
 }
 
-class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
+class _VerifyOTPScreenState extends ConsumerState<VerifyOTPScreen> {
   final otpController = TextEditingController();
+  final familyKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(authAdapterProvider(familyKey), (previous, next) {
+      if (next is AuthError) {
+        final AuthError(:message) = next;
+        CoreUtils.showSnackBar(context, message: message);
+      } else if (next is OTPVerified) {
+        context.pushReplacement(
+          ResetPasswordScreen.path,
+          extra: widget.email,
+        );
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -34,6 +53,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authAdapterProvider(familyKey));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -57,7 +78,10 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
           const Gap(20),
           OTPFields(controller: otpController),
           const Gap(30),
-          OTPTimer(email: widget.email),
+          OTPTimer(
+            email: widget.email,
+            familyKey: familyKey,
+          ),
           const Gap(40),
           RoundedButton(
             text: 'Verify',
@@ -65,15 +89,13 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
               if (otpController.text.length < 4) {
                 CoreUtils.showSnackBar(context, message: 'Invalid OTP');
               } else {
-                // TODO(Verify-OTP): Implement OTP Verification
-
-                context.pushReplacement(
-                  ResetPasswordScreen.path,
-                  extra: widget.email,
+                ref.read(authAdapterProvider(familyKey).notifier).verifyOTP(
+                  email: widget.email,
+                  otp: otpController.text.trim(),
                 );
               }
             },
-          ).loading(false),
+          ).loading(authState is AuthLoading),
         ],
       ),
     );

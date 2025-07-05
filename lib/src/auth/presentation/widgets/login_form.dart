@@ -3,23 +3,39 @@ import 'package:compair_hub/core/common/widgets/vertical_label_field.dart';
 import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/extensions/widget_extensions.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
+import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/src/auth/presentation/app/adapter/auth_adapter.dart';
 import 'package:compair_hub/src/auth/presentation/views/forgot_password_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginForm extends StatefulWidget {
+class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({super.key});
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  ConsumerState<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends ConsumerState<LoginForm> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final obscurePasswordNotifier = ValueNotifier(true);
+
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(authAdapterProvider(), (previous, next) {
+      if (next is AuthError) {
+        final AuthError(:message) = next;
+        CoreUtils.showSnackBar(context, message: message);
+      } else if (next is LoggedIn) {
+        context.go('/', extra: 'home');
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -31,6 +47,8 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authAdapterProvider());
+
     return Form(
       key: formKey,
       child: Column(
@@ -86,10 +104,16 @@ class _LoginFormState extends State<LoginForm> {
             text: 'Sign In',
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                // TODO(Sign-In): Implement Sign in Functionality here
+                final email = emailController.text.trim();
+                final password = passwordController.text.trim();
+
+                ref.read(authAdapterProvider().notifier).login(
+                  email: email,
+                  password: password,
+                );
               }
             },
-          ).loading(false),
+          ).loading(authState is AuthLoading),
         ],
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:compair_hub/core/errors/exceptions.dart';
 import 'package:equatable/equatable.dart';
 

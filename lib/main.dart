@@ -2,11 +2,12 @@ import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/services/injection_container.dart';
 import 'package:compair_hub/core/services/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

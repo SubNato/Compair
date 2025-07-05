@@ -3,18 +3,21 @@ import 'dart:async';
 import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
+import 'package:compair_hub/src/auth/presentation/app/adapter/auth_adapter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class OTPTimer extends StatefulWidget {
-  const OTPTimer({required this.email, super.key});
+class OTPTimer extends ConsumerStatefulWidget {
+  const OTPTimer({required this.email, required this.familyKey, super.key});
 
   final String email;
+  final GlobalKey familyKey;
 
   @override
-  State<OTPTimer> createState() => _OTPTimerState();
+  ConsumerState<OTPTimer> createState() => _OTPTimerState();
 }
 
-class _OTPTimerState extends State<OTPTimer> {
+class _OTPTimerState extends ConsumerState<OTPTimer> {
   int _mainDuration = 60;
 
   int _duration = 60;
@@ -24,12 +27,20 @@ class _OTPTimerState extends State<OTPTimer> {
   Timer? _timer;
 
   bool canResend = false;
-  bool resending = false;
 
   @override
   void initState() {
     super.initState();
     _startTimer();
+
+    ref.listenManual(authAdapterProvider(widget.familyKey), (previous, next) {
+      if (next is OTPSent) {
+        _startTimer();
+        setState(() {
+          canResend = false;
+        });
+      }
+    });
   }
 
   @override
@@ -67,25 +78,17 @@ class _OTPTimerState extends State<OTPTimer> {
     final minutes = _duration ~/ 60;
     final seconds = _duration.remainder(60);
 
+    final authState = ref.read(authAdapterProvider(widget.familyKey));
+
     return Center(
         child: switch (canResend) {
-          true => switch (resending) {
-            true => const CircularProgressIndicator.adaptive(
-              backgroundColor: Colours.lightThemePrimaryColour,
-            ),
+          true => switch (authState) {
+            AuthLoading _ => const SizedBox.shrink(),
             _ => TextButton(
-              onPressed: () async {
-                setState(() {
-                  resending = true;
-                });
-                // TODO(Resend-OTP): Implement OTP resend
-                setState(() {
-                  resending = false;
-                });
-                _startTimer();
-                setState(() {
-                  canResend = false;
-                });
+              onPressed: () {
+                ref
+                    .read(authAdapterProvider(widget.familyKey).notifier)
+                    .forgotPassword(email: widget.email);
               },
               child: Text(
                 'Resend Code',
