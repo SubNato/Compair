@@ -116,7 +116,10 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> {
                   return null;
                 },
                 inputFormatters: [
-                  PhoneInputFormatter(defaultCountryCode: country?.countryCode),
+                  PhoneInputFormatter(
+                    defaultCountryCode: country?.countryCode,
+                    allowEndlessPhone: true,
+                  ),
                 ],
                 mainFieldFlex: 3,
                 prefix: InputField(
@@ -154,7 +157,7 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> {
                 suffixIcon: GestureDetector(
                   onTap: () {
                     obscurePasswordNotifier.value =
-                    !obscurePasswordNotifier.value;
+                        !obscurePasswordNotifier.value;
                   },
                   child: Icon(
                     obscurePassword
@@ -178,7 +181,7 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> {
                   suffixIcon: GestureDetector(
                     onTap: () {
                       obscureConfirmPasswordNotifier.value =
-                      !obscureConfirmPasswordNotifier.value;
+                          !obscureConfirmPasswordNotifier.value;
                     },
                     child: Icon(
                       obscureConfirmPassword
@@ -209,12 +212,12 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> {
                 final fullName = fullNameController.text.trim();
 
                 ref.read(authAdapterProvider().notifier).register(
-                  name: fullName,
-                  email: email,
-                  password: password,
-                  phone: formattedNumber,
-                  parish: '',//parish,
-                );
+                      name: fullName,
+                      email: email,
+                      password: password,
+                      phone: formattedNumber,
+                      parish: '', //parish,
+                    );
               }
             },
           ).loading(authState is AuthLoading),

@@ -86,7 +86,7 @@ class UserModel extends User {
       email: map['email'] as String,
       isAdmin: map['isAdmin'] as bool,
       isBusiness: map['isBusiness'] as bool,
-      wishlist: List<DataMap>.from(map['wishlist'] as List)
+      wishlist: List<DataMap>.from(map['wishList'] as List)
           .map(WishlistProductModel.fromMap)
           .toList(),
       address: address.isEmpty ? null : address,
