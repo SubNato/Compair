@@ -7,9 +7,14 @@ import 'package:compair_hub/src/auth/presentation/views/registration_screen.dart
 import 'package:compair_hub/src/auth/presentation/views/reset_password_screen.dart';
 import 'package:compair_hub/src/auth/presentation/views/splash_screen.dart';
 import 'package:compair_hub/src/auth/presentation/views/verify_otp_screen.dart';
+import 'package:compair_hub/src/cart/presentation/views/cart_view.dart';
 import 'package:compair_hub/src/dashboard/presentation/views/dashboard_screen.dart';
+import 'package:compair_hub/src/explore/presentation/views/explore_view.dart';
 import 'package:compair_hub/src/home/presentation/views/home_view.dart';
 import 'package:compair_hub/src/on_boarding/presentation/views/on_boarding_screen.dart';
+import 'package:compair_hub/src/user/presentation/views/payment_profile_view.dart';
+import 'package:compair_hub/src/user/presentation/views/profile_view.dart';
+import 'package:compair_hub/src/wishlist/presentation/views/wishlist_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 

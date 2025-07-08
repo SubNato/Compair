@@ -1,3 +1,5 @@
+import 'package:compair_hub/core/common/app/cache_helper.dart';
+import 'package:compair_hub/core/common/singletons/cache.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/services/injection_container.dart';
 import 'package:compair_hub/core/services/router.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
+  sl<CacheHelper>().getThemeMode();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -26,18 +29,23 @@ class MyApp extends StatelessWidget {
       ),
       useMaterial3: true,
     );
-    return MaterialApp.router(
-      title: 'Compair',
-      routerConfig: router,
-      themeMode: ThemeMode.system,
-      theme: theme,
-      darkTheme: theme.copyWith(
-        scaffoldBackgroundColor: Colours.darkThemeBGDark,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colours.darkThemeBGDark,
-          foregroundColor: Colours.lightThemeWhiteColour,
-        ),
-      ),
+    return ValueListenableBuilder(
+        valueListenable: Cache.instance.themeModeNotifier,
+        builder: (_, themeMode, __) {
+          return MaterialApp.router(
+            title: 'Compair',
+            routerConfig: router,
+            themeMode: themeMode,
+            theme: theme,
+            darkTheme: theme.copyWith(
+              scaffoldBackgroundColor: Colours.darkThemeBGDark,
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colours.darkThemeBGDark,
+                foregroundColor: Colours.lightThemeWhiteColour,
+              ),
+            ),
+          );
+        }
     );
   }
 }

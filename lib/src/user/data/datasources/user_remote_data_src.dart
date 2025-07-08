@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:compair_hub/core/common/app/cache_helper.dart';
 import 'package:compair_hub/core/common/models/user_model.dart';
 import 'package:compair_hub/core/common/singletons/cache.dart';
 import 'package:compair_hub/core/errors/exceptions.dart';
@@ -11,13 +10,11 @@ import 'package:compair_hub/core/utils/constants/network_constants.dart';
 import 'package:compair_hub/core/utils/error_response.dart';
 import 'package:compair_hub/core/utils/network_utils.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 abstract class UserRemoteDataSrc {
-  Future<UserModel> getUser(
-      String
-          userId); //Ensure that you have matching usecases for each of these.
+  Future<UserModel> getUser(String userId);
 
   Future<UserModel> updateUser({
     required String userId,
@@ -105,8 +102,10 @@ class UserRemoteDataSrcImpl implements UserRemoteDataSrc {
   }
 
   @override
-  Future<UserModel> updateUser(
-      {required String userId, required DataMap updateData}) async {
+  Future<UserModel> updateUser({
+    required String userId,
+    required DataMap updateData,
+  }) async {
     try {
       final uri = Uri.parse(
         '${NetworkConstants.baseUrl}$USERS_ENDPOINT/$userId',

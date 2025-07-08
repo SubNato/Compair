@@ -28,4 +28,18 @@ extension StringExt on String {
 
     return '$username@$domain';
   }
+
+  String get initials {
+    if (isEmpty) return '';
+
+    final words = trim().split(' ');
+
+    String initials = '';
+
+    for (int i = 0; i < words.length && i < 2; i++) {
+      initials += words[i][0];
+    }
+
+    return initials.toUpperCase();
+  }
 }
