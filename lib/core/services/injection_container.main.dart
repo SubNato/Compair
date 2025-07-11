@@ -5,6 +5,28 @@ final sl = GetIt.instance;
 Future<void> init() async {
   await _cacheInit();
   await _authInit();
+  await _userInit();
+  await _productInit();
+}
+
+Future<void> _productInit() async {
+  sl
+    ..registerLazySingleton(() => GetCategories(sl()))
+    ..registerLazySingleton(() => GetCategory(sl()))
+    ..registerLazySingleton(() => GetNewArrivals(sl()))
+    ..registerLazySingleton(() => GetPopular(sl()))
+    ..registerLazySingleton(() => GetProduct(sl()))
+    ..registerLazySingleton(() => GetProductReviews(sl()))
+    ..registerLazySingleton(() => GetProducts(sl()))
+    ..registerLazySingleton(() => GetProductsByCategory(sl()))
+    ..registerLazySingleton(() => LeaveReview(sl()))
+    ..registerLazySingleton(() => SearchAllProducts(sl()))
+    ..registerLazySingleton(() => SearchByCategory(sl()))
+    ..registerLazySingleton(() => SearchByCategoryAndGenderAgeCategory(sl()))
+    ..registerLazySingleton<ProductRepo>(() => ProductRepoImpl(sl()))
+    ..registerLazySingleton<ProductRemoteDataSrc>(
+          () => ProductRemoteDataSrcImpl(sl()),
+    );
 }
 
 Future<void> _userInit() async {

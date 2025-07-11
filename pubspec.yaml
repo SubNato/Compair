@@ -52,6 +52,7 @@ dependencies:
   iconly: ^1.0.1
   collection: ^1.18.0
   webview_flutter: ^4.10.0
+  iconify_flutter: ^0.0.7
 
 dev_dependencies:
   flutter_test:

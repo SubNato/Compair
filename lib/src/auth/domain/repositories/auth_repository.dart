@@ -2,7 +2,7 @@
 import 'package:compair_hub/core/common/entities/user.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
 
-abstract class AuthRepository {
+abstract interface class AuthRepository {
   const AuthRepository();
 
   ResultFuture<void> register({

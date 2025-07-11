@@ -15,13 +15,12 @@ import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-abstract class AuthRemoteDataSource {
+abstract interface class AuthRemoteDataSource {
   const AuthRemoteDataSource();
 
   Future<void> register({
     required String name,
     required String password,
-    required String parish,
     required String email,
     required String phone,
   });
@@ -110,8 +109,7 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
       final user = UserModel.fromMap(payload);
       await sl<CacheHelper>().cacheUserId(user.id);
       return user;
-    } on ServerException  catch(se) {
-      debugPrint('Error ${se.statusCode}: ${se.message}');
+    } on ServerException {
       rethrow;
     } catch (e, s) {
       debugPrint(e.toString());
@@ -127,7 +125,6 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
   Future<void> register({
     required String name,
     required String password,
-    required String parish,
     required String email,
     required String phone,
   }) async {
@@ -139,7 +136,6 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
         body: jsonEncode({
           'name': name,
           'password': password,
-          'parish': parish,
           'email': email,
           'phone': phone,
         }),

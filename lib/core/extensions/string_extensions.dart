@@ -42,4 +42,14 @@ extension StringExt on String {
 
     return initials.toUpperCase();
   }
+
+  Color get colour => Color(int.parse(replaceFirst('#', 'ff'), radix: 16));
+
+  String truncateWithEllipsis(int maxLength) {
+    if (length <= maxLength) {
+      return this;
+    } else {
+      return '${substring(0, maxLength)}...';
+    }
+  }
 }

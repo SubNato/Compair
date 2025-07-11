@@ -13,7 +13,8 @@ import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-abstract class UserRemoteDataSrc {
+abstract interface class UserRemoteDataSrc {
+  const UserRemoteDataSrc();
   Future<UserModel> getUser(String userId);
 
   Future<UserModel> updateUser({

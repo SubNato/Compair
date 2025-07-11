@@ -1,7 +1,7 @@
 import 'package:compair_hub/core/common/entities/user.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
 
-abstract class UserRepo {
+abstract interface class UserRepo {
   const UserRepo();
 
   ResultFuture<User> getUser(String userId); //Ensure that you have matching usecases for each of these.
