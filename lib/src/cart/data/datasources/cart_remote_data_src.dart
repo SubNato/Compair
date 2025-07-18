@@ -80,7 +80,7 @@ class CartRemoteDataSrcImpl implements CartRemoteDataSrc {
           .cast<DataMap>()
           .map(
             (cartProduct) => CartProductModel.fromMap(cartProduct),
-          )
+      )
           .toList();
     } on ServerException {
       rethrow;

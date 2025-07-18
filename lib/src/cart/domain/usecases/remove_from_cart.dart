@@ -3,6 +3,7 @@ import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:compair_hub/src/cart/domain/repos/cart_repo.dart';
 import 'package:equatable/equatable.dart';
 
+
 class RemoveFromCart extends UsecaseWithParams<void, RemoveFromCartParams> {
   const RemoveFromCart(this._repo);
 
@@ -10,9 +11,9 @@ class RemoveFromCart extends UsecaseWithParams<void, RemoveFromCartParams> {
 
   @override
   ResultFuture<void> call(RemoveFromCartParams params) => _repo.removeFromCart(
-        userId: params.userId,
-        cartProductId: params.cartProductId,
-      );
+    userId: params.userId,
+    cartProductId: params.cartProductId,
+  );
 }
 
 class RemoveFromCartParams extends Equatable {

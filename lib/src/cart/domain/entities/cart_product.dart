@@ -41,15 +41,15 @@ class CartProduct extends Equatable {
 
   @override
   List<dynamic> get props => [
-        id,
-        productId,
-        quantity,
-        productName,
-        productImage,
-        productPrice,
-        selectedSize,
-        selectedColour,
-        productExists,
-        productOutOfStock,
-      ];
+    id,
+    productId,
+    quantity,
+    productName,
+    productImage,
+    productPrice,
+    selectedSize,
+    selectedColour,
+    productExists,
+    productOutOfStock,
+  ];
 }

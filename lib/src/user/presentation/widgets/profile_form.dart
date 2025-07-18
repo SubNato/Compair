@@ -32,7 +32,7 @@ class _ProfileFormState extends ConsumerState<ProfileForm> {
   bool noChanges() {
     final currentUser = ref.watch(currentUserProvider)!;
     return nameController.text.toLowerCase().trim() ==
-            currentUser.name.toLowerCase().trim() &&
+        currentUser.name.toLowerCase().trim() &&
         emailController.text.toLowerCase().trim() ==
             currentUser.email.toLowerCase().trim() &&
         phoneController.text.toLowerCase().trim() ==
@@ -99,7 +99,7 @@ class _ProfileFormState extends ConsumerState<ProfileForm> {
     super.initState();
     ref.listenManual(
       currentUserProvider,
-      (previous, next) {
+          (previous, next) {
         if (noChanges()) {
           widget.changeNotifier.value = false;
           widget.updateContainer.clear();
