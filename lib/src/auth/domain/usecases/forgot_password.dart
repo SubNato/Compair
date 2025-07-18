@@ -10,3 +10,4 @@ class ForgotPassword extends UsecaseWithParams<void, String> {
   @override
   ResultFuture<void> call(String params) => _repo.forgotPassword(params);
 }
+

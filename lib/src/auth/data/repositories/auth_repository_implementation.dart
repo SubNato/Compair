@@ -45,7 +45,7 @@ class AuthRepositoryImplementation implements AuthRepository {
     required String email,
     required String phone,
   }) async {
-    try {  //TODO: Add parish as a field in the remote datasource so that register works
+    try {  //TODO: Add the parish as a field in the remote datasource so that register works
       await _remoteDataSource.register(
         name: name,
         password: password,

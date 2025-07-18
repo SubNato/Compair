@@ -26,3 +26,4 @@ abstract interface class AuthRepository {
 
   ResultFuture<bool> verifyToken();
 }
+
