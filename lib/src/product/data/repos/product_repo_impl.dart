@@ -174,11 +174,11 @@ class ProductRepoImpl implements ProductRepo {
   }) async {
     try {
       final result =
-          await _remoteDataSource.searchByCategoryAndGenderAgeCategory(
-              query: query,
-              categoryId: categoryId,
-              genderAgeCategory: genderAgeCategory,
-              page: page);
+      await _remoteDataSource.searchByCategoryAndGenderAgeCategory(
+          query: query,
+          categoryId: categoryId,
+          genderAgeCategory: genderAgeCategory,
+          page: page);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message, statusCode: e.statusCode));

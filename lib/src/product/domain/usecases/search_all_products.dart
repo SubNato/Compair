@@ -29,7 +29,7 @@ class SearchAllProductsParams extends Equatable {
 
   @override
   List<dynamic> get props => [
-        query,
-        page,
-      ];
+    query,
+    page,
+  ];
 }

@@ -1,12 +1,12 @@
-import 'package:compair_hub/core/common/widgets/compair_logo.dart';
-import 'package:compair_hub/core/res/styles/colours.dart';
-import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/core/common/app/cache_helper.dart';
 import 'package:compair_hub/core/common/app/riverpod/current_user_provider.dart';
 import 'package:compair_hub/core/common/singletons/cache.dart';
+import 'package:compair_hub/core/common/widgets/compair_logo.dart';
+import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/services/injection_container.dart';
+import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/src/auth/presentation/app/adapter/auth_adapter.dart';
-import 'package:compair_hub/src/user/app/adapter/auth_user_provider.dart';
+import 'package:compair_hub/src/user/presentation/adapter/auth_user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

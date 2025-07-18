@@ -20,32 +20,45 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colours.lightThemePrimaryColour,),
-      fontFamily: 'Switzer', //Remember that this is licenced. Find out about using it for a launched app!
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colours.lightThemePrimaryColour,
+      ),
+      fontFamily: 'Switzer',
       scaffoldBackgroundColor: Colours.lightThemeTintStockColour,
       appBarTheme: const AppBarTheme(
         backgroundColor: Colours.lightThemeTintStockColour,
         foregroundColor: Colours.lightThemePrimaryTextColour,
       ),
+      chipTheme: const ChipThemeData(
+        padding: EdgeInsets.symmetric(horizontal: 8),
+      ),
       useMaterial3: true,
     );
     return ValueListenableBuilder(
-        valueListenable: Cache.instance.themeModeNotifier,
-        builder: (_, themeMode, __) {
-          return MaterialApp.router(
-            title: 'Compair',
-            routerConfig: router,
-            themeMode: themeMode,
-            theme: theme,
-            darkTheme: theme.copyWith(
-              scaffoldBackgroundColor: Colours.darkThemeBGDark,
-              appBarTheme: const AppBarTheme(
-                backgroundColor: Colours.darkThemeBGDark,
-                foregroundColor: Colours.lightThemeWhiteColour,
-              ),
+      valueListenable: Cache.instance.themeModeNotifier,
+      builder: (_, themeMode, __) {
+        return MaterialApp.router(
+          title: 'Compair',
+          routerConfig: router,
+          themeMode: themeMode,
+          theme: theme,
+          darkTheme: ThemeData.dark(useMaterial3: true).copyWith(
+            scaffoldBackgroundColor: Colours.darkThemeBGDark,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Colours.darkThemeBGDark,
+              foregroundColor: Colours.lightThemeWhiteColour,
             ),
-          );
-        }
+            colorScheme: theme.colorScheme,
+            elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colours.lightThemePrimaryColour,
+                )
+            ),
+            chipTheme: theme.chipTheme,
+            textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'Switzer'),
+          ),
+        );
+      },
     );
   }
 }

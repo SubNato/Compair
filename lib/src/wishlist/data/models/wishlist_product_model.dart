@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:compair_hub/src/wishlist/domain/entities/wishlist_product.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
+import 'package:compair_hub/src/wishlist/domain/entities/wishlist_product.dart';
 
 class WishlistProductModel extends WishlistProduct {
   const WishlistProductModel({

@@ -11,9 +11,9 @@ class GetPopular extends UsecaseWithParams<List<Product>, GetPopularParams> {
 
   @override
   ResultFuture<List<Product>> call(GetPopularParams params) => _repo.getPopular(
-        page: params.page,
-        categoryId: params.categoryId,
-      );
+    page: params.page,
+    categoryId: params.categoryId,
+  );
 }
 
 class GetPopularParams extends Equatable {

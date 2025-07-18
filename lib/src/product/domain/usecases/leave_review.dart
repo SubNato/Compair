@@ -10,11 +10,11 @@ class LeaveReview extends UsecaseWithParams<void, LeaveReviewParams> {
 
   @override
   ResultFuture<void> call(LeaveReviewParams params) => _repo.leaveReview(
-        productId: params.productId,
-        userId: params.userId,
-        comment: params.comment,
-        rating: params.rating,
-      );
+    productId: params.productId,
+    userId: params.userId,
+    comment: params.comment,
+    rating: params.rating,
+  );
 }
 
 class LeaveReviewParams extends Equatable {
@@ -32,9 +32,9 @@ class LeaveReviewParams extends Equatable {
 
   @override
   List<dynamic> get props => [
-        productId,
-        userId,
-        comment,
-        rating,
-      ];
+    productId,
+    userId,
+    comment,
+    rating,
+  ];
 }

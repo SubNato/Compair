@@ -10,8 +10,10 @@ class UpdateUser extends UsecaseWithParams<User, UpdateUserParams> {
   final UserRepo _repo;
 
   @override
-  ResultFuture<User> call(UpdateUserParams params) =>
-      _repo.updateUser(userId: params.userId, updateData: params.updateData);
+  ResultFuture<User> call(UpdateUserParams params) => _repo.updateUser(
+    userId: params.userId,
+    updateData: params.updateData,
+  );
 }
 
 class UpdateUserParams extends Equatable {

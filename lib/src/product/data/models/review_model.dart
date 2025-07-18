@@ -13,23 +13,23 @@ class ReviewModel extends Review {
 
   ReviewModel.empty([DateTime? date])
       : this(
-          id: "Test String",
-          userId: "Test String",
-          userName: "Test String",
-          comment: "Test String",
-          rating: 1,
-          date: date ?? DateTime.now(),
-        );
+    id: "Test String",
+    userId: "Test String",
+    userName: "Test String",
+    comment: "Test String",
+    rating: 1,
+    date: date ?? DateTime.now(),
+  );
 
   ReviewModel.fromMap(DataMap map)
       : this(
-          id: map['id'] as String? ?? map['_id'] as String,
-          userId: map['user'] as String,
-          userName: map['userName'] as String,
-          comment: map['comment'] as String,
-          rating: (map['rating'] as num).toDouble(),
-          date: DateTime.parse(map['date'] as String),
-        );
+    id: map['id'] as String? ?? map['_id'] as String,
+    userId: map['user'] as String,
+    userName: map['userName'] as String,
+    comment: map['comment'] as String,
+    rating: (map['rating'] as num).toDouble(),
+    date: DateTime.parse(map['date'] as String),
+  );
 
   ReviewModel copyWith({
     String? id,

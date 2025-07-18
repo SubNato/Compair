@@ -1,10 +1,10 @@
+import 'package:dartz/dartz.dart';
 import 'package:compair_hub/core/common/entities/user.dart';
 import 'package:compair_hub/core/errors/exceptions.dart';
 import 'package:compair_hub/core/errors/failures.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:compair_hub/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:compair_hub/src/auth/domain/repositories/auth_repository.dart';
-import 'package:dartz/dartz.dart';
 
 class AuthRepositoryImplementation implements AuthRepository {
   const AuthRepositoryImplementation(this._remoteDataSource);
@@ -45,11 +45,11 @@ class AuthRepositoryImplementation implements AuthRepository {
     required String email,
     required String phone,
   }) async {
-    try {
+    try {  //TODO: Add parish as a field in the remote datasource so that register works
       await _remoteDataSource.register(
         name: name,
         password: password,
-        parish: parish,
+        //parish: parish,
         email: email,
         phone: phone,
       );

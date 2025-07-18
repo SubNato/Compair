@@ -12,8 +12,8 @@ class SearchByCategoryAndGenderAgeCategory extends UsecaseWithParams<
 
   @override
   ResultFuture<List<Product>> call(
-    SearchByCategoryAndGenderAgeCategoryParams params,
-  ) =>
+      SearchByCategoryAndGenderAgeCategoryParams params,
+      ) =>
       _repo.searchByCategoryAndGenderAgeCategory(
         query: params.query,
         categoryId: params.categoryId,
@@ -37,9 +37,9 @@ class SearchByCategoryAndGenderAgeCategoryParams extends Equatable {
 
   @override
   List<dynamic> get props => [
-        query,
-        categoryId,
-        genderAgeCategory,
-        page,
-      ];
+    query,
+    categoryId,
+    genderAgeCategory,
+    page,
+  ];
 }

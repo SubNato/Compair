@@ -7,6 +7,7 @@ import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class CategoriesSection extends ConsumerStatefulWidget {
   const CategoriesSection({super.key});
@@ -24,7 +25,7 @@ class _CategoriesSectionState extends ConsumerState<CategoriesSection> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     CoreUtils.postFrameCall(
-      () {
+          () {
         ref.read(productAdapterProvider(familyKey).notifier).getCategories();
       },
     );
@@ -35,7 +36,7 @@ class _CategoriesSectionState extends ConsumerState<CategoriesSection> {
     super.initState();
     ref.listenManual(
       productAdapterProvider(familyKey),
-      (previous, next) {
+          (previous, next) {
         if (next is ProductError) {
           final ProductError(:message) = next;
           CoreUtils.showSnackBar(context, message: message);
@@ -71,7 +72,7 @@ class _CategoriesSectionState extends ConsumerState<CategoriesSection> {
             final category = categories[index];
             return GestureDetector(
               onTap: () {
-                // TODO(Categories): Push to category screen
+                context.push('/${category.name}', extra: category);
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,

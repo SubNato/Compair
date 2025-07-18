@@ -78,6 +78,7 @@ class _ColourPaletteState extends State<ColourPalette> {
                         shape: BoxShape.circle,
                         border: Border.all(width: 2, color: colour),
                       ),
+                      child: innerContainer,
                     )
                   : innerContainer,
             );

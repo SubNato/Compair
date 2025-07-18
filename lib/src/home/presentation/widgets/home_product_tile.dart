@@ -8,6 +8,7 @@ import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/presentation/widgets/colour_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeProductTile extends StatelessWidget {
   const HomeProductTile(this.product, {super.key, this.margin});
@@ -19,9 +20,7 @@ class HomeProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () {
-        // TODO(Navigation): Push to Product details page
-      },
+      onTap: () => context.push('/products/${product.id}'),
       child: Container(
         width: 196,
         margin: margin,

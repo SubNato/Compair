@@ -1,10 +1,10 @@
+import 'package:compair_hub/core/common/app/riverpod/current_user_provider.dart';
 import 'package:compair_hub/core/common/entities/user.dart';
 import 'package:compair_hub/core/services/injection_container.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:compair_hub/src/user/domain/usecases/get_user.dart';
 import 'package:compair_hub/src/user/domain/usecases/get_user_payment_profile.dart';
 import 'package:compair_hub/src/user/domain/usecases/update_user.dart';
-import 'package:compair_hub/core/common/app/riverpod/current_user_provider.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -31,8 +31,8 @@ class AuthUser extends _$AuthUser {
     final result = await _getUser(userId);
 
     result.fold(
-      (failure) => state = AuthUserError(failure.errorMessage),
-      (user) {
+          (failure) => state = AuthUserError(failure.errorMessage),
+          (user) {
         ref.read(currentUserProvider.notifier).setUser(user);
         state = UserUpdated(user);
       },
@@ -49,8 +49,8 @@ class AuthUser extends _$AuthUser {
     );
 
     result.fold(
-      (failure) => state = AuthUserError(failure.errorMessage),
-      (user) {
+          (failure) => state = AuthUserError(failure.errorMessage),
+          (user) {
         ref.read(currentUserProvider.notifier).setUser(user);
         state = UserUpdated(user);
       },
@@ -62,9 +62,9 @@ class AuthUser extends _$AuthUser {
     final result = await _getUserPaymentProfile(userId);
 
     result.fold(
-      (failure) => state = AuthUserError(failure.errorMessage),
-      (paymentProfileUrl) =>
-          state = FetchedUserPaymentProfile(paymentProfileUrl),
+          (failure) => state = AuthUserError(failure.errorMessage),
+          (paymentProfileUrl) =>
+      state = FetchedUserPaymentProfile(paymentProfileUrl),
     );
   }
 }

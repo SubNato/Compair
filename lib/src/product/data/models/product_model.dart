@@ -26,21 +26,21 @@ class ProductModel extends Product {
 
   const ProductModel.empty()
       : this(
-          id: "Test String",
-          name: "Test String",
-          description: "Test String",
-          price: 1,
-          rating: 1,
-          colours: const [],
-          image: "Test String",
-          images: const [],
-          reviewIds: const [],
-          numberOfReviews: 1,
-          sizes: const [],
-          category: const ProductCategoryModel.empty(),
-          genderAgeCategory: "Test String",
-          countInStock: 1,
-        );
+    id: "Test String",
+    name: "Test String",
+    description: "Test String",
+    price: 1,
+    rating: 1,
+    colours: const [],
+    image: "Test String",
+    images: const [],
+    reviewIds: const [],
+    numberOfReviews: 1,
+    sizes: const [],
+    category: const ProductCategoryModel.empty(),
+    genderAgeCategory: "Test String",
+    countInStock: 1,
+  );
 
   Map<String, dynamic> toMap() {
     return {

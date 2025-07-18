@@ -40,14 +40,15 @@ class _PaymentProfileViewState extends State<PaymentProfileView> {
             );
           },
           onNavigationRequest: (request) {
-            if(request.url.startsWith('https://dbestech.biz/ecomly')) {
+            if (request.url.startsWith('https://dbestech.biz/ecomly')) {
               context.pop();
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
           },
         ),
-      )..loadRequest(Uri.parse(widget.sessionUrl));
+      )
+      ..loadRequest(Uri.parse(widget.sessionUrl));
   }
 
   @override
@@ -57,7 +58,7 @@ class _PaymentProfileViewState extends State<PaymentProfileView> {
         child: ValueListenableBuilder(
           valueListenable: loadingNotifier,
           builder: (_, loading, __) {
-            if(loading) {
+            if (loading) {
               return const Center(
                 child: CircularProgressIndicator.adaptive(
                   backgroundColor: Colours.lightThemePrimaryColour,

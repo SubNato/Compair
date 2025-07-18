@@ -80,14 +80,14 @@ class _ThemeToggleState extends State<ThemeToggle> {
                   ThemeMode.light => Icons.light_mode,
                   ThemeMode.dark => Icons.dark_mode,
                   ThemeMode.system => switch (defaultTargetPlatform) {
-                    TargetPlatform.iOS => Icons.phone_iphone_rounded,
-                    TargetPlatform.android ||
-                    TargetPlatform.fuchsia =>
-                    Icons.phone_android_rounded,
-                    TargetPlatform.linux => Icons.laptop_chromebook_rounded,
-                    TargetPlatform.macOS => Icons.laptop_mac_rounded,
-                    TargetPlatform.windows => Icons.laptop_windows_rounded,
-                  },
+                      TargetPlatform.iOS => Icons.phone_iphone_rounded,
+                      TargetPlatform.android ||
+                      TargetPlatform.fuchsia =>
+                        Icons.phone_android_rounded,
+                      TargetPlatform.linux => Icons.laptop_chromebook_rounded,
+                      TargetPlatform.macOS => Icons.laptop_mac_rounded,
+                      TargetPlatform.windows => Icons.laptop_windows_rounded,
+                    },
                 },
               ),
               const Gap(3),
@@ -98,7 +98,7 @@ class _ThemeToggleState extends State<ThemeToggle> {
                   ThemeMode.system => 'System',
                 },
                 style:
-                TextStyles.paragraphSubTextRegular2.adaptiveColour(context),
+                    TextStyles.paragraphSubTextRegular2.adaptiveColour(context),
               ),
             ],
           ),

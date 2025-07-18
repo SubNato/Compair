@@ -42,9 +42,9 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
         Scaffold.of(context).closeDrawer();
         CoreUtils.showSnackBar(context, message: message);
       } else if (next
-      case FetchedUserPaymentProfile(
-          :final paymentProfileUrl,
-      )) {
+          case FetchedUserPaymentProfile(
+            :final paymentProfileUrl,
+          )) {
         context.push(PaymentProfileView.path, extra: paymentProfileUrl);
       }
     });
@@ -166,7 +166,7 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
                               positiveButtonText: 'Yes',
                               negativeButtonText: 'Cancel',
                               positiveButtonColour:
-                              Colours.lightThemeSecondaryColour,
+                                  Colours.lightThemeSecondaryColour,
                             );
                           },
                         );

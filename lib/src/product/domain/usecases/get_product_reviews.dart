@@ -29,7 +29,7 @@ class GetProductReviewsParams extends Equatable {
 
   @override
   List<dynamic> get props => [
-        productId,
-        page,
-      ];
+    productId,
+    page,
+  ];
 }

@@ -27,11 +27,11 @@ class WishlistProduct extends Equatable {
 
   @override
   List<dynamic> get props => [
-        productId,
-        productName,
-        productImage,
-        productPrice,
-        productExists,
-        productOutOfStock,
-      ];
+    productId,
+    productName,
+    productImage,
+    productPrice,
+    productExists,
+    productOutOfStock,
+  ];
 }

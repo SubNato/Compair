@@ -11,12 +11,14 @@ class SearchSection extends StatefulWidget {
     this.readOnly = false,
     this.suffixIcon,
     this.controller,
+    this.onSubmitted,
   });
 
   final VoidCallback? onTap;
   final bool readOnly;
   final Widget? suffixIcon;
   final TextEditingController? controller;
+  final ValueChanged<String>? onSubmitted;
 
   @override
   State<SearchSection> createState() => _SearchSectionState();
@@ -34,8 +36,10 @@ class _SearchSectionState extends State<SearchSection> {
 
   @override
   void dispose() {
-    controller.dispose();
-    focusNode.dispose();
+    if (widget.controller == null) controller.dispose();
+    focusNode
+      ..unfocus()
+      ..dispose();
     super.dispose();
   }
 
@@ -53,10 +57,12 @@ class _SearchSectionState extends State<SearchSection> {
         controller: controller,
         focusNode: focusNode,
         defaultValidation: false,
+        readOnly: widget.readOnly,
         hintText: 'Search for products',
         onTap: widget.onTap,
         prefixIcon: const Icon(IconlyLight.search),
         onTapOutside: (_) => focusNode.unfocus(),
+        onSubmitted: widget.onSubmitted,
         suffixIcon: IntrinsicHeight(
           child: Row(
             mainAxisSize: MainAxisSize.min,

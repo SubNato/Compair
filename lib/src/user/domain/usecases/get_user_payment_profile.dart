@@ -8,5 +8,6 @@ class GetUserPaymentProfile extends UsecaseWithParams<String, String> {
   final UserRepo _repo;
 
   @override
-  ResultFuture<String> call(String params) => _repo.getUserPaymentProfile(params);
+  ResultFuture<String> call(String params) =>
+      _repo.getUserPaymentProfile(params);
 }

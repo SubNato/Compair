@@ -437,7 +437,7 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
     try {
       final uri = Uri.parse(
         '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT'
-        '/$productId$GET_PRODUCT_REVIEWS_ENDPOINT',
+            '/$productId$GET_PRODUCT_REVIEWS_ENDPOINT',
       );
 
       final response = await _client.post(

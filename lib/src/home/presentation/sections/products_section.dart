@@ -54,7 +54,7 @@ class _ProductsSectionState extends ConsumerState<ProductsSection> {
 
     ref.listenManual(
       productAdapterProvider(familyKey),
-      (previous, next) {
+          (previous, next) {
         if (next case ProductError(:final message)) {
           CoreUtils.showSnackBar(context, message: message);
         } else if (next case ProductsFetched(:final products)) {
@@ -89,11 +89,11 @@ class _ProductsSectionState extends ConsumerState<ProductsSection> {
                   context,
                 ),
               ),
-              if (products.length > 10)
+              if (products.length > 9)
                 IconButton.filled(
                   style: IconButton.styleFrom(
                     backgroundColor:
-                        Colours.lightThemeSecondaryTextColour.withOpacity(
+                    Colours.lightThemeSecondaryTextColour.withOpacity(
                       .2,
                     ),
                   ),

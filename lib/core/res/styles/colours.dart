@@ -44,7 +44,7 @@ abstract class Colours {
   static Color classicAdaptiveTextColour(BuildContext context) =>
       CoreUtils.adaptiveColour(
         context,
-        lightModeColour: lightThemePrimaryTextColour ,
+        lightModeColour: lightThemePrimaryTextColour,
         darkModeColour: lightThemeWhiteColour,
       );
 }

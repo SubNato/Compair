@@ -27,10 +27,10 @@ class Review extends Equatable {
 
   @override
   List<dynamic> get props => [
-        id,
-        userId,
-        userName,
-        rating,
-        date,
-      ];
+    id,
+    userId,
+    userName,
+    rating,
+    date,
+  ];
 }

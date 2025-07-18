@@ -27,6 +27,7 @@ class InputField extends StatelessWidget {
     this.onTap,
     this.suffixIconConstraints,
     this.onTapOutside,
+    this.onSubmitted,
   });
 
   final Widget? suffixIcon;
@@ -47,6 +48,7 @@ class InputField extends StatelessWidget {
   final bool expandable;
   final BoxConstraints? suffixIconConstraints;
   final ValueChanged<PointerDownEvent>? onTapOutside;
+  final ValueChanged<String>? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +64,7 @@ class InputField extends StatelessWidget {
       style: TextStyles.paragraphSubTextRegular3.adaptiveColour(context),
       onTap: onTap,
       onTapOutside: onTapOutside,
+      onFieldSubmitted: onSubmitted,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),

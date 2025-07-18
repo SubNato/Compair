@@ -32,8 +32,8 @@ class SearchByCategoryParams extends Equatable {
 
   @override
   List<dynamic> get props => [
-        query,
-        categoryId,
-        page,
-      ];
+    query,
+    categoryId,
+    page,
+  ];
 }

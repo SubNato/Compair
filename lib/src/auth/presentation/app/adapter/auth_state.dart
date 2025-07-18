@@ -7,17 +7,17 @@ sealed class AuthState extends Equatable {
   List<Object?> get props => [];
 }
 
-//The Initial State
+// THE INITIAL STATE
 final class AuthInitial extends AuthState {
   const AuthInitial();
 }
 
-//The general Loading States. Can have different loading states for different classes.
+// THE LOADING STATES
 final class AuthLoading extends AuthState {
   const AuthLoading();
 }
 
-//The Success States
+// THE SUCCESS STATES
 final class OTPSent extends AuthState {
   const OTPSent();
 }
@@ -28,7 +28,7 @@ final class LoggedIn extends AuthState {
   final User user;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [user];
 }
 
 final class Registered extends AuthState {
@@ -52,7 +52,7 @@ final class TokenVerified extends AuthState {
   List<Object?> get props => [isValid];
 }
 
-//The Error State
+// THE ERROR STATE
 class AuthError extends AuthState {
   const AuthError(this.message);
 

@@ -53,6 +53,12 @@ dependencies:
   collection: ^1.18.0
   webview_flutter: ^4.10.0
   iconify_flutter: ^0.0.7
+  infinite_scroll_pagination: ^4.0.0
+  carousel_slider: ^5.1.1
+  flutter_rating_stars: ^1.1.0
+  intl: ^0.20.2
+  flutter_rating_bar: ^4.0.1
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
