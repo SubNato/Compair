@@ -1,3 +1,5 @@
+import 'package:compair_hub/core/common/entities/user.dart';
+import 'package:compair_hub/core/utils/enums/drawer_enums.dart';
 import 'package:compair_hub/src/cart/presentation/views/cart_view.dart';
 import 'package:compair_hub/src/explore/presentation/views/explore_view.dart';
 import 'package:compair_hub/src/home/presentation/views/home_view.dart';
@@ -11,20 +13,24 @@ abstract class DashboardUtils {
   static final scaffoldKey = GlobalKey<ScaffoldState>();
   static final iconList = <({IconData idle, IconData active})>[
     (idle: IconlyBroken.home, active: IconlyBold.home),
+    (idle: IconlyBroken.upload, active: IconlyBold.upload),
     (idle: IconlyBroken.discovery, active: IconlyBold.discovery),
     (idle: IconlyBroken.buy, active: IconlyBold.buy),
     (idle: IconlyBroken.heart, active: IconlyBold.heart),
     (idle: IconlyBroken.profile, active: IconlyBold.profile),
   ];
 
-  static final drawerItems = <({String title, IconData icon})>[
-    (title: 'Profile', icon: IconlyBroken.profile),
-    (title: 'Payment Profile', icon: IconlyBroken.scan),
-    (title: 'Wishlist', icon: IconlyBroken.heart),
-    (title: 'My orders', icon: IconlyBroken.time_circle),
-    (title: 'Privacy Policy', icon: IconlyBroken.shield_done),
-    (title: 'Terms & Conditions', icon: IconlyBroken.document),
-  ];
+  static List <({String title, IconData icon, DrawerItemTypes type})> drawerItems (User user) {
+    return [
+      (title: 'Profile', icon: IconlyBroken.profile, type: DrawerItemTypes.profile),
+      if (user.isBusiness) (title: 'Upload', icon: IconlyBroken.upload, type: DrawerItemTypes.upload),
+      (title: 'Payment Profile', icon: IconlyBroken.scan, type: DrawerItemTypes.paymentProfile),
+      (title: 'Wishlist', icon: IconlyBroken.heart, type: DrawerItemTypes.wishList),
+      (title: 'My orders', icon: IconlyBroken.time_circle, type: DrawerItemTypes.orders),
+      (title: 'Privacy Policy', icon: IconlyBroken.shield_done, type: DrawerItemTypes.privacyPolicy),
+      (title: 'Terms & Conditions', icon: IconlyBroken.document, type: DrawerItemTypes.termsAndConditions),
+    ];
+  }
 
   static int activeIndex(GoRouterState state) {
     return switch (state.fullPath) {

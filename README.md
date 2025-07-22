@@ -24,3 +24,21 @@ Use dart run build_runner build watch --delete-conflicting-outputs for 'auto' tr
 tracking changes!
 
 ' dart run build_runner build watch --delete-conflicting-outputs ' for Just building riverpod stuff.
+
+If you are trying to login, and all you get is a spinning indicator, it is likely that you have not put in the correct ip address for it to connect
+
+Added this line in the android/app/src/main/AndroidManifest.xml android manifest file: android:enableOnBackInvokedCallback="true"
+
+
+//TODOs: 
+
+-Create new splash screens (Remember that there are 2 of them). For uniqueness
+
+-Fix the gap on the screens between the appbar and scaffold. 
+    FIX: IT IS ACTUALLY THE STYLE, CHANGEABLE IN "app_bar_bottom class" line 18.
+
+-Fix the errors popping up on login and screen changes
+changed as String map['_id'] as String to as String? ?? map['_id'] as String
+
+res issue with cron_job
+    handled

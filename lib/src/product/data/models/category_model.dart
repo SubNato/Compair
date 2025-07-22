@@ -21,7 +21,7 @@ class ProductCategoryModel extends ProductCategory {
 
   factory ProductCategoryModel.fromMap(Map<String, dynamic> map) {
     return ProductCategoryModel(
-      id: map['id'] as String,
+      id: map['id'] as String? ?? map['_id'] as String,
       name: map['name'] as String?,
       colour: map['colour'] as String?,
       image: map['image'] as String?,

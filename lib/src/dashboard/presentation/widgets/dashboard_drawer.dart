@@ -10,6 +10,7 @@ import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/services/injection_container.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/core/utils/enums/drawer_enums.dart';
 import 'package:compair_hub/src/dashboard/presentation/app/dashboard_state.dart';
 import 'package:compair_hub/src/dashboard/presentation/utils/dashboard_utils.dart';
 import 'package:compair_hub/src/dashboard/presentation/widgets/theme_toggle.dart';
@@ -62,6 +63,12 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
 
     final authUserAdapter = ref.watch(authUserProvider(authUserFamilyKey));
 
+    // Since we are watching to see if a user is a business account or not,
+    // We have to dynamically check and watch to see the variable that the the backend sends
+    final currentUser = ref.watch(currentUserProvider);
+    final drawerItems = DashboardUtils.drawerItems(currentUser!);
+
+
     return Drawer(
       backgroundColor: CoreUtils.adaptiveColour(
         context,
@@ -103,9 +110,11 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
                     lightModeColour: Colours.lightThemeWhiteColour,
                     darkModeColour: Colours.darkThemeDarkNavBarColour),
               ),
-              itemCount: DashboardUtils.drawerItems.length,
+              itemCount: drawerItems.length,//DashboardUtils.drawerItems.length,
               itemBuilder: (_, index) {
-                final drawerItem = DashboardUtils.drawerItems[index];
+                //Updated logic to check the index
+                // whenever it is dynamically changed
+                final drawerItem = drawerItems[index];
                 return ListTile(
                   leading: Icon(
                     drawerItem.icon,
@@ -117,20 +126,34 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
                   ).loading(
                     index == 1 && authUserAdapter is GettingUserPaymentProfile,
                   ),
-                  onTap: () {
+                  onTap: () { //Logic for the dashboard drawer items.
                     if (index != 1) Scaffold.of(context).closeDrawer();
-                    switch (index) {
-                      case 0:
+                    switch (drawerItem.type) {
+                    // Replacing integers, titles or lengths with an enumerator
+                    // is better and cleaner coding for future usage!
+                      case DrawerItemTypes.profile:
                         context.push(ProfileView.path);
-                      case 1:
+                      case DrawerItemTypes.upload:
+                        print("-----------------------------UPLOAD BUTTON PUSHED---------------------------------");
+                        //context.push(UploadView.path); TODO(Nav): Go to UploadPage
+                      case DrawerItemTypes.paymentProfile:
                         ref
                             .read(authUserProvider(authUserFamilyKey).notifier)
                             .getUserPaymentProfile(Cache.instance.userId!);
-                      case 2:
-                        DashboardState.instance.changeIndex(3);
-                        context.go(WishlistView.path);
-                      case 3:
-                      // TODO(Nav): Go to OrdersPage
+                      case DrawerItemTypes.wishList:
+                      DashboardState.instance.changeIndex(3);
+                      context.go(WishlistView.path);
+                      case DrawerItemTypes.orders:
+                        print("-------------------------------ORDER BUTTON PRESSED ------------------------------");
+                        // TODO(Nav): Go to OrdersPage
+                      case DrawerItemTypes.privacyPolicy:
+                        print("-------------------------------pp BUTTON PRESSED ------------------------------");
+
+                    // TODO(Nav): Go to privacyPolicy
+                      case DrawerItemTypes.termsAndConditions:
+                        print("-------------------------------tc BUTTON PRESSED ------------------------------");
+
+                    // TODO(Nav): Go to termsAndConditions
                     }
                   },
                 );
