@@ -11,15 +11,17 @@ import 'package:iconly/iconly.dart';
 
 abstract class DashboardUtils {
   static final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  //This is for the bottom navigation bar items
   static final iconList = <({IconData idle, IconData active})>[
     (idle: IconlyBroken.home, active: IconlyBold.home),
-    (idle: IconlyBroken.upload, active: IconlyBold.upload),
     (idle: IconlyBroken.discovery, active: IconlyBold.discovery),
     (idle: IconlyBroken.buy, active: IconlyBold.buy),
     (idle: IconlyBroken.heart, active: IconlyBold.heart),
     (idle: IconlyBroken.profile, active: IconlyBold.profile),
   ];
 
+  //This is for the dashboard drawer items
   static List <({String title, IconData icon, DrawerItemTypes type})> drawerItems (User user) {
     return [
       (title: 'Profile', icon: IconlyBroken.profile, type: DrawerItemTypes.profile),
@@ -32,6 +34,7 @@ abstract class DashboardUtils {
     ];
   }
 
+  //This is for the bottom navigation bar items routing.
   static int activeIndex(GoRouterState state) {
     return switch (state.fullPath) {
       HomeView.path => 0,
