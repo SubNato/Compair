@@ -40,5 +40,28 @@ Added this line in the android/app/src/main/AndroidManifest.xml android manifest
 -Fix the errors popping up on login and screen changes
 changed as String map['_id'] as String to as String? ?? map['_id'] as String
 
+-Create the comparing feature(Which si the main selling part of the app)
+
+-Create the uploads page 
+    So every upload must be tied to a category. Keep that in mind. 
+    These are the fields for it: const productSchema = Schema({
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    brand: { type: String, required: true },
+    model: { type: String },
+    rating: { type: Number, default: 0.0 },
+    colors: [{ type: String }],
+    image: { type: String, required: true },
+    images: [{type: String}],
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
+    numberofReviews: { type: Number, default: 0 },
+    sizes: [{type: String}],
+    category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    genderAgeCategory: { type: String, enum: ['men', 'women', 'unisex', 'kids'] },
+    countInStock: { type: Number, required: true, min: 0, max: 255 },
+    dateAdded: { type: Date, default: Date.now },
+    owner: { type: Schema.Types.ObjectId, ref: 'User', requried: true}
+
 res issue with cron_job
     handled

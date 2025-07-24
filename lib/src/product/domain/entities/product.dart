@@ -9,6 +9,8 @@ class Product extends Equatable {
     required this.name,
     required this.description,
     required this.price,
+    required this.brand,
+    required this.model,
     required this.rating,
     required this.colours,
     required this.image,
@@ -26,6 +28,8 @@ class Product extends Equatable {
         name = "Test String",
         description = "Test String",
         price = 1,
+        brand = "Test String",
+        model = "Test String",
         rating = 1,
         colours = const [],
         image = "Test String",
@@ -41,6 +45,8 @@ class Product extends Equatable {
   final String name;
   final String description;
   final double price;
+  final String brand;
+  final String model;
   final double rating;
   final List<Color> colours;
   final String image;
@@ -58,6 +64,8 @@ class Product extends Equatable {
     name,
     description,
     price,
+    brand,
+    model,
     rating,
     image,
     numberOfReviews,
