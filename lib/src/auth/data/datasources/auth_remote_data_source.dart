@@ -21,6 +21,7 @@ abstract interface class AuthRemoteDataSource {
   Future<void> register({
     required String name,
     required String password,
+    required String parish, //Parish added for a better search criteria
     required String email,
     required String phone,
   });
@@ -125,6 +126,7 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
   Future<void> register({
     required String name,
     required String password,
+    required String parish,
     required String email,
     required String phone,
   }) async {
@@ -136,6 +138,7 @@ class AuthRemoteDataSourceImplementation implements AuthRemoteDataSource {
         body: jsonEncode({
           'name': name,
           'password': password,
+          'parish': parish,
           'email': email,
           'phone': phone,
         }),

@@ -9,6 +9,16 @@ Future<void> init() async {
   await _productInit();
   await _wishlistInit();
   await _cartInit();
+  await _uploadInit();
+}
+
+Future<void> _uploadInit() async {
+  sl
+    ..registerLazySingleton(() => Upload(sl()))
+    ..registerLazySingleton<UploadRepository>(() => UploadRepositoryImplementation(sl()))
+    ..registerLazySingleton<UploadRemoteDataSource>(
+        () => UploadRemoteDataSourceImplementation(sl()),
+    );
 }
 
 Future<void> _cartInit() async {

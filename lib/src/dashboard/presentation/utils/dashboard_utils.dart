@@ -25,7 +25,7 @@ abstract class DashboardUtils {
   static List <({String title, IconData icon, DrawerItemTypes type})> drawerItems (User user) {
     return [
       (title: 'Profile', icon: IconlyBroken.profile, type: DrawerItemTypes.profile),
-      if (user.isBusiness) (title: 'Upload', icon: IconlyBroken.upload, type: DrawerItemTypes.upload),
+      if (user.isBusiness || user.isAdmin) (title: 'Upload', icon: IconlyBroken.upload, type: DrawerItemTypes.upload),
       (title: 'Payment Profile', icon: IconlyBroken.scan, type: DrawerItemTypes.paymentProfile),
       (title: 'Wishlist', icon: IconlyBroken.heart, type: DrawerItemTypes.wishList),
       (title: 'My orders', icon: IconlyBroken.time_circle, type: DrawerItemTypes.orders),

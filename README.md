@@ -32,13 +32,20 @@ Added this line in the android/app/src/main/AndroidManifest.xml android manifest
 
 //TODOs: 
 
+-Fix the Register screen to accept the parish as well to send to the database ✅
+
+-Create Logic for businesses to register on the register page. Eg, request to be a business
+by pressing a button or a slider? Send the flag for backend, then do it manually as an admin?
+Or on clicking Register, you give the option as a regular user or as a business! (Might be better to seperate logic)
+Or, just let it check the list of registered businesses on frontend to see if it is true, but ensure to follow up with email to verify business
+
 -Create new splash screens (Remember that there are 2 of them). For uniqueness
 
 -Fix the gap on the screens between the appbar and scaffold. 
     FIX: IT IS ACTUALLY THE STYLE, CHANGEABLE IN "app_bar_bottom class" line 18.
 
 -Fix the errors popping up on login and screen changes
-changed as String map['_id'] as String to as String? ?? map['_id'] as String
+changed as String map['_id'] as String to as String? ?? map['_id'] as String ✅
 
 -Create the comparing feature(Which si the main selling part of the app)
 
@@ -63,5 +70,5 @@ changed as String map['_id'] as String to as String? ?? map['_id'] as String
     dateAdded: { type: Date, default: Date.now },
     owner: { type: Schema.Types.ObjectId, ref: 'User', requried: true}
 
-res issue with cron_job
+res issue with cron_job ✅
     handled

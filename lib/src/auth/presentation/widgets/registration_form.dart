@@ -18,13 +18,14 @@ class RegistrationForm extends ConsumerStatefulWidget {
   ConsumerState<RegistrationForm> createState() => _RegistrationFormState();
 }
 
-class _RegistrationFormState extends ConsumerState<RegistrationForm> {
+class _RegistrationFormState extends ConsumerState<RegistrationForm> { // TODO: Logic for businesses to register. Eg, request to be a business? Give a flag for backend, then do it manually as an admin?
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final fullNameController = TextEditingController();
   final phoneController = TextEditingController();
+  final parishController = TextEditingController();
   final countryController = TextEditingController();
   final obscurePasswordNotifier = ValueNotifier(true);
   final obscureConfirmPasswordNotifier = ValueNotifier(true);
@@ -56,7 +57,8 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> {
         final AuthError(:message) = next;
         CoreUtils.showSnackBar(context, message: message);
       } else if (next is Registered) {
-        context.go('/');
+        //context.go('/');
+        context.go('/login?registered=true'); //To send a query params so we know that register was successful to show a snackbar for user experience originally its '/' for login, but we added the '?etc'
       }
     });
   }
@@ -68,6 +70,7 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> {
     confirmPasswordController.dispose();
     fullNameController.dispose();
     phoneController.dispose();
+    parishController.dispose();
     countryController.dispose();
     obscurePasswordNotifier.dispose();
     obscureConfirmPasswordNotifier.dispose();
@@ -145,6 +148,13 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> {
             },
           ),
           const Gap(20),
+          VerticalLabelField(
+            label: 'Parish',
+            controller: parishController,
+            keyboardType: TextInputType.text,
+            hintText: 'Enter your parish',
+          ),
+          const Gap(20),
           ValueListenableBuilder(
             valueListenable: obscurePasswordNotifier,
             builder: (_, obscurePassword, __) {
@@ -210,13 +220,14 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> {
                 final email = emailController.text.trim();
                 final password = passwordController.text.trim();
                 final fullName = fullNameController.text.trim();
+                final parish = parishController.text.trim();
 
                 ref.read(authAdapterProvider().notifier).register(
                       name: fullName,
                       email: email,
                       password: password,
                       phone: formattedNumber,
-                      parish: '', //parish,
+                      parish: parish, //parish,
                     );
               }
             },

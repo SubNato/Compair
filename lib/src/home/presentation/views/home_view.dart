@@ -63,7 +63,7 @@ class HomeView extends ConsumerWidget {
                 ],
               ),
             ),
-            if(currentUser!.isBusiness) UploadFloatingActionButton(
+            if(currentUser!.isBusiness || currentUser!.isAdmin) UploadFloatingActionButton(
               onPressed: () {
                 print("Floater action detected");
                 // TODO: Push to upload page!
