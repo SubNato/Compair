@@ -111,6 +111,11 @@ final router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
+      path: UploadView.path,
+      builder: (_,__) => const UploadView(),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
       path: PaymentProfileView.path,
       builder: (_, state) => PaymentProfileView(
         sessionUrl: state.extra as String,

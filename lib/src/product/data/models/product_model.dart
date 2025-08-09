@@ -74,12 +74,12 @@ class ProductModel extends Product {
     final sizes = map['sizes'] as List<dynamic>?;
     final category = map['category'];
     return ProductModel(
-      id: map['id'] as String,
+      id: map['_id'] as String,
       name: map['name'] as String,
       description: map['description'] as String,
       price: (map['price'] as num).toDouble(),
       brand: (map['brand'] as String),
-      model: (map['model'] as String),
+      model: (map['model'] as String? ?? map['model'] as String),
       rating: (map['rating'] as num).toDouble(),
       colours: colours == null
           ? []

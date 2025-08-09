@@ -70,5 +70,12 @@ changed as String map['_id'] as String to as String? ?? map['_id'] as String ✅
     dateAdded: { type: Date, default: Date.now },
     owner: { type: Schema.Types.ObjectId, ref: 'User', requried: true}
 
+-Create an uploads preview page
+- Plug in the categories in the categories secion of the uploads page. so they pick one from backend.
+
+-Why does the category state extend equatable?
+
+- Remember your router.main.dart files
+
 res issue with cron_job ✅
     handled

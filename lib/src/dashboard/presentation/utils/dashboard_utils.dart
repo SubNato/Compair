@@ -3,6 +3,7 @@ import 'package:compair_hub/core/utils/enums/drawer_enums.dart';
 import 'package:compair_hub/src/cart/presentation/views/cart_view.dart';
 import 'package:compair_hub/src/explore/presentation/views/explore_view.dart';
 import 'package:compair_hub/src/home/presentation/views/home_view.dart';
+import 'package:compair_hub/src/upload/presentation/views/upload_view.dart';
 import 'package:compair_hub/src/user/presentation/views/profile_view.dart';
 import 'package:compair_hub/src/wishlist/presentation/views/wishlist_view.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ abstract class DashboardUtils {
       CartView.path => 2,
       WishlistView.path => 3,
       ProfileView.path => 4,
+      //UploadView.path => 5,
       _ => 0,
     };
   }

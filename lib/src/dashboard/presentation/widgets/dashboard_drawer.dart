@@ -14,6 +14,7 @@ import 'package:compair_hub/core/utils/enums/drawer_enums.dart';
 import 'package:compair_hub/src/dashboard/presentation/app/dashboard_state.dart';
 import 'package:compair_hub/src/dashboard/presentation/utils/dashboard_utils.dart';
 import 'package:compair_hub/src/dashboard/presentation/widgets/theme_toggle.dart';
+import 'package:compair_hub/src/upload/presentation/views/upload_view.dart';
 import 'package:compair_hub/src/user/presentation/adapter/auth_user_provider.dart';
 import 'package:compair_hub/src/user/presentation/views/payment_profile_view.dart';
 import 'package:compair_hub/src/user/presentation/views/profile_view.dart';
@@ -134,8 +135,7 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
                       case DrawerItemTypes.profile:
                         context.push(ProfileView.path);
                       case DrawerItemTypes.upload:
-                        print("-----------------------------UPLOAD BUTTON PUSHED---------------------------------");
-                        //context.push(UploadView.path); TODO(Nav): Go to UploadPage
+                        context.push(UploadView.path);
                       case DrawerItemTypes.paymentProfile:
                         ref
                             .read(authUserProvider(authUserFamilyKey).notifier)

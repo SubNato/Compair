@@ -4,6 +4,7 @@ import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:compair_hub/src/upload/data/datasources/upload_remote_datasource.dart';
 import 'package:compair_hub/src/upload/domain/repositories/upload_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:http/http.dart' as http;
 
 class UploadRepositoryImplementation implements UploadRepository {
   const UploadRepositoryImplementation(this._remoteDataSource);
@@ -16,11 +17,11 @@ class UploadRepositoryImplementation implements UploadRepository {
     required String description,
     required double price,
     required String brand,
-    required String image,
+    required http.MultipartFile image,
     required String category,
     required int countInStock,
     List<String>? colors,
-    List<String>? images,
+    List<http.MultipartFile>? images,
     List<String>? sizes,
     String? model,
     String? genderAgeCategory,

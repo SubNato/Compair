@@ -22,6 +22,7 @@ import 'package:compair_hub/src/product/presentation/views/all_popular_products_
 import 'package:compair_hub/src/product/presentation/views/categorized_products_view.dart';
 import 'package:compair_hub/src/product/presentation/views/product_details_view.dart';
 import 'package:compair_hub/src/product/presentation/views/search_view.dart';
+import 'package:compair_hub/src/upload/presentation/views/upload_view.dart';
 import 'package:compair_hub/src/user/presentation/views/payment_profile_view.dart';
 import 'package:compair_hub/src/user/presentation/views/profile_view.dart';
 import 'package:compair_hub/src/wishlist/presentation/views/wishlist_view.dart';

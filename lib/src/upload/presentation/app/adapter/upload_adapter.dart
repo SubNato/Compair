@@ -2,6 +2,7 @@ import 'package:compair_hub/core/services/injection_container.dart';
 import 'package:compair_hub/src/upload/domain/usecases/upload.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'upload_adapter.g.dart';
@@ -24,11 +25,11 @@ class UploadAdapter extends _$UploadAdapter {
     required String description,
     required double price,
     required String brand,
-    required String image,
+    required http.MultipartFile image,
     required String category,
     required int countInStock,
     List<String>? colors,
-    List<String>? images,
+    List<http.MultipartFile>? images,
     List<String>? sizes,
     String? model,
     String? genderAgeCategory,

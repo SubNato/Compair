@@ -8,6 +8,7 @@ import 'package:compair_hub/src/product/presentation/views/all_new_arrivals_view
 import 'package:compair_hub/src/product/presentation/views/all_popular_products_view.dart';
 import 'package:compair_hub/src/product/presentation/views/search_view.dart';
 import 'package:compair_hub/core/common/widgets/upload_floating_action_button.dart';
+import 'package:compair_hub/src/upload/presentation/views/upload_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -65,9 +66,7 @@ class HomeView extends ConsumerWidget {
             ),
             if(currentUser!.isBusiness || currentUser!.isAdmin) UploadFloatingActionButton(
               onPressed: () {
-                print("Floater action detected");
-                // TODO: Push to upload page!
-                // context.push(UploadView.path);
+                context.push(UploadView.path);
               },
               icon: const Icon(Icons.add),
             ),

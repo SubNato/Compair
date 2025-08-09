@@ -2,6 +2,7 @@ import 'package:compair_hub/core/usecase/usecase.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:compair_hub/src/upload/domain/repositories/upload_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:http/http.dart' as http;
 
 class Upload extends UsecaseWithParams<void, UploadParams> {
   const Upload(this._repo);
@@ -27,7 +28,7 @@ class Upload extends UsecaseWithParams<void, UploadParams> {
 }
 
 class UploadParams extends Equatable {
-  UploadParams({
+  const UploadParams({
     required this.name,
     required this.description,
     required this.price,
@@ -46,11 +47,11 @@ class UploadParams extends Equatable {
   final String description;
   final double price;
   final String brand;
-  final String image;
+  final http.MultipartFile image;
   final String category;
   final int countInStock;
   final List<String>? colors;
-  final List<String>? images;
+  final List<http.MultipartFile>? images;
   final List<String>? sizes;
   final String? model;
   final String? genderAgeCategory;
