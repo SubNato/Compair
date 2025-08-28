@@ -68,14 +68,26 @@ changed as String map['_id'] as String to as String? ?? map['_id'] as String ✅
     genderAgeCategory: { type: String, enum: ['men', 'women', 'unisex', 'kids'] },
     countInStock: { type: Number, required: true, min: 0, max: 255 },
     dateAdded: { type: Date, default: Date.now },
-    owner: { type: Schema.Types.ObjectId, ref: 'User', requried: true}
+    owner: { type: Schema.Types.ObjectId, ref: 'User', required: true}
 
 -Create an uploads preview page
-- Plug in the categories in the categories secion of the uploads page. so they pick one from backend.
+- Plug in the categories in the categories section of the uploads page. so they pick one from backend.
 
 -Why does the category state extend equatable?
 
-- Remember your router.main.dart files
+- TODO: Make sure that the colors are changed to hex values before backend upload, but I think
+- that was done on backend. Please check to ensure.
 
+- Remember your router.main.dart files
+- NEXTjs learn it for web apps. React Native. Laravel/ PHP for work
+- Fix the upload banner (Not going into dark mode))
+- The text color is not changing with the dark mode, in category upload
 res issue with cron_job ✅
     handled
+
+Since I am not using the client, do I still need the:
+const CategoryUploadRemoteDataSourceImplementation(this._client);
+final http.Client _client;
+
+In the category_upload_remote_datasource? research it!
+

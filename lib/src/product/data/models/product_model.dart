@@ -87,7 +87,7 @@ class ProductModel extends Product {
       image: map['image'] as String,
       images: images == null ? [] : List<String>.from(images),
       reviewIds: reviewIds == null ? [] : List<String>.from(reviewIds),
-      numberOfReviews: (map['numberOfReviews'] as num).toInt(),
+      numberOfReviews: map ['numberOfReviews'] == null  ? 0 : (map['numberOfReviews'] as num).toInt(),
       sizes: sizes == null ? [] : List<String>.from(sizes),
       category: category is String
           ? ProductCategoryModel(id: category)

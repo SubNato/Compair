@@ -16,6 +16,17 @@ class HomeProductTile extends StatelessWidget {
   final Product product;
   final EdgeInsetsGeometry? margin;
 
+  //Try catch to see what the actual problem with the image is
+  ImageProvider _buildProductImage() {
+    try {
+      return NetworkImage(product.image);
+    } catch (error, stack) {
+      debugPrint('Error loading image for the product ${product.id}. This is the image url: ${product.image}: $error');
+      debugPrintStack(stackTrace: stack);
+      return const AssetImage('assets/images/user.png');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -47,7 +58,7 @@ class HomeProductTile extends StatelessWidget {
                       color: const Color((0xFFF0F0F0)),
                       borderRadius: BorderRadius.circular(16),
                       image: DecorationImage(
-                        image: NetworkImage(product.image),
+                        image: _buildProductImage(),//NetworkImage(product.image),
                       ),
                     ),
                   ),

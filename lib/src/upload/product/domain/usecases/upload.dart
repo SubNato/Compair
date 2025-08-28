@@ -1,6 +1,6 @@
 import 'package:compair_hub/core/usecase/usecase.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
-import 'package:compair_hub/src/upload/domain/repositories/upload_repository.dart';
+import 'package:compair_hub/src/upload/product/domain/repositories/upload_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 

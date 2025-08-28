@@ -1,6 +1,8 @@
 import 'package:compair_hub/core/common/app/cache_helper.dart';
 import 'package:compair_hub/core/common/app/riverpod/current_user_provider.dart';
 import 'package:compair_hub/core/common/singletons/cache.dart';
+import 'package:compair_hub/core/common/widgets/admin_option_bottom_sheet.dart';
+import 'package:compair_hub/core/common/widgets/bottom_sheet.dart';
 import 'package:compair_hub/core/common/widgets/bottom_sheet_card.dart';
 import 'package:compair_hub/core/common/widgets/rounded_button.dart';
 import 'package:compair_hub/core/extensions/string_extensions.dart';
@@ -14,7 +16,8 @@ import 'package:compair_hub/core/utils/enums/drawer_enums.dart';
 import 'package:compair_hub/src/dashboard/presentation/app/dashboard_state.dart';
 import 'package:compair_hub/src/dashboard/presentation/utils/dashboard_utils.dart';
 import 'package:compair_hub/src/dashboard/presentation/widgets/theme_toggle.dart';
-import 'package:compair_hub/src/upload/presentation/views/upload_view.dart';
+import 'package:compair_hub/src/upload/category/presentation/views/category_upload_view.dart';
+import 'package:compair_hub/src/upload/product/presentation/views/upload_view.dart';
 import 'package:compair_hub/src/user/presentation/adapter/auth_user_provider.dart';
 import 'package:compair_hub/src/user/presentation/views/payment_profile_view.dart';
 import 'package:compair_hub/src/user/presentation/views/profile_view.dart';
@@ -127,7 +130,7 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
                   ).loading(
                     index == 1 && authUserAdapter is GettingUserPaymentProfile,
                   ),
-                  onTap: () { //Logic for the dashboard drawer items.
+                  onTap: () async { //Logic for the dashboard drawer items.
                     if (index != 1) Scaffold.of(context).closeDrawer();
                     switch (drawerItem.type) {
                     // Replacing integers, titles or lengths with an enumerator
@@ -135,7 +138,12 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
                       case DrawerItemTypes.profile:
                         context.push(ProfileView.path);
                       case DrawerItemTypes.upload:
-                        context.push(UploadView.path);
+                        user.isAdmin ? showAdminOptions(
+                            context: context,
+                          onUploadProduct: () => context.push(UploadView.path),
+                          onUploadCategory: () => context.push(CategoryUploadView.path),
+                        ): context.push(UploadView.path);
+                        //context.push(UploadView.path);
                       case DrawerItemTypes.paymentProfile:
                         ref
                             .read(authUserProvider(authUserFamilyKey).notifier)

@@ -6,7 +6,7 @@ part of 'upload_adapter.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$uploadAdapterHash() => r'3c9792a786b14e20a4b40c00bf118880761e1e6e';
+String _$uploadAdapterHash() => r'4c7dd0e94156311a922461e4acf1753e534d880a';
 
 /// Copied from Dart SDK
 class _SystemHash {

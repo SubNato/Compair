@@ -1,25 +1,25 @@
 import 'package:compair_hub/core/common/widgets/app_bar_bottom.dart';
-import 'package:compair_hub/src/upload/presentation/widgets/upload_form.dart';
+import 'package:compair_hub/src/upload/category/presentation/widgets/category_upload_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UploadView extends ConsumerStatefulWidget {
-  const UploadView({super.key});
+class CategoryUploadView extends ConsumerStatefulWidget {
+  const CategoryUploadView({super.key});
 
-  static const path = '/upload';
+  static const path = '/categoryUpload';
 
   @override
-  ConsumerState<UploadView> createState() => _UploadViewState();
+  ConsumerState<CategoryUploadView> createState() => _CategoryUploadViewState();
 }
 
-class _UploadViewState extends ConsumerState<UploadView> {
+class _CategoryUploadViewState extends ConsumerState<CategoryUploadView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-            'Upload',
+          'Category Upload',
         ),
         bottom: const AppBarBottom(),
       ),
@@ -30,7 +30,7 @@ class _UploadViewState extends ConsumerState<UploadView> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
                 children: const [
-                  UploadForm(),
+                  CategoryUploadForm(),
                 ],
               ),
           ),

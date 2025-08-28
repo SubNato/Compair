@@ -1,8 +1,8 @@
 import 'package:compair_hub/core/errors/exceptions.dart';
 import 'package:compair_hub/core/errors/failures.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
-import 'package:compair_hub/src/upload/data/datasources/upload_remote_datasource.dart';
-import 'package:compair_hub/src/upload/domain/repositories/upload_repository.dart';
+import 'package:compair_hub/src/upload/product/data/datasources/upload_remote_datasource.dart';
+import 'package:compair_hub/src/upload/product/domain/repositories/upload_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 

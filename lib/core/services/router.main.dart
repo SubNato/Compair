@@ -116,6 +116,11 @@ final router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
+      path: CategoryUploadView.path,
+      builder: (_,__) => const CategoryUploadView(),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
       path: PaymentProfileView.path,
       builder: (_, state) => PaymentProfileView(
         sessionUrl: state.extra as String,

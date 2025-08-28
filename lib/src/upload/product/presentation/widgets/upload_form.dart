@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:compair_hub/core/common/widgets/vertical_label_field.dart';
 import 'package:compair_hub/core/extensions/image_extension.dart';
 import 'package:compair_hub/core/extensions/text_style_extensions.dart';
+import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/src/product/domain/entities/category.dart';
-import 'package:compair_hub/src/upload/presentation/app/adapter/upload_adapter.dart';
-import 'package:compair_hub/src/upload/presentation/app/category/category_adapter.dart';
-import 'package:compair_hub/src/upload/presentation/widgets/CategoryGlider.dart';
+import 'package:compair_hub/src/upload/product/presentation/app/adapter/upload_adapter.dart';
+import 'package:compair_hub/src/upload/product/presentation/app/category/category_adapter.dart';
+import 'package:compair_hub/src/upload/product/presentation/widgets/category_glider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,7 +101,7 @@ class _UploadFormState extends ConsumerState<UploadForm> {
     http.MultipartFile? mainImageFile;
     final mimeType = mainImage!.path.imageMimeType;
 
-    if(mimeType != null) { //TODO: Error is coming from somewhere here!
+    if (mimeType != null) {
       mainImageFile = await http.MultipartFile.fromPath(
         'image',
         mainImage!.path,
@@ -108,11 +109,6 @@ class _UploadFormState extends ConsumerState<UploadForm> {
       );
     } else {
       debugPrint('Unsupported main image type detected: ${mainImage!.path}');
-      // mainImageFile = await http.MultipartFile.fromPath(
-      //   'image',
-      //   mainImage!.path,
-      //   contentType: mimeType,
-      // );
       CoreUtils.postFrameCall(() {
         CoreUtils.showSnackBar(context, message: 'Invalid Image Type!');
       });
@@ -135,20 +131,14 @@ class _UploadFormState extends ConsumerState<UploadForm> {
         // Optional: Show a snackbar or error message here
       }
     }
-    // for (var image in additionalImages) {
-    //   final multipartFile = await http.MultipartFile.fromPath(
-    //     'images', //Must match what you have at backend
-    //     image.path,
-    //   );
-    //   imageFiles.add(multipartFile);
-    // }
 
     uploadNotifier.upload(
         name: nameController.text.trim(),
         description: descriptionController.text.trim(),
         price: double.tryParse(priceController.text.trim()) ?? 0.0,
         brand: brandController.text.trim(),
-        image: mainImageFile!, //mainImage?.path ?? '',
+        image: mainImageFile!,
+        //mainImage?.path ?? '',
         //TODO: Check how backend wants it. To be changed
         category: selectedCategoryId,
         countInStock: int.tryParse(countInStockController.text.trim()) ?? 0,
@@ -300,9 +290,13 @@ class _UploadFormState extends ConsumerState<UploadForm> {
           ElevatedButton.icon(
             onPressed: pickImage,
             icon:
-                Icon(mainImage == null ? IconlyBroken.image : IconlyBold.image),
-            label:
-                Text(mainImage == null ? 'Pick Product Image' : 'Change Image'),
+                Icon(mainImage == null ? IconlyBroken.image : IconlyBold.image, color: Colours.classicAdaptiveTextColour(context),),
+            label: Text(
+              mainImage == null ? 'Pick Product Image' : 'Change Image',
+              style: TextStyle(
+                  color: Colours.classicAdaptiveTextColour(context),
+              ),
+            ),
           ),
 
           if (mainImage != null) ...[
@@ -330,10 +324,15 @@ class _UploadFormState extends ConsumerState<UploadForm> {
                   onPressed: () {
                     pickMultipleImages();
                   },
-                  label: const Text('Select More Images'),
+                  label: Text(
+                    'Select More Images',
+                    style: TextStyle(
+                      color: Colours.classicAdaptiveTextColour(context),
+                    ),
+                  ),
                   icon: Icon(additionalImages == null
                       ? IconlyBroken.image_2
-                      : IconlyBold.image_2),
+                      : IconlyBold.image_2, color: Colours.classicAdaptiveTextColour(context),),
                 )
               : const SizedBox.shrink(),
           additionalImages != null
@@ -375,9 +374,16 @@ class _UploadFormState extends ConsumerState<UploadForm> {
           const Gap(20),
           ElevatedButton.icon(
             onPressed: () {
-              if(nameController.text.isEmpty || descriptionController.text.isEmpty || priceController.text.isEmpty || brandController.text.isEmpty || mainImage == null || selectedCategoryId.isEmpty || countInStockController.text.isEmpty){
+              if (nameController.text.isEmpty ||
+                  descriptionController.text.isEmpty ||
+                  priceController.text.isEmpty ||
+                  brandController.text.isEmpty ||
+                  mainImage == null ||
+                  selectedCategoryId.isEmpty ||
+                  countInStockController.text.isEmpty) {
                 CoreUtils.postFrameCall(() {
-                  CoreUtils.showSnackBar(context, message: 'Please fill in required fields!');
+                  CoreUtils.showSnackBar(context,
+                      message: 'Please fill in required fields!');
                 });
               } else {
                 print("Submit form button pressed");
@@ -385,10 +391,17 @@ class _UploadFormState extends ConsumerState<UploadForm> {
               }
             },
             icon: Icon(
-                mainImage == null ? IconlyBroken.upload : IconlyBold.upload),
+              mainImage == null ? IconlyBroken.upload : IconlyBold.upload,
+              color: Colours.classicAdaptiveTextColour(context),
+            ),
             label: state is UploadLoading
                 ? const CircularProgressIndicator()
-                : const Text('Upload'),
+                : Text(
+                    'Upload',
+                    style: TextStyle(
+                      color: Colours.classicAdaptiveTextColour(context),
+                    ),
+                  ),
           ),
         ],
       ),
