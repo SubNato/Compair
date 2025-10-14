@@ -1,32 +1,28 @@
 import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:flutter/material.dart';
 
-class UploadFloatingActionButton extends StatelessWidget {
+class CustomFloatingActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget icon;
+  final double height;
 
-  const UploadFloatingActionButton({
+  const CustomFloatingActionButton({
     super.key,
     required this.onPressed,
     required this.icon,
+    this.height = 10,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 10, //For adjusting the height above the bottom bar
-      left: 0,
-      right: 0,
-      child: Center(
-        child: FloatingActionButton(
+    return FloatingActionButton(
           onPressed: onPressed,
           //focusColor: Colours.lightThemePrimaryTextColour,
           foregroundColor: Colours.lightThemeWhiteColour,
           backgroundColor: Colours.lightThemePrimaryColour,
           shape: const CircleBorder(),
           child: icon,
-        ),
-      ),
-    );
+        );
+      //),
   }
 }

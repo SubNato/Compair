@@ -335,6 +335,7 @@ class _UploadFormState extends ConsumerState<UploadForm> {
                       : IconlyBold.image_2, color: Colours.classicAdaptiveTextColour(context),),
                 )
               : const SizedBox.shrink(),
+          const Gap(10),
           additionalImages != null
               ? Wrap(
                   spacing: 8,

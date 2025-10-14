@@ -60,9 +60,22 @@ final router = GoRouter(
     GoRoute(
       path: '/products/:productId',
       parentNavigatorKey: rootNavigatorKey,
-      builder: (_, state) => ProductDetailsView(
-        state.pathParameters['productId'] as String,
-      ),
+      builder: (_, state) {
+        final productId = state.pathParameters['productId'] as String;
+        final extra = state.extra;
+
+        //Opened from Compare View
+        final fromCompare = (extra is Map && extra['fromCompare'] == true);
+
+        return ProductDetailsView(
+          productId,
+          fromCompare: fromCompare,
+        );
+      },
+
+      // builder: (_, state) => ProductDetailsView(
+      //   state.pathParameters['productId'] as String,
+      // ),
     ),
     GoRoute(
       path: '/products/:productId/reviews',
@@ -148,4 +161,7 @@ final router = GoRouter(
       },
     ),
   ],
+  errorBuilder: (context, state) {
+    return const RouteNotFoundPage();
+  }
 );

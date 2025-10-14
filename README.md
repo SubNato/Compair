@@ -78,12 +78,57 @@ changed as String map['_id'] as String to as String? ?? map['_id'] as String ✅
 - TODO: Make sure that the colors are changed to hex values before backend upload, but I think
 - that was done on backend. Please check to ensure.
 
+
 - Remember your router.main.dart files
 - NEXTjs learn it for web apps. React Native. Laravel/ PHP for work
-- Fix the upload banner (Not going into dark mode))
-- The text color is not changing with the dark mode, in category upload
+- Fix the upload banner (Not going into dark mode)) ✅
+- The text color is not changing with the dark mode, in category upload ✅
 res issue with cron_job ✅
-    handled
+
+Cat upload and product upload, fully functional!
+
+
+- Fix adding to a wishlist. Error received:
+  I/flutter (20827): {"type":"TypeError","message":"Cannot read properties of undefined (reading 'find')"}
+  I/flutter (20827): #0      debugPrintStack (package:flutter/src/foundation/assertions.dart:1204:29)
+  I/flutter (20827): #1      WishlistRemoteDataSrcImpl.addToWishlist (package:compair_hub/src/wishlist/data/datasources/wishlist_remote_data_src.dart:97:9)
+  I/flutter (20827): <asynchronous suspension>
+  I/flutter (20827): #2      WishlistRepoImpl.addToWishlist (package:compair_hub/src/wishlist/data/repos/wishlist_repo_impl.dart:30:7)
+  I/flutter (20827): <asynchronous suspension>
+  I/flutter (20827): #3      UserWishlist.addToWishlist (package:compair_hub/src/wishlist/presentation/app/adapter/wishlist_provider.dart:41:20)
+  I/flutter (20827): <asynchronous suspension>
+
+
+
+- Fix the updating product amount in My Cart (Reference error, cart is not defined). Error message received:
+  I/flutter (17299): <asynchronous suspension>
+  I/flutter (17299): #3      CartAdapter.getCartProduct (package:compair_hub/src/cart/presentation/app/adapter/cart_provider.dart:114:20)
+  I/flutter (17299): <asynchronous suspension>
+  I/flutter (17299): {"type":"ReferenceError","message":"cart is not defined"}
+  I/flutter (17299): #0      debugPrintStack (package:flutter/src/foundation/assertions.dart:1204:29)
+  I/flutter (17299): #1      CartRemoteDataSrcImpl.getCartProduct (package:compair_hub/src/cart/data/datasources/cart_remote_data_src.dart:154:9)
+  I/flutter (17299): <asynchronous suspension>
+  I/flutter (17299): #2      CartRepoImpl.getCartProduct (package:compair_hub/src/cart/data/repos/cart_repo_impl.dart:40:22)
+
+- Entering the wishlist section: Error received:
+  I/flutter (20827): {"type":"TypeError","message":"user.wishlist is not iterable"}
+  I/flutter (20827): #0      debugPrintStack (package:flutter/src/foundation/assertions.dart:1204:29)
+  I/flutter (20827): #1      WishlistRemoteDataSrcImpl.getWishlist (package:compair_hub/src/wishlist/data/datasources/wishlist_remote_data_src.dart:51:9)
+  I/flutter (20827): <asynchronous suspension>
+  I/flutter (20827): #2      WishlistRepoImpl.getWishlist (package:compair_hub/src/wishlist/data/repos/wishlist_repo_impl.dart:17:22)
+  I/flutter (20827): <asynchronous suspension>
+  I/flutter (20827): #3      UserWishlist.getWishlist (package:compair_hub/src/wishlist/presentation/app/adapter/wishlist_provider.dart:29:20)
+  I/flutter (20827): <asynchronous suspension>
+
+
+IMPORTANT FEATURES TO ADD!
+- Create the "COMPAIR FUNCTION" in the product details view section! ✅
+- Create new controllers and routes in order to get either FURNITURE/APPLIANCES OR AUTOPARTS on APP OPENING, so that users can choose which to shop on the app!
+- Create a feature on the mobile app for only admins to set a company as a business or remove their privileges as a business!!!!!!! So handle seeing their isBusiness status, and toggling the value to send to backend from the frontend!
+The backend implementation is ready. Route with middleware: router.patch('/users/:id/business', verifyAdminUser, usersController.setBusiness);
+
+- Only the OWNER of the APP, can add or remove admins. So set the owner tag for only one person. YOU! How, figure it out. Or just hard code it in the database G.
+- handled
 
 Since I am not using the client, do I still need the:
 const CategoryUploadRemoteDataSourceImplementation(this._client);
@@ -91,3 +136,23 @@ final http.Client _client;
 
 In the category_upload_remote_datasource? research it!
 
+
+2 seperate logos for compairing the autoparts vs. furniture/appliance.
+
+Not getting the products under the Car Guys Unite Category section
+
+Add a button to surround retry in the categories on the home page above pop. products when something goes wrong
+(maybe shut off server to get the error again)
+
+No required fields and yet it says to fill in required fields.
+
+Replace the beginning app splash screen
+
+Add a home button to the STACK (products preview page) IF they have opened like tons of compairs, else, let it be just the bak button
+Name is not label 
+
+When you log on from a different IP from what the pictures were uploaded from, then the photos don't show. Why?
+
+
+prompt for the COMPAIR function: Please analyze my prompt carefully and give me a solution. I want to implement a compare function on my app. So, in the product details section, I want to create a button, that when pressed, it opens a mini screen (A screen on top of the main product details screen) that on the top half, or left half, of the screen, is the product that you are currently viewing or on with the price and product and seller name, and on the other side, is a list of the other products that are 1. in the same category, 2. relates to that product, displaying the name of the product and the price., and when clicked, brings you to a new product details view page for the user to look at that product. This is the main selling point of my app, help me out, I need it to be special and pretty. (Maybe rounded edges on the new screen as it sits on top of the main screen with a back button to go back to main screen.)
+How can I make the logo jump? On the Top of the product image? Or where?

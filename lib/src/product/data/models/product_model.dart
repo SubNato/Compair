@@ -79,7 +79,7 @@ class ProductModel extends Product {
       description: map['description'] as String,
       price: (map['price'] as num).toDouble(),
       brand: (map['brand'] as String),
-      model: (map['model'] as String? ?? map['model'] as String),
+      model: (map['model'] as String? ?? ""),
       rating: (map['rating'] as num).toDouble(),
       colours: colours == null
           ? []

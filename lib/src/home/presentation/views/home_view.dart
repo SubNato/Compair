@@ -8,7 +8,7 @@ import 'package:compair_hub/src/home/presentation/widgets/promo_banner.dart';
 import 'package:compair_hub/src/product/presentation/views/all_new_arrivals_view.dart';
 import 'package:compair_hub/src/product/presentation/views/all_popular_products_view.dart';
 import 'package:compair_hub/src/product/presentation/views/search_view.dart';
-import 'package:compair_hub/core/common/widgets/upload_floating_action_button.dart';
+import 'package:compair_hub/core/common/widgets/custom_floating_action_button.dart';
 import 'package:compair_hub/src/upload/category/presentation/views/category_upload_view.dart';
 import 'package:compair_hub/src/upload/product/presentation/views/upload_view.dart';
 import 'package:flutter/material.dart';
@@ -66,16 +66,24 @@ class HomeView extends ConsumerWidget {
                 ],
               ),
             ),
-            if(currentUser!.isBusiness || currentUser!.isAdmin) UploadFloatingActionButton( //TODO: Fix all buttons in ALL upload sections. Let them switch colors when go into dark mode.
-              onPressed: () {
-                currentUser.isAdmin ? showAdminOptions(
-                context: context,
-                  onUploadProduct: () => context.push(UploadView.path),
-                  onUploadCategory: () => context.push(CategoryUploadView.path),
-                ) : context.push(UploadView.path);
-              },
-              icon: const Icon(Icons.add),
-            ),
+            if(currentUser!.isBusiness || currentUser!.isAdmin) Padding(
+              padding: const EdgeInsets.fromLTRB(0.0,0.0,0.00,10.0),
+              child: Align(
+                // height: 60,
+                // bottom: 200,
+                alignment: Alignment.bottomCenter,
+                child: CustomFloatingActionButton( //TODO: Fix all buttons in ALL upload sections. Let them switch colors when go into dark mode.
+                  onPressed: () {
+                    currentUser.isAdmin ? showAdminOptions(
+                    context: context,
+                      onUploadProduct: () => context.push(UploadView.path),
+                      onUploadCategory: () => context.push(CategoryUploadView.path),
+                    ) : context.push(UploadView.path);
+                  },
+                  icon: const Icon(Icons.add),
+                ),
+              ),
+            ), //Height = 10 as a custom figure
           ],
       ),
     );

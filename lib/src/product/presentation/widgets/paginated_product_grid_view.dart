@@ -1,6 +1,8 @@
 import 'package:compair_hub/core/common/widgets/classic_product_tile.dart';
 import 'package:compair_hub/core/common/widgets/empty_data.dart';
+import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
+import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/constants/network_constants.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
@@ -121,6 +123,28 @@ class _PaginatedProductGridView
                     ? 'No products found for this category'
                     : 'No products found',
                 padding: const EdgeInsets.symmetric(horizontal: 16),
+              ),
+            );
+          },
+          firstPageErrorIndicatorBuilder: (context) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Something went wrong. Please try again.',
+                    style: TextStyles.paragraphSubTextRegular2.adaptiveColour(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () => pageController.refresh(),
+                    child: Text(
+                      'Retry',
+                      style: TextStyles.paragraphSubTextRegular2.adaptiveColour(context),
+                    ),
+                  ),
+                ],
               ),
             );
           },

@@ -16,7 +16,7 @@ class CompairLogo extends StatelessWidget {
         style: style ?? TextStyles.appLogo.white,
         children: const [
           TextSpan(
-            text: 'pair',
+            text: 'pare',
             style: TextStyle(
               color: Colours.lightThemeSecondaryColour,
             ),
