@@ -47,6 +47,14 @@ final class ChangedCartProductQuantity extends CartState {
   const ChangedCartProductQuantity();
 }
 
+final class CartQuantityUpdate extends CartState {
+  const CartQuantityUpdate(this.cart);
+  final List<CartProduct> cart;
+
+  @override
+  List<Object?> get props => cart;
+}
+
 final class CartFetched extends CartState {
   const CartFetched(this.cart);
 
