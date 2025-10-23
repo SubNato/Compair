@@ -1,6 +1,7 @@
 import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class RoundedButton extends StatelessWidget {
   const RoundedButton({
@@ -11,6 +12,7 @@ class RoundedButton extends StatelessWidget {
     this.padding,
     this.textStyle,
     this.backgroundColour,
+    this.cart,
   });
 
   final VoidCallback? onPressed;
@@ -19,6 +21,7 @@ class RoundedButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final TextStyle? textStyle;
   final Color? backgroundColour;
+  final bool? cart;
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +40,15 @@ class RoundedButton extends StatelessWidget {
           FocusManager.instance.primaryFocus?.unfocus();
           onPressed?.call();
         },
-        child: Text(
-          text,
-          style: textStyle ?? TextStyles.buttonTextHeadingSemiBold.white,
+        child: Row(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            cart == true ? const Icon(Icons.check_circle_rounded) : const SizedBox.shrink(),
+            cart == true ? const Gap(10) : const SizedBox.shrink(),
+            Text(
+              text,
+              style: textStyle ?? TextStyles.buttonTextHeadingSemiBold.white,
+            ),
+          ],
         ),
       ),
     );

@@ -5,12 +5,14 @@ class CustomFloatingActionButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget icon;
   final double height;
+  final bool? cart;
 
   const CustomFloatingActionButton({
     super.key,
     required this.onPressed,
     required this.icon,
     this.height = 10,
+    this.cart = false,
   });
 
   @override
@@ -19,7 +21,7 @@ class CustomFloatingActionButton extends StatelessWidget {
           onPressed: onPressed,
           //focusColor: Colours.lightThemePrimaryTextColour,
           foregroundColor: Colours.lightThemeWhiteColour,
-          backgroundColor: Colours.lightThemePrimaryColour,
+          backgroundColor: cart == true ? Colors.green : Colours.lightThemePrimaryColour,
           shape: const CircleBorder(),
           child: icon,
         );
