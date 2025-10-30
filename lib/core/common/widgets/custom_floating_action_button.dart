@@ -6,6 +6,7 @@ class CustomFloatingActionButton extends StatelessWidget {
   final Widget icon;
   final double height;
   final bool? cart;
+  final String? heroTag;
 
   const CustomFloatingActionButton({
     super.key,
@@ -13,11 +14,13 @@ class CustomFloatingActionButton extends StatelessWidget {
     required this.icon,
     this.height = 10,
     this.cart = false,
+    this.heroTag,
   });
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: heroTag ?? UniqueKey(),
           onPressed: onPressed,
           //focusColor: Colours.lightThemePrimaryTextColour,
           foregroundColor: Colours.lightThemeWhiteColour,

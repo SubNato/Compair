@@ -73,6 +73,7 @@ class HomeView extends ConsumerWidget {
                 // bottom: 200,
                 alignment: Alignment.bottomCenter,
                 child: CustomFloatingActionButton( //TODO: Fix all buttons in ALL upload sections. Let them switch colors when go into dark mode.
+                  heroTag: 'home_to_upload_fab',
                   onPressed: () {
                     currentUser.isAdmin ? showAdminOptions(
                     context: context,

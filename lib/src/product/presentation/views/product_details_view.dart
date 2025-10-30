@@ -96,8 +96,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
           );
         }
         if (next is AddedToCart) {
-          CoreUtils.showSnackBar(context, message: 'Product added to Cart', backgroundColour: Colors.green);
-          ref.read(cartAdapterProvider(cartAdapterFamilyKey).notifier).getCart(Cache.instance.userId!);
+          CoreUtils.showSnackBar(context,
+              message: 'Product added to Cart', backgroundColour: Colors.green);
+          ref
+              .read(cartAdapterProvider(cartAdapterFamilyKey).notifier)
+              .getCart(Cache.instance.userId!);
         }
       },
     );
@@ -130,7 +133,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
     final cartState = ref.watch(cartAdapterProvider(cartAdapterFamilyKey));
     List<CartProduct> cartItems = [];
 
-    if(cartState is CartFetched) {
+    if (cartState is CartFetched) {
       cartItems = cartState.cart;
     }
 
@@ -314,100 +317,148 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   // }
 
                   //Add to Cart button
-                  Padding(//Wrap an icon infront of it
+                  Padding(
+                    //Wrap an icon infront of it
                     padding: const EdgeInsets.all(20).copyWith(bottom: 40),
-                    child: isInCart ?
-                        RoundedButton(
-                          height: 50,
-                          onPressed: null,
-                          backgroundColour: Colors.green.withOpacity(0.8),
-                          text: 'Already In Cart',
-                          textStyle: TextStyles.buttonTextHeadingSemiBold.copyWith(fontSize: 16).white,
-                          cart: true,
-                        )
+                    child: isInCart
+                        ? RoundedButton(
+                            height: 50,
+                            onPressed: null,
+                            backgroundColour: Colors.green.withOpacity(0.8),
+                            text: 'Already In Cart',
+                            textStyle: TextStyles.buttonTextHeadingSemiBold
+                                .copyWith(fontSize: 16)
+                                .white,
+                            cart: true,
+                          )
                         : RoundedButton(
-                      height: 50,
-                      onPressed: () {
-                        if (product.colours.isNotEmpty &&
-                            selectedColour == null) {
-                          CoreUtils.showSnackBar(
-                            context,
-                            message: 'Pick a colour',
-                            backgroundColour: Colors.red.withOpacity(.8),
-                          );
-                          return;
-                        } else if (product.sizes.isNotEmpty &&
-                            selectedSize == null) {
-                          CoreUtils.showSnackBar(
-                            context,
-                            message: 'Pick a size',
-                            backgroundColour: Colors.red.withOpacity(.8),
-                          );
-                          return;
-                        }
-                        ref
-                            .read(
-                              cartAdapterProvider(cartAdapterFamilyKey)
-                                  .notifier,
-                            )
-                            .addToCart(
-                              userId: Cache.instance.userId!,
-                              cartProduct:
-                                  const CartProductModel.empty().copyWith(
-                                productId: product.id,
-                                quantity: 1,
-                                selectedSize: selectedSize,
-                                selectedColour: selectedColour,
-                              ),
-                            );
-                      },
-                      text: 'Add to Cart',
-                      textStyle: TextStyles.buttonTextHeadingSemiBold
-                          .copyWith(fontSize: 16)
-                          .white,
-                    ).loading(cartState is AddingToCart),
+                            height: 50,
+                            onPressed: () {
+                              if (product.colours.isNotEmpty &&
+                                  selectedColour == null) {
+                                CoreUtils.showSnackBar(
+                                  context,
+                                  message: 'Pick a colour',
+                                  backgroundColour: Colors.red.withOpacity(.8),
+                                );
+                                return;
+                              } else if (product.sizes.isNotEmpty &&
+                                  selectedSize == null) {
+                                CoreUtils.showSnackBar(
+                                  context,
+                                  message: 'Pick a size',
+                                  backgroundColour: Colors.red.withOpacity(.8),
+                                );
+                                return;
+                              }
+                              ref
+                                  .read(
+                                    cartAdapterProvider(cartAdapterFamilyKey)
+                                        .notifier,
+                                  )
+                                  .addToCart(
+                                    userId: Cache.instance.userId!,
+                                    cartProduct:
+                                        const CartProductModel.empty().copyWith(
+                                      productId: product.id,
+                                      quantity: 1,
+                                      selectedSize: selectedSize,
+                                      selectedColour: selectedColour,
+                                    ),
+                                  );
+                            },
+                            text: 'Add to Cart',
+                            textStyle: TextStyles.buttonTextHeadingSemiBold
+                                .copyWith(fontSize: 16)
+                                .white,
+                          ).loading(cartState is AddingToCart),
                   ),
                 ],
               ),
-              Positioned(
-                bottom: 120,
-                right:
-                    (widget.fromCompare && CompareTracker.count >= 3) ? 90 : 0,
-                left: 0,
-                child: Align(
-                  //alignment: Alignment.center,
-                  child: CustomFloatingActionButton(
-                    height: 110,
-                    onPressed: () => _showCompareModal(product),
-                    icon: const Icon(Icons.compare_arrows_outlined),
-                    cart: isInCart ? true : false,
-                  ),
-                ),
-              ),
+              //Row(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                //children: [
+                  Positioned(
+                    bottom: 105,
+                    right: /*(widget.fromCompare && CompareTracker.count >= 3)
+                        ? 90
+                        :*/ 0,
+                    left: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
 
-              //Home button for compare view
-              if (widget.fromCompare && CompareTracker.count >= 3)
-                Positioned(
-                  bottom: 120,
-                  right: 0,
-                  left: widget.fromCompare ? 90 : 0,
-                  child: AnimatedOpacity(
-                    opacity:
-                        widget.fromCompare && CompareTracker.count >= 3 ? 1 : 0,
-                    duration: const Duration(milliseconds: 800),
-                    child: CustomFloatingActionButton(
-                      height: 10,
-                      onPressed: () {
-                        CompareTracker.reset();
-                        context.go('/home');
-                      },
-                      icon: const Icon(
-                        Icons.home,
-                        color: Colors.white,
-                      ),
+                      children: [
+                        //Align(
+                          //alignment: Alignment.center,
+                          /*child:*/ CustomFloatingActionButton(
+                            //height: 110,
+                            heroTag: 'compare_fab_${widget.productId}',
+                            onPressed: () {
+                              print(
+                                  "+++++++++++++++++++++++ UPLOAD button alone was pressed G++++++++++++++++++++++");
+                              _showCompareModal(product);
+                            },
+                            icon: const Icon(Icons.compare_arrows_outlined),
+                            cart: isInCart ? true : false,
+                          ),
+                        //),
+                        const Gap(15),
+                        if (widget.fromCompare && CompareTracker.count >= 3)
+                          AnimatedOpacity(
+                            opacity:
+                                widget.fromCompare && CompareTracker.count >= 3
+                                    ? 1
+                                    : 0,
+                            duration: const Duration(milliseconds: 800),
+                            child: CustomFloatingActionButton(
+                              height: 10,
+                              heroTag: 'home_fab_${widget.productId}',
+                              //unique key for buttons
+                              onPressed: () {
+                                print(
+                                    "+++++++++++++++++++++++ Home button alone was pressed G++++++++++++++++++++++");
+                                CompareTracker.reset();
+                                context.go('/home');
+                              },
+                              icon: const Icon(
+                                Icons.home,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
-                )
+                //],
+              //),
+
+              //Home button for compare view
+              // if (widget.fromCompare && CompareTracker.count >= 3)
+              //   Positioned(
+              //     bottom: 120,
+              //     right: 20,
+              //     left: widget.fromCompare ? 90 : 0,
+              //     child: AnimatedOpacity(
+              //       opacity:
+              //           widget.fromCompare && CompareTracker.count >= 3 ? 1 : 0,
+              //       duration: const Duration(milliseconds: 800),
+              //       child: CustomFloatingActionButton(
+              //         height: 10,
+              //         heroTag: 'home_fab_${widget.productId}',
+              //         //unique key for buttons
+              //         onPressed: () {
+              //           print(
+              //               "+++++++++++++++++++++++ Home button alone was pressed G++++++++++++++++++++++");
+              //           CompareTracker.reset();
+              //           context.go('/home');
+              //         },
+              //         icon: const Icon(
+              //           Icons.home,
+              //           color: Colors.white,
+              //         ),
+              //       ),
+              //     ),
+              //   )
             ],
           );
         }

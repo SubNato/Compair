@@ -132,27 +132,53 @@ The backend implementation is ready. Route with middleware: router.patch('/users
 
 Since I am not using the client, do I still need the:
 const CategoryUploadRemoteDataSourceImplementation(this._client);
-final http.Client _client;
+final http.Client _client; ?
 
 In the category_upload_remote_datasource? research it!
 
 
 2 seperate logos for compairing the autoparts vs. furniture/appliance.
 
-Not getting the products under the Car Guys Unite Category section
+Not getting the products under the Car Guys Unite Category section ✅
 
-Add a button to surround retry in the categories on the home page above pop. products when something goes wrong
+Add a button to surround retry in the categories on the home page above pop. products when something goes wrong ✅
 (maybe shut off server to get the error again)
 
-No required fields and yet it says to fill in required fields.
+No required fields and yet it says to fill in required fields. (Check all form instances)
 
 Replace the beginning app splash screen
 
-Add a home button to the STACK (products preview page) IF they have opened like tons of compairs, else, let it be just the bak button
+Add a home button to the STACK (products preview page) IF they have opened like tons of compairs, else, let it be just the back button ✅
 Name is not label 
 
 When you log on from a different IP from what the pictures were uploaded from, then the photos don't show. Why?
 
+How can I make the compare button and then the logo jump? On the Top of the product image? Or where?
 
-prompt for the COMPAIR function: Please analyze my prompt carefully and give me a solution. I want to implement a compare function on my app. So, in the product details section, I want to create a button, that when pressed, it opens a mini screen (A screen on top of the main product details screen) that on the top half, or left half, of the screen, is the product that you are currently viewing or on with the price and product and seller name, and on the other side, is a list of the other products that are 1. in the same category, 2. relates to that product, displaying the name of the product and the price., and when clicked, brings you to a new product details view page for the user to look at that product. This is the main selling point of my app, help me out, I need it to be special and pretty. (Maybe rounded edges on the new screen as it sits on top of the main screen with a back button to go back to main screen.)
-How can I make the logo jump? On the Top of the product image? Or where?
+Already added to cart, then show something else like a green tick button. ✅
+
+Recurring error when trying to update the amount of something in a cart ✅
+
+Adding a product to the cart that is already there. 1 product more than 1 times. 1 product like 10 times. (FIXED BY CHANGING THE BUTTON WHEN THE PRODUCT IS ALREADY IN THE CART) ✅
+
+Fix up the email that they get from us OTP stuff
+
+Checkout not working, crashes the server!!!!!!!!!!!!!
+
+When searching for a category by the list of category user the search bar, does not work.
+
+
+
+
+TOP PRIORITY
+-------------
+Work on fetching Appliances-Furniture vs. autoparts. ⬅️
+    - Backend completely implemented for this feature. It works by using a query for the type on the products table in the database.
+    - So just send a query for finding a autopart vs furniture-appliance!
+    - Get it done next 
+
+Admin features for Allowing someone to be a business or not.
+
+Adding the logic on the registration page for checking if someone wants to be considered as a business. (manual by admin or automatically by server side logic? )
+
+Changing the UI Ads and Posters on first time screen.
