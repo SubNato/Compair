@@ -15,15 +15,17 @@ class GetNewArrivals
       _repo.getNewArrivals(
         page: params.page,
         categoryId: params.categoryId,
+        type: params.type,
       );
 }
 
 class GetNewArrivalsParams extends Equatable {
-  const GetNewArrivalsParams({required this.page, this.categoryId});
+  const GetNewArrivalsParams({required this.page, this.categoryId, this.type});
 
   final int page;
   final String? categoryId;
+  final String? type;
 
   @override
-  List<Object?> get props => [page, categoryId];
+  List<Object?> get props => [page, categoryId, type];
 }

@@ -376,60 +376,59 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                 ],
               ),
               //Row(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                //children: [
-                  Positioned(
-                    bottom: 105,
-                    right: /*(widget.fromCompare && CompareTracker.count >= 3)
+              //mainAxisAlignment: MainAxisAlignment.center,
+              //children: [
+              Positioned(
+                bottom: 105,
+                right: /*(widget.fromCompare && CompareTracker.count >= 3)
                         ? 90
-                        :*/ 0,
-                    left: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-
-                      children: [
-                        //Align(
-                          //alignment: Alignment.center,
-                          /*child:*/ CustomFloatingActionButton(
-                            //height: 110,
-                            heroTag: 'compare_fab_${widget.productId}',
-                            onPressed: () {
-                              print(
-                                  "+++++++++++++++++++++++ UPLOAD button alone was pressed G++++++++++++++++++++++");
-                              _showCompareModal(product);
-                            },
-                            icon: const Icon(Icons.compare_arrows_outlined),
-                            cart: isInCart ? true : false,
-                          ),
-                        //),
-                        const Gap(15),
-                        if (widget.fromCompare && CompareTracker.count >= 3)
-                          AnimatedOpacity(
-                            opacity:
-                                widget.fromCompare && CompareTracker.count >= 3
-                                    ? 1
-                                    : 0,
-                            duration: const Duration(milliseconds: 800),
-                            child: CustomFloatingActionButton(
-                              height: 10,
-                              heroTag: 'home_fab_${widget.productId}',
-                              //unique key for buttons
-                              onPressed: () {
-                                print(
-                                    "+++++++++++++++++++++++ Home button alone was pressed G++++++++++++++++++++++");
-                                CompareTracker.reset();
-                                context.go('/home');
-                              },
-                              icon: const Icon(
-                                Icons.home,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                      ],
+                        :*/
+                    0,
+                left: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //Align(
+                    //alignment: Alignment.center,
+                    /*child:*/ CustomFloatingActionButton(
+                      //height: 110,
+                      heroTag: 'compare_fab_${widget.productId}',
+                      onPressed: () {
+                        print(
+                            "======================================= UPLOAD button was pressed ===================================");
+                        _showCompareModal(product);
+                      },
+                      icon: const Icon(Icons.compare_arrows_outlined),
+                      cart: isInCart ? true : false,
                     ),
-                  ),
-                //],
+                    //),
+                    const Gap(15),
+                    if (widget.fromCompare && CompareTracker.count >= 3)
+                      AnimatedOpacity(
+                        opacity: widget.fromCompare && CompareTracker.count >= 3
+                            ? 1
+                            : 0,
+                        duration: const Duration(milliseconds: 800),
+                        child: CustomFloatingActionButton(
+                          height: 10,
+                          heroTag: 'home_fab_${widget.productId}',
+                          //unique key for buttons
+                          onPressed: () {
+                            print(
+                                "================================= Home button was pressed ==================================");
+                            CompareTracker.reset();
+                            context.go('/home');
+                          },
+                          icon: const Icon(
+                            Icons.home,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              //],
               //),
 
               //Home button for compare view

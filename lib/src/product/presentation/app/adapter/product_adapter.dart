@@ -55,9 +55,9 @@ class ProductAdapter extends _$ProductAdapter {
   late SearchByCategoryAndGenderAgeCategory
       _searchByCategoryAndGenderAgeCategory;
 
-  Future<void> getCategories() async {
+  Future<void> getCategories({String? type}) async {
     state = const FetchingCategories();
-    final result = await _getCategories();
+    final result = await _getCategories(GetCategoriesParams(type: type));
 
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
@@ -74,11 +74,12 @@ class ProductAdapter extends _$ProductAdapter {
     );
   }
 
-  Future<void> getNewArrivals({required int page, String? categoryId}) async {
+  Future<void> getNewArrivals({required int page, String? categoryId, String? type}) async {
     state = const FetchingProducts();
     final result = await _getNewArrivals(GetNewArrivalsParams(
       page: page,
       categoryId: categoryId,
+      type: type,
     ));
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
@@ -86,11 +87,12 @@ class ProductAdapter extends _$ProductAdapter {
     );
   }
 
-  Future<void> getPopular({required int page, String? categoryId}) async {
+  Future<void> getPopular({required int page, String? categoryId, String? type}) async {
     state = const FetchingProducts();
     final result = await _getPopular(GetPopularParams(
       page: page,
       categoryId: categoryId,
+      type: type,
     ));
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
@@ -123,9 +125,9 @@ class ProductAdapter extends _$ProductAdapter {
     );
   }
 
-  Future<void> getProducts(int page) async {
+  Future<void> getProducts(int page, {String? type}) async {
     state = const FetchingProducts();
-    final result = await _getProducts(page);
+    final result = await _getProducts(GetProductsParams(page: page, type: type));
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
       (products) => state = ProductsFetched(products),
@@ -135,10 +137,11 @@ class ProductAdapter extends _$ProductAdapter {
   Future<void> getProductsByCategory({
     required String categoryId,
     required int page,
+    String? type,
   }) async {
     state = const FetchingProducts();
     final result = await _getProductsByCategory(
-      GetProductsByCategoryParams(categoryId: categoryId, page: page),
+      GetProductsByCategoryParams(categoryId: categoryId, page: page, type: type,),
     );
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
@@ -170,10 +173,11 @@ class ProductAdapter extends _$ProductAdapter {
   Future<void> searchAllProducts({
     required String query,
     required int page,
+    String? type,
   }) async {
     state = const Searching();
     final result = await _searchAllProducts(
-      SearchAllProductsParams(query: query, page: page),
+      SearchAllProductsParams(query: query, page: page, type: type,),
     );
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
@@ -185,10 +189,11 @@ class ProductAdapter extends _$ProductAdapter {
     required String query,
     required String categoryId,
     required int page,
+    String? type,
   }) async {
     state = const Searching();
     final result = await _searchByCategory(
-      SearchByCategoryParams(query: query, categoryId: categoryId, page: page),
+      SearchByCategoryParams(query: query, categoryId: categoryId, page: page, type: type),
     );
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
@@ -201,6 +206,7 @@ class ProductAdapter extends _$ProductAdapter {
     required String categoryId,
     required String genderAgeCategory,
     required int page,
+    String? type,
   }) async {
     state = const Searching();
     final result = await _searchByCategoryAndGenderAgeCategory(
@@ -209,6 +215,7 @@ class ProductAdapter extends _$ProductAdapter {
         categoryId: categoryId,
         genderAgeCategory: genderAgeCategory,
         page: page,
+        type: type,
       ),
     );
     result.fold(

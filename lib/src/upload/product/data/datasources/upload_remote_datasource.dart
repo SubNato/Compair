@@ -26,6 +26,7 @@ abstract interface class UploadRemoteDataSource {
     List<String>? sizes,
     String? model,
     String? genderAgeCategory,
+    String? type,
   });
 }
 
@@ -50,6 +51,7 @@ class UploadRemoteDataSourceImplementation implements UploadRemoteDataSource {
     List<String>? sizes,
     String? model,
     String? genderAgeCategory,
+    String? type,
   }) async {
     try {
       final uri = Uri.parse('${NetworkConstants.adminUrl}$ADD_PRODUCT_ENDPOINT');
@@ -66,6 +68,8 @@ class UploadRemoteDataSourceImplementation implements UploadRemoteDataSource {
       request.fields['brand'] = brand;
       request.fields['category'] = category;
       request.fields['countInStock'] = countInStock.toString();
+
+      if(type != null) request.fields['type'] = type;
 
       if(model != null) request.fields['model'] = model;
       if (genderAgeCategory != null) {

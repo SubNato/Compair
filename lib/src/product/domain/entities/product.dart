@@ -19,8 +19,9 @@ class Product extends Equatable {
     required this.numberOfReviews,
     required this.sizes,
     required this.category,
-    this.genderAgeCategory,
     required this.countInStock,
+    this.genderAgeCategory,
+    this.type,
   });
 
   const Product.empty()
@@ -38,8 +39,9 @@ class Product extends Equatable {
         numberOfReviews = 1,
         sizes = const [],
         category = const ProductCategory.empty(),
+        countInStock = 1,
         genderAgeCategory = "Test String",
-        countInStock = 1;
+        type = "Test String";
 
   final String id;
   final String name;
@@ -55,8 +57,9 @@ class Product extends Equatable {
   final int numberOfReviews;
   final List<String> sizes;
   final ProductCategory category;
-  final String? genderAgeCategory;
   final int countInStock;
+  final String? genderAgeCategory;
+  final String? type;
 
   @override
   List<Object?> get props => [
@@ -70,7 +73,8 @@ class Product extends Equatable {
     image,
     numberOfReviews,
     category,
-    genderAgeCategory,
     countInStock,
+    genderAgeCategory,
+    type,
   ];
 }

@@ -23,7 +23,8 @@ class Upload extends UsecaseWithParams<void, UploadParams> {
           sizes: params.sizes,
           category: params.category,
           countInStock: params.countInStock,
-          genderAgeCategory: params.genderAgeCategory
+          genderAgeCategory: params.genderAgeCategory,
+          type: params.type,
       );
 }
 
@@ -41,6 +42,7 @@ class UploadParams extends Equatable {
     this.images,
     this.sizes,
     this.genderAgeCategory,
+    this.type,
 });
 
   final String name;
@@ -55,6 +57,7 @@ class UploadParams extends Equatable {
   final List<String>? sizes;
   final String? model;
   final String? genderAgeCategory;
+  final String? type;
 
   @override
   List<dynamic> get props => [
@@ -70,5 +73,6 @@ class UploadParams extends Equatable {
     category,
     countInStock,
     genderAgeCategory,
+    type,
   ];
 }

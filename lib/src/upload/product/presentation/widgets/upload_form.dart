@@ -6,6 +6,8 @@ import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/core/utils/enums/product_type.dart';
+import 'package:compair_hub/core/utils/product_type_selector.dart';
 import 'package:compair_hub/src/product/domain/entities/category.dart';
 import 'package:compair_hub/src/upload/product/presentation/app/adapter/upload_adapter.dart';
 import 'package:compair_hub/src/upload/product/presentation/app/category/category_adapter.dart';
@@ -41,6 +43,7 @@ class _UploadFormState extends ConsumerState<UploadForm> {
   final imagesController = TextEditingController();
 
   String? genderAgeCategory;
+  String? type;
   File? mainImage;
   String selectedCategoryId = '';
 
@@ -133,26 +136,28 @@ class _UploadFormState extends ConsumerState<UploadForm> {
     }
 
     uploadNotifier.upload(
-        name: nameController.text.trim(),
-        description: descriptionController.text.trim(),
-        price: double.tryParse(priceController.text.trim()) ?? 0.0,
-        brand: brandController.text.trim(),
-        image: mainImageFile!,
-        //mainImage?.path ?? '',
-        //TODO: Check how backend wants it. To be changed
-        category: selectedCategoryId,
-        countInStock: int.tryParse(countInStockController.text.trim()) ?? 0,
-        model: modelController.text.trim().isEmpty
-            ? null
-            : modelController.text.trim(),
-        //sizes: sizesController.text.split(',').map((e) => e.trim()).toList(),
-        colors: colorsController.text
-            .split(',')
-            .map((e) => e.trim())
-            .where((color) => color.isNotEmpty)
-            .toList(),
-        images: imageFiles,
-        genderAgeCategory: genderAgeCategory);
+      name: nameController.text.trim(),
+      description: descriptionController.text.trim(),
+      price: double.tryParse(priceController.text.trim()) ?? 0.0,
+      brand: brandController.text.trim(),
+      image: mainImageFile!,
+      //mainImage?.path ?? '',
+      //TODO: Check how backend wants it. To be changed
+      category: selectedCategoryId,
+      countInStock: int.tryParse(countInStockController.text.trim()) ?? 0,
+      model: modelController.text.trim().isEmpty
+          ? null
+          : modelController.text.trim(),
+      //sizes: sizesController.text.split(',').map((e) => e.trim()).toList(),
+      colors: colorsController.text
+          .split(',')
+          .map((e) => e.trim())
+          .where((color) => color.isNotEmpty)
+          .toList(),
+      images: imageFiles,
+      genderAgeCategory: genderAgeCategory,
+      type: type,
+    );
   }
 
   @override
@@ -169,7 +174,7 @@ class _UploadFormState extends ConsumerState<UploadForm> {
         });
       } else if (next is UploadError) {
         CoreUtils.postFrameCall(() {
-          CoreUtils.showSnackBar(context, message: next.message);
+          CoreUtils.showSnackBar(context, message: 'Upload Error!');
         });
       }
     });
@@ -268,6 +273,21 @@ class _UploadFormState extends ConsumerState<UploadForm> {
             defaultValidation: false,
           ),
           const Gap(20),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Select Product Type',
+              style: TextStyles.headingMedium4.adaptiveColour(context),
+            ),
+          ),
+          const Gap(20),
+          ProductTypeSelector(onChanged: (product) {
+            print("Changed value: ${product?.apiValue}");
+            setState(() {
+              type = product?.apiValue;
+            });
+          }),
+          const Gap(20),
           // VerticalLabelField( //TODO, Image picker to select multiple photos! if neeeded
           //   label: 'Images',
           //   controller: imagesController,
@@ -289,12 +309,14 @@ class _UploadFormState extends ConsumerState<UploadForm> {
           // const Gap(20),
           ElevatedButton.icon(
             onPressed: pickImage,
-            icon:
-                Icon(mainImage == null ? IconlyBroken.image : IconlyBold.image, color: Colours.classicAdaptiveTextColour(context),),
+            icon: Icon(
+              mainImage == null ? IconlyBroken.image : IconlyBold.image,
+              color: Colours.classicAdaptiveTextColour(context),
+            ),
             label: Text(
               mainImage == null ? 'Pick Product Image' : 'Change Image',
               style: TextStyle(
-                  color: Colours.classicAdaptiveTextColour(context),
+                color: Colours.classicAdaptiveTextColour(context),
               ),
             ),
           ),
@@ -330,9 +352,12 @@ class _UploadFormState extends ConsumerState<UploadForm> {
                       color: Colours.classicAdaptiveTextColour(context),
                     ),
                   ),
-                  icon: Icon(additionalImages == null
-                      ? IconlyBroken.image_2
-                      : IconlyBold.image_2, color: Colours.classicAdaptiveTextColour(context),),
+                  icon: Icon(
+                    additionalImages == null
+                        ? IconlyBroken.image_2
+                        : IconlyBold.image_2,
+                    color: Colours.classicAdaptiveTextColour(context),
+                  ),
                 )
               : const SizedBox.shrink(),
           const Gap(10),
@@ -373,6 +398,11 @@ class _UploadFormState extends ConsumerState<UploadForm> {
                 )
               : const SizedBox.shrink(),
           const Gap(20),
+          if (additionalImages.length > 10)
+            Text(
+              'Only 10 More Images can be selected. ${additionalImages.length} Selected',
+              style: const TextStyle(color: Colors.red),
+            ),
           ElevatedButton.icon(
             onPressed: () {
               if (nameController.text.isEmpty ||
@@ -381,10 +411,16 @@ class _UploadFormState extends ConsumerState<UploadForm> {
                   brandController.text.isEmpty ||
                   mainImage == null ||
                   selectedCategoryId.isEmpty ||
-                  countInStockController.text.isEmpty) {
+                  countInStockController.text.isEmpty ||
+                  type == null) {
                 CoreUtils.postFrameCall(() {
                   CoreUtils.showSnackBar(context,
                       message: 'Please fill in required fields!');
+                });
+              } else if (additionalImages.length > 10) {
+                CoreUtils.postFrameCall(() {
+                  CoreUtils.showSnackBar(context,
+                      message: 'Chose Only 10 Additional Images.');
                 });
               } else {
                 print("Submit form button pressed");
@@ -396,7 +432,7 @@ class _UploadFormState extends ConsumerState<UploadForm> {
               color: Colours.classicAdaptiveTextColour(context),
             ),
             label: state is UploadLoading
-                ? const CircularProgressIndicator()
+                ? const SizedBox(height: 25, width: 25, child: CircularProgressIndicator( backgroundColor: Colours.lightThemeStockColour,))
                 : Text(
                     'Upload',
                     style: TextStyle(

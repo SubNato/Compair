@@ -17,5 +17,6 @@ abstract interface class UploadRepository {
     List<String>? sizes,
     String? model,
     String? genderAgeCategory,
+    String? type,
   });
 }

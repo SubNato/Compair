@@ -6,6 +6,7 @@ class ProductCategoryModel extends ProductCategory {
     super.name,
     super.colour,
     super.image,
+    super.type,
   });
 
   const ProductCategoryModel.empty() : super(id: 'Test String');
@@ -16,6 +17,7 @@ class ProductCategoryModel extends ProductCategory {
       'name': name,
       'colour': colour,
       'image': image,
+      'type': type
     };
   }
 
@@ -25,6 +27,7 @@ class ProductCategoryModel extends ProductCategory {
       name: map['name'] as String?,
       colour: map['colour'] as String?,
       image: map['image'] as String?,
+      type: map['type'] as String?,
     );
   }
 
@@ -33,12 +36,14 @@ class ProductCategoryModel extends ProductCategory {
     String? name,
     String? colour,
     String? image,
+    String? type,
   }) {
     return ProductCategoryModel(
       id: id ?? this.id,
       name: name ?? this.name,
       colour: colour ?? this.colour,
       image: image ?? this.image,
+      type: type ?? this.type,
     );
   }
 }

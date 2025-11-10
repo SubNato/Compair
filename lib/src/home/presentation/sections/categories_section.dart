@@ -4,6 +4,7 @@ import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/src/product/domain/entities/category.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
+import 'package:compair_hub/src/product/presentation/app/provider/product_type_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -21,14 +22,24 @@ class _CategoriesSectionState extends ConsumerState<CategoriesSection> {
 
   List<ProductCategory> categories = [];
 
+  void fetchCategories() {
+    final productType = ref.read(productTypeNotifierProvider);
+    ref.read(productAdapterProvider(familyKey).notifier).getCategories(
+      type: productType.queryParam,
+    );
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    CoreUtils.postFrameCall(
-          () {
-        ref.read(productAdapterProvider(familyKey).notifier).getCategories();
-      },
-    );
+
+    CoreUtils.postFrameCall(() => fetchCategories());
+
+    // CoreUtils.postFrameCall(
+    //       () {
+    //     ref.read(productAdapterProvider(familyKey).notifier).getCategories();
+    //   },
+    // );
   }
 
   @override
@@ -46,6 +57,16 @@ class _CategoriesSectionState extends ConsumerState<CategoriesSection> {
           });
         }
       },
+    );
+
+    //Listen to the product type changes and refetch categories
+    ref.listenManual(
+    productTypeNotifierProvider,
+        (previous, next) {
+          if (previous != next) {
+            fetchCategories();
+          }
+        },
     );
   }
 

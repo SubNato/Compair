@@ -6,6 +6,7 @@ import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/src/home/presentation/widgets/home_product_tile.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
+import 'package:compair_hub/src/product/presentation/app/provider/product_type_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -33,24 +34,37 @@ class _ProductsSectionState extends ConsumerState<ProductsSection> {
 
   List<Product> products = [];
 
-  void getPopular(int page) {
-    ref.read(productAdapterProvider(familyKey).notifier).getPopular(page: page);
+  void getPopular(int page, {String? type}) {
+    ref.read(productAdapterProvider(familyKey).notifier).getPopular(
+        page: page, type: type,
+    );
   }
 
-  void getNewArrivals(int page) {
+  void getNewArrivals(int page, {String? type}) {
     ref
         .read(productAdapterProvider(familyKey).notifier)
-        .getNewArrivals(page: page);
+        .getNewArrivals(page: page, type: type);
+  }
+
+  void fetchProducts() {
+    final productType = ref.read(productTypeNotifierProvider);
+    if (widget.productsCriteria == 'popular') {
+      getPopular(1, type: productType.queryParam);
+    } else if (widget.productsCriteria == 'newArrivals') {
+      getNewArrivals(1, type: productType.queryParam);
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    if (widget.productsCriteria == 'popular') {
-      CoreUtils.postFrameCall(() => getPopular(1));
-    } else if (widget.productsCriteria == 'newArrivals') {
-      CoreUtils.postFrameCall(() => getNewArrivals(1));
-    }
+    // if (widget.productsCriteria == 'popular') {
+    //   CoreUtils.postFrameCall(() => getPopular(1));
+    // } else if (widget.productsCriteria == 'newArrivals') {
+    //   CoreUtils.postFrameCall(() => getNewArrivals(1));
+    // }
+
+    CoreUtils.postFrameCall(() => fetchProducts());
 
     ref.listenManual(
       productAdapterProvider(familyKey),
@@ -63,6 +77,16 @@ class _ProductsSectionState extends ConsumerState<ProductsSection> {
           });
         }
       },
+    );
+
+    //Listening to the product type for changes and then refetch when changed.
+    ref.listenManual(
+        productTypeNotifierProvider,
+        (previous, next) {
+          if (previous != next) {
+            fetchProducts();
+          }
+        },
     );
   }
 

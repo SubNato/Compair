@@ -19,6 +19,7 @@ class SearchByCategoryAndGenderAgeCategory extends UsecaseWithParams<
         categoryId: params.categoryId,
         genderAgeCategory: params.genderAgeCategory,
         page: params.page,
+        type: params.type,
       );
 }
 
@@ -28,12 +29,14 @@ class SearchByCategoryAndGenderAgeCategoryParams extends Equatable {
     required this.categoryId,
     required this.genderAgeCategory,
     required this.page,
+    this.type,
   });
 
   final String query;
   final String categoryId;
   final String genderAgeCategory;
   final int page;
+  final String? type;
 
   @override
   List<dynamic> get props => [
@@ -41,5 +44,6 @@ class SearchByCategoryAndGenderAgeCategoryParams extends Equatable {
     categoryId,
     genderAgeCategory,
     page,
+    type,
   ];
 }

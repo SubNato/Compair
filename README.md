@@ -167,18 +167,43 @@ Checkout not working, crashes the server!!!!!!!!!!!!!
 
 When searching for a category by the list of category user the search bar, does not work.
 
+Feature idea, when you hit the compare logo, it changes the products from autoparts to furniture/appliances and viceversa.
+And it additionally switches the colors. From blue 'com' and orange 'pare', to orange 'com' and blue 'pare'
 
+The Git push before November 5, 2025 works perfectly. This is before the additions to the product files 
+that helps with changing the products type (Auto Parts vs. furniture/ appliance).
 
+extra is sent to the GoRouter through the 'categories section' and 'compare_view' (for compare view, where the _related products is called in the top method.).
 
 TOP PRIORITY
 -------------
 Work on fetching Appliances-Furniture vs. autoparts. ⬅️
-    - Backend completely implemented for this feature. It works by using a query for the type on the products table in the database.
-    - So just send a query for finding a autopart vs furniture-appliance!
-    - Get it done next 
+    - Backend completely implemented for this feature. It works by using a query for the type on the products table in the database. ✔️
+    - So just send a query for finding a autopart vs furniture-appliance! ✔️
+    - Get it done next ✔️
+    - Add a physical button to toggle product types. ✔️
+    - Add type to the UPLOADS of a category and a product.
 
 Admin features for Allowing someone to be a business or not.
 
 Adding the logic on the registration page for checking if someone wants to be considered as a business. (manual by admin or automatically by server side logic? )
 
 Changing the UI Ads and Posters on first time screen.
+
+Search for a specific Category seeing as though there can be many at once.
+
+Request a category feature?
+
+CODING NOTES:
+
+Easily expandable to inlcude hardware stuff as well. Do it!!!!!
+
+
+Implemented, but nothing is being sent in as the type when there is already a global value. Check on that ✅
+
+
+
+
+In ALL things, pray about it. For the right features to add. The right ways to add then. The right time to get things done. 
+
+God will work it out for our good :)

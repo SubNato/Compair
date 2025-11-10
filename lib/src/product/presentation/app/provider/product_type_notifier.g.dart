@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'category_adapter.dart';
+part of 'product_type_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$categoryAdapterHash() => r'0539f55ae0f7beb0edb68f05652890a209729fa1';
+String _$productTypeNotifierHash() =>
+    r'80103d826f1cb778a52a196c35c48dc05d5b5537';
 
-/// See also [CategoryAdapter].
-@ProviderFor(CategoryAdapter)
-final categoryAdapterProvider =
-    AutoDisposeNotifierProvider<CategoryAdapter, CategoryState>.internal(
-  CategoryAdapter.new,
-  name: r'categoryAdapterProvider',
+/// See also [ProductTypeNotifier].
+@ProviderFor(ProductTypeNotifier)
+final productTypeNotifierProvider =
+    AutoDisposeNotifierProvider<ProductTypeNotifier, ProductType>.internal(
+  ProductTypeNotifier.new,
+  name: r'productTypeNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$categoryAdapterHash,
+      : _$productTypeNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$CategoryAdapter = AutoDisposeNotifier<CategoryState>;
+typedef _$ProductTypeNotifier = AutoDisposeNotifier<ProductType>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

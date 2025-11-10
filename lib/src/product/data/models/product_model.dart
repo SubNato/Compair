@@ -24,6 +24,7 @@ class ProductModel extends Product {
     required super.category,
     super.genderAgeCategory,
     required super.countInStock,
+    super.type,
   });
 
   const ProductModel.empty()
@@ -44,6 +45,7 @@ class ProductModel extends Product {
     category: const ProductCategoryModel.empty(),
     genderAgeCategory: "Test String",
     countInStock: 1,
+    type: "Test String",
   );
 
   Map<String, dynamic> toMap() {
@@ -64,6 +66,7 @@ class ProductModel extends Product {
       'category': category,
       'genderAgeCategory': genderAgeCategory,
       'countInStock': countInStock,
+      'type': type,
     };
   }
 
@@ -94,6 +97,7 @@ class ProductModel extends Product {
           : ProductCategoryModel.fromMap(category as DataMap),
       genderAgeCategory: map['genderAgeCategory'] as String?,
       countInStock: (map['countInStock'] as num).toInt(),
+      type: map['type'] as String?,
     );
   }
 
@@ -114,6 +118,7 @@ class ProductModel extends Product {
     ProductCategoryModel? category,
     String? genderAgeCategory,
     int? countInStock,
+    String? type,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -132,6 +137,7 @@ class ProductModel extends Product {
       category: category ?? this.category,
       genderAgeCategory: genderAgeCategory ?? this.genderAgeCategory,
       countInStock: countInStock ?? this.countInStock,
+      type: type ?? this.type,
     );
   }
 }

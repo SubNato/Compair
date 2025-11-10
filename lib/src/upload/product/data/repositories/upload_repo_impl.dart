@@ -25,6 +25,7 @@ class UploadRepositoryImplementation implements UploadRepository {
     List<String>? sizes,
     String? model,
     String? genderAgeCategory,
+    String? type,
   }) async {
     try {
       await _remoteDataSource.upload(
@@ -40,6 +41,7 @@ class UploadRepositoryImplementation implements UploadRepository {
         category: category,
         countInStock: countInStock,
         genderAgeCategory: genderAgeCategory,
+        type: type,
       );
       return const Right(null);
     } on ServerException catch (e) {

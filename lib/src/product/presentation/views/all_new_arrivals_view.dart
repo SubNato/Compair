@@ -2,6 +2,7 @@ import 'package:compair_hub/core/common/widgets/app_bar_bottom.dart';
 import 'package:compair_hub/core/common/widgets/search_button.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
+import 'package:compair_hub/src/product/presentation/app/provider/product_type_notifier.dart';
 import 'package:compair_hub/src/product/presentation/widgets/category_selector.dart';
 import 'package:compair_hub/src/product/presentation/widgets/paginated_product_grid_view.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,11 @@ class _AllNewArrivalsViewState extends ConsumerState<AllNewArrivalsView> {
   Future<void> getProducts(int page) async {
     final category =
         ref.watch(categoryNotifierProvider(categoryNotifierFamilyKey));
+    final productType =
+        ref.watch(productTypeNotifierProvider);
+
     String? categoryId;
+
     if (category.name?.toLowerCase() != 'all') {
       categoryId = category.id;
     }
@@ -33,6 +38,7 @@ class _AllNewArrivalsViewState extends ConsumerState<AllNewArrivalsView> {
         .getNewArrivals(
           page: page,
           categoryId: categoryId,
+          type: productType.queryParam,
         );
   }
 

@@ -6,9 +6,9 @@ import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/core/utils/enums/product_type.dart';
+import 'package:compair_hub/core/utils/product_type_selector.dart';
 import 'package:compair_hub/src/upload/category/presentation/app/adapter/category_upload_adapter.dart';
-import 'package:compair_hub/src/upload/category/presentation/widgets/category_type.dart';
-import 'package:compair_hub/src/upload/category/presentation/widgets/category_type_selector.dart';
 import 'package:compair_hub/src/upload/product/presentation/app/adapter/upload_adapter.dart';
 import 'package:compair_hub/src/upload/product/presentation/app/category/category_adapter.dart';
 import 'package:flutter/cupertino.dart';
@@ -141,10 +141,10 @@ class _CategoryUploadFormState extends ConsumerState<CategoryUploadForm> {
               ),
             ),
             const Gap(20),
-            CategoryTypeSelector(onChanged: (category) {
-              print("Changed value: ${category.apiValue}");
+            ProductTypeSelector(onChanged: (category) {
+              print("Changed value: ${category?.apiValue}");
               setState(() {
-                type = category.apiValue;
+                type = category?.apiValue;
               });
             }),
             const Gap(30),
@@ -201,7 +201,7 @@ class _CategoryUploadFormState extends ConsumerState<CategoryUploadForm> {
                 ),
               ),
               icon: Icon(
-                image == null ? IconlyBroken.image_2 : IconlyBold.image_2,
+                image == null ? IconlyBroken.upload : IconlyBold.upload,
                 color: Colours.classicAdaptiveTextColour(context),
               ),
             ),

@@ -15,6 +15,7 @@ import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/core/utils/enums/drawer_enums.dart';
 import 'package:compair_hub/src/dashboard/presentation/app/dashboard_state.dart';
 import 'package:compair_hub/src/dashboard/presentation/utils/dashboard_utils.dart';
+import 'package:compair_hub/src/dashboard/presentation/widgets/product_toggle.dart';
 import 'package:compair_hub/src/dashboard/presentation/widgets/theme_toggle.dart';
 import 'package:compair_hub/src/upload/category/presentation/views/category_upload_view.dart';
 import 'package:compair_hub/src/upload/product/presentation/views/upload_view.dart';
@@ -176,7 +177,13 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const ThemeToggle(),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ThemeToggle(),
+                    ProductToggle(),
+                  ],
+                ),
                 const Gap(10),
                 ValueListenableBuilder(
                   valueListenable: signingOutNotifier,

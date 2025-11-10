@@ -33,6 +33,7 @@ class UploadAdapter extends _$UploadAdapter {
     List<String>? sizes,
     String? model,
     String? genderAgeCategory,
+    String? type,
   }) async {
      state = const UploadLoading();
      final result = await _upload(UploadParams(
@@ -48,6 +49,7 @@ class UploadAdapter extends _$UploadAdapter {
        category: category,
        countInStock: countInStock,
        genderAgeCategory: genderAgeCategory,
+       type: type,
      ));
      result.fold(
       (failure) => state = UploadError(failure.errorMessage),

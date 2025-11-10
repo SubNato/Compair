@@ -13,6 +13,7 @@ class GetPopular extends UsecaseWithParams<List<Product>, GetPopularParams> {
   ResultFuture<List<Product>> call(GetPopularParams params) => _repo.getPopular(
     page: params.page,
     categoryId: params.categoryId,
+    type: params.type,
   );
 }
 
@@ -20,11 +21,13 @@ class GetPopularParams extends Equatable {
   const GetPopularParams({
     required this.page,
     this.categoryId,
+    this.type,
   });
 
   final int page;
   final String? categoryId;
+  final String? type;
 
   @override
-  List<Object?> get props => [page, categoryId];
+  List<Object?> get props => [page, categoryId, type];
 }

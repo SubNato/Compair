@@ -18,9 +18,9 @@ class CategoryAdapter extends _$CategoryAdapter {
     return const CategoryInitial();
   }
 
-  Future<void> fetchCategories() async {
+  Future<void> fetchCategories({String? type}) async {
     state = const CategoryLoading();
-    final result = await _getCategories();
+    final result = await _getCategories(GetCategoriesParams(type: type));
     result.fold(
       (failure) => state = CategoryError(failure.errorMessage),
       (categories) => state = CategoryLoaded(categories),

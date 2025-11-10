@@ -16,6 +16,7 @@ class SearchByCategory
         query: params.query,
         categoryId: params.categoryId,
         page: params.page,
+        type: params.type,
       );
 }
 
@@ -24,16 +25,20 @@ class SearchByCategoryParams extends Equatable {
     required this.query,
     required this.categoryId,
     required this.page,
+    this.type,
   });
 
   final String query;
   final String categoryId;
   final int page;
+  final String? type;
+
 
   @override
   List<dynamic> get props => [
     query,
     categoryId,
     page,
+    type,
   ];
 }

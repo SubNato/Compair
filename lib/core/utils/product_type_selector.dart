@@ -1,28 +1,29 @@
-import 'package:compair_hub/src/upload/category/presentation/widgets/category_type.dart';
+import 'package:compair_hub/core/utils/enums/product_type.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CategoryTypeSelector extends StatefulWidget {
-  const CategoryTypeSelector({
+class ProductTypeSelector extends StatefulWidget {
+  const ProductTypeSelector({
     super.key,
     required this.onChanged,
     });
 
-  final Function(CategoryType) onChanged;
+  final Function(ProductType?) onChanged; // Nullable to handle no selection.
 
   @override
-  State<CategoryTypeSelector> createState() => _CategoryTypeSelectorState();
+  State<ProductTypeSelector> createState() => _ProductTypeSelectorState();
 }
 
-class _CategoryTypeSelectorState extends State<CategoryTypeSelector> {
-  late CategoryType _type;
-  CategoryType selectedCategory =CategoryType.autoPart;
+class _ProductTypeSelectorState extends State<ProductTypeSelector> {
+  late ProductType _type;
+  ProductType? selectedCategory; // Start with nothing selected.
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<CategoryType>(
+    return DropdownButton<ProductType>(
+        hint: const Text('Select Product Type'), // Show when nothing is selected. User Hint text.
         value: selectedCategory,
-        items: CategoryType.values.map((category) {
+        items: ProductType.values.map((category) {
           return DropdownMenuItem(
               value: category,
               child: Text(category.Label),

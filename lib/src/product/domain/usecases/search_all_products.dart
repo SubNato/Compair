@@ -15,6 +15,7 @@ class SearchAllProducts
       _repo.searchAllProducts(
         query: params.query,
         page: params.page,
+        type: params.type,
       );
 }
 
@@ -22,14 +23,17 @@ class SearchAllProductsParams extends Equatable {
   const SearchAllProductsParams({
     required this.query,
     required this.page,
+    this.type,
   });
 
   final String query;
   final int page;
+  final String? type;
 
   @override
   List<dynamic> get props => [
     query,
     page,
+    type,
   ];
 }
