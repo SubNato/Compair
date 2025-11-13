@@ -6,6 +6,7 @@ import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/src/product/domain/entities/category.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
+import 'package:compair_hub/src/product/presentation/app/provider/product_type_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -31,14 +32,29 @@ class _CategorySelectorState extends ConsumerState<CategorySelector> {
         .changeCategory(category);
   }
 
+  Future<void> categories() async {
+    final productType = ref.read(productTypeNotifierProvider);
+    ref
+        .read(productAdapterProvider(productAdapterFamilyKey).notifier)
+        .getCategories(type: productType.queryParam);
+  }
+
   @override
   void initState() {
     super.initState();
-    CoreUtils.postFrameCall(
-      ref
-          .read(productAdapterProvider(productAdapterFamilyKey).notifier)
-          .getCategories,
-    );
+
+    CoreUtils.postFrameCall(() {
+      categories();
+
+      ref.listen(productTypeNotifierProvider, (prev, next) {
+        if(prev != next) {
+          //Reset category to 'All' when the product type changes.
+          selectCategory(const ProductCategory.all());
+          //Fetch new categories for teh newly selected type
+          categories();
+        }
+      });
+    });
   }
 
   @override
@@ -48,6 +64,7 @@ class _CategorySelectorState extends ConsumerState<CategorySelector> {
     final selectedCategory = ref.watch(
       categoryNotifierProvider(widget.categoryNotifierFamilyKey),
     );
+    final productType = ref.watch(productTypeNotifierProvider);
 
     ref.listen(productAdapterProvider(productAdapterFamilyKey),
         (previous, next) {

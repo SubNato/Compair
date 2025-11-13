@@ -182,7 +182,17 @@ Work on fetching Appliances-Furniture vs. autoparts. ⬅️
     - So just send a query for finding a autopart vs furniture-appliance! ✔️
     - Get it done next ✔️
     - Add a physical button to toggle product types. ✔️
-    - Add type to the UPLOADS of a category and a product.
+    - Add type to the UPLOADS of a category and a product. ️✔️
+    - Add the type to the categories search in Explore View. ✔️
+    - Add the type of the returned products in the Explore View. ✔️
+    - A pop up message on every app turn on reminding them that they can search also for the other IF you allow persisting states.
+Bugs:
+    - The type does not persist after you navigate to wishlist and back to home. Anytime you go to wishlist and navigate to anywhere else it happens.
+    - The drawer change option does not work on the explore page for the category selector slider. ✔️
+
+Fix the wishlist crashing issue. ✔️
+
+Add a different checkout system for users like PayAveta etc.
 
 Admin features for Allowing someone to be a business or not.
 
@@ -194,9 +204,16 @@ Search for a specific Category seeing as though there can be many at once.
 
 Request a category feature?
 
+
+
+
+
+
+
+
 CODING NOTES:
 
-Easily expandable to inlcude hardware stuff as well. Do it!!!!!
+Easily expandable to include hardware stuff as well. Do it!!!!!
 
 
 Implemented, but nothing is being sent in as the type when there is already a global value. Check on that ✅
