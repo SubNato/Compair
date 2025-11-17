@@ -1,5 +1,6 @@
 import 'package:compair_hub/core/common/widgets/app_bar_bottom.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
+import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/core/utils/enums/gender_age_category.dart';
 import 'package:compair_hub/src/home/presentation/sections/search_section.dart';
 import 'package:compair_hub/src/product/domain/entities/category.dart';
@@ -32,31 +33,50 @@ class _SearchViewState extends ConsumerState<SearchView> {
 
   int page = 1;
 
+  @override
+  void initState(){
+    super.initState();
+
+    //All products are already in the explore view so it doesn't make sense to show them again
+    // CoreUtils.postFrameCall(() {
+    //   final category = ref.read(categoryNotifierProvider(categoryFamilyKey));
+    //   search(category: category);
+    // });
+
+    ref.listenManual(categoryNotifierProvider(categoryFamilyKey),
+        (previous, next) {
+          if (previous != next) {
+            search(category: next);
+          }
+        }
+      );
+  }
+
   void search({
     required ProductCategory category,
-    required GenderAgeCategory genderAgeCategory,
+    //GenderAgeCategory? genderAgeCategory,
   }) {
     final productAdapter =
         ref.read(productAdapterProvider(productAdapterFamilyKey).notifier);
     if (category.name!.toLowerCase() != 'all') {
       // means that the genderAgeCategory is considered
-      if (genderAgeCategory.title.toLowerCase() != 'all') {
+      /*if (genderAgeCategory?.title.toLowerCase() != 'all') {
         // means we have a specification and they are
         // both not [all]
         productAdapter.searchByCategoryAndGenderAgeCategory(
           query: searchController.text.trim(),
           categoryId: category.id,
-          genderAgeCategory: genderAgeCategory.title.toLowerCase(),
+          genderAgeCategory: genderAgeCategory!.title.toLowerCase(),
           page: page,
         );
-      } else {
+      } else {*/
         // means we have only category specified
         productAdapter.searchByCategory(
           query: searchController.text.trim(),
           categoryId: category.id,
           page: page,
         );
-      }
+      //}
     } else {
       productAdapter.searchAllProducts(
         query: searchController.text.trim(),
@@ -74,9 +94,9 @@ class _SearchViewState extends ConsumerState<SearchView> {
   @override
   Widget build(BuildContext context) {
     final category = ref.watch(categoryNotifierProvider(categoryFamilyKey));
-    final genderAgeCategory = ref.watch(
+    /*final genderAgeCategory = ref.watch(
       genderAgeCategoryNotifierProvider(genderAgeCategoryFamilyKey),
-    );
+    );*/
     return Scaffold(
       appBar: AppBar(title: const Text('Search'), bottom: const AppBarBottom()),
       body: SafeArea(
@@ -93,12 +113,12 @@ class _SearchViewState extends ConsumerState<SearchView> {
                     controller: searchController,
                     onSubmitted: (_) => search(
                       category: category,
-                      genderAgeCategory: genderAgeCategory,
+                      //genderAgeCategory: genderAgeCategory,
                     ),
                     suffixIcon: IconButton(
                       onPressed: () => search(
                         category: category,
-                        genderAgeCategory: genderAgeCategory,
+                        //genderAgeCategory: genderAgeCategory,
                       ),
                       icon: const Iconify(
                         Majesticons.send,
@@ -111,13 +131,13 @@ class _SearchViewState extends ConsumerState<SearchView> {
                     categoryNotifierFamilyKey: categoryFamilyKey,
                   ),
                   const Gap(10),
-                  if (category.name!.toLowerCase() != 'all') ...[
+                  /*if (category.name!.toLowerCase() != 'all') ...[
                     GenderAgeCategorySelector(
                       genderAgeCategoryNotifierFamilyKey:
                           genderAgeCategoryFamilyKey,
                     ),
                     const Gap(10),
-                  ]
+                  ]*/
                 ],
               ),
             ),

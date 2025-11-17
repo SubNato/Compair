@@ -192,6 +192,18 @@ Bugs:
 
 Fix the wishlist crashing issue. ✔️
 
+Fix add to cart from wishlist. ✔️
+
+Fix the 'In Cart!' button when the product is already in the cart so that they cannot add it more than once to cart. ✔️
+
+
+Click the category tab and when they do, it switches to the category.
+
+
+Put in safety measures, so that they can't spam stuff.
+
+
+
 Add a different checkout system for users like PayAveta etc.
 
 Admin features for Allowing someone to be a business or not.

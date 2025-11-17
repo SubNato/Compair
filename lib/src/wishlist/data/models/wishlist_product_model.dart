@@ -28,10 +28,10 @@ class WishlistProductModel extends WishlistProduct {
 
   WishlistProductModel.fromMap(DataMap map)
       : this(
-    productId: map['productId'] as String,
-    productName: map['productName'] as String,
-    productImage: map['productImage'] as String,
-    productPrice: (map['productPrice'] as num).toDouble(),
+    productId: map['productId'] as String? ?? '',
+    productName: map['productName'] as String? ?? '',
+    productImage: map['productImage'] as String? ?? '',
+    productPrice: (map['productPrice'] as num?)?.toDouble() ?? 0.00,
     productExists: map['productExists'] as bool? ?? true,
     productOutOfStock: map['productOutOfStock'] as bool? ?? false,
   );

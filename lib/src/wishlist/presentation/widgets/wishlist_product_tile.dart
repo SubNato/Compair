@@ -6,6 +6,7 @@ import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/src/cart/data/models/cart_product_model.dart';
+import 'package:compair_hub/src/cart/domain/entities/cart_product.dart';
 import 'package:compair_hub/src/cart/presentation/app/adapter/cart_provider.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
@@ -101,13 +102,19 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
     super.initState();
 
     product = widget.wishlistProduct;
-    if (product.productExists && !product.productOutOfStock) {
       CoreUtils.postFrameCall(() {
-        ref
+        if (product.productExists && !product.productOutOfStock) {
+
+          ref
             .read(productAdapterProvider(productAdapterFamilyKey).notifier)
             .getProduct(product.productId);
+        }
+        //Fetching the cart items
+        ref
+            .read(cartAdapterProvider(cartAdapterFamilyKey).notifier)
+            .getCart(Cache.instance.userId!);
       });
-    }
+
     ref.listenManual(
       productAdapterProvider(productAdapterFamilyKey),
       (previous, next) {
@@ -139,6 +146,22 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
         }
       },
     );
+    ref.listenManual(
+      cartAdapterProvider(cartAdapterFamilyKey),
+          (previous, next) {
+        if (next case CartError(:final message)) {
+          CoreUtils.showSnackBar(context, message: message);
+        }
+        // Refresh cart after adding to cart
+        if (next is AddedToCart) {
+          CoreUtils.postFrameCall(() {
+            ref
+                .read(cartAdapterProvider(cartAdapterFamilyKey).notifier)
+                .getCart(Cache.instance.userId!);
+          });
+        }
+      },
+    );
   }
 
   @override
@@ -153,6 +176,20 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
     final cartAdapter = ref.watch(
       cartAdapterProvider(cartAdapterFamilyKey),
     );
+
+    //Logic for crosschecking if the product in teh wishlist is already in the cart.
+    List<CartProduct> cartItems = [];
+    
+    if(cartAdapter is CartFetched) {
+      cartItems = cartAdapter.cart;
+    }
+
+    for(final items in cartItems){
+      print('Product Id: ${items.productId}------------------- id: ${items.id}');
+    }
+    bool isInCart = cartItems.any((items) => items.productId == product.productId);
+    print('In Cart Value: $isInCart || Wishlist product Id: ${product.productId}');
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -236,8 +273,18 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
                   ).loading(
                     wishlistAdapter is RemovingFromWishlist &&
                         product.productExists,
-                  ),
-                  TextButton(
+                  ), isInCart ? TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.green.shade400,//.withOpacity(1),
+                      foregroundColor: Colours.lightThemeWhiteColour,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      )
+                    ),
+                    onPressed: null,
+                    child: const Text('IN CART!', style: TextStyle(color: Colours.lightThemeWhiteColour),),
+                  )
+                  : TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: product.productOutOfStock
                           ? Colors.grey
