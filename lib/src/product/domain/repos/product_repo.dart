@@ -4,7 +4,7 @@ import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/domain/entities/review.dart';
 
 abstract interface class ProductRepo {
-  ResultFuture<List<Product>> getProducts(int page, {String? type});
+  ResultFuture<List<Product>> getProducts(int page, {String? type, String? owner});
 
   ResultFuture<Product> getProduct(String productId);
 

@@ -124,6 +124,16 @@ final router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
+      path: VendorView.path,
+      builder: (_,state) => VendorView(vendor: state.extra as User),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: VendorProductsView.path,
+      builder: (_,state) => VendorProductsView(vendor: state.extra as User),
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
       path: UploadView.path,
       builder: (_,__) => const UploadView(),
     ),

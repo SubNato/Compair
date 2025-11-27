@@ -1,4 +1,5 @@
 import 'package:compair_hub/core/common/app/cache_helper.dart';
+import 'package:compair_hub/core/common/entities/user.dart';
 import 'package:compair_hub/core/common/singletons/cache.dart';
 import 'package:compair_hub/core/errors/routing_error.dart';
 import 'package:compair_hub/core/services/injection_container.dart';
@@ -27,6 +28,8 @@ import 'package:compair_hub/src/upload/category/presentation/views/category_uplo
 import 'package:compair_hub/src/upload/product/presentation/views/upload_view.dart';
 import 'package:compair_hub/src/user/presentation/views/payment_profile_view.dart';
 import 'package:compair_hub/src/user/presentation/views/profile_view.dart';
+import 'package:compair_hub/src/vendor/presentation/views/vendor_products_view.dart';
+import 'package:compair_hub/src/vendor/presentation/views/vendor_view.dart';
 import 'package:compair_hub/src/wishlist/presentation/views/wishlist_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';

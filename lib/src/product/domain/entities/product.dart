@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:compair_hub/src/product/domain/entities/category.dart';
+import 'package:compair_hub/src/product/domain/entities/product_user.dart';
 import 'package:equatable/equatable.dart';
 
 class Product extends Equatable {
@@ -19,6 +20,7 @@ class Product extends Equatable {
     required this.numberOfReviews,
     required this.sizes,
     required this.category,
+    required this.owner,
     required this.countInStock,
     this.genderAgeCategory,
     this.type,
@@ -39,6 +41,7 @@ class Product extends Equatable {
         numberOfReviews = 1,
         sizes = const [],
         category = const ProductCategory.empty(),
+        owner = const ProductUser.empty(),
         countInStock = 1,
         genderAgeCategory = "Test String",
         type = "Test String";
@@ -57,6 +60,7 @@ class Product extends Equatable {
   final int numberOfReviews;
   final List<String> sizes;
   final ProductCategory category;
+  final ProductUser owner;
   final int countInStock;
   final String? genderAgeCategory;
   final String? type;
@@ -73,6 +77,7 @@ class Product extends Equatable {
     image,
     numberOfReviews,
     category,
+    owner,
     countInStock,
     genderAgeCategory,
     type,

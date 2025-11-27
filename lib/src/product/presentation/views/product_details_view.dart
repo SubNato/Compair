@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:compair_hub/core/common/entities/user.dart';
 import 'package:compair_hub/core/common/singletons/cache.dart';
 import 'package:compair_hub/core/common/widgets/app_bar_bottom.dart';
 import 'package:compair_hub/core/common/widgets/custom_floating_action_button.dart';
@@ -19,10 +20,13 @@ import 'package:compair_hub/src/compare/presentation/utils/compare_tracker.dart'
 import 'package:compair_hub/src/compare/presentation/views/compare_view.dart';
 import 'package:compair_hub/src/home/presentation/widgets/reactive_cart_icon.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
+import 'package:compair_hub/src/product/domain/entities/product_user.dart';
 import 'package:compair_hub/src/product/features/review/presentation/widgets/reviews_preview.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/widgets/colour_palette.dart';
 import 'package:compair_hub/src/product/presentation/widgets/size_picker.dart';
+import 'package:compair_hub/src/user/presentation/adapter/auth_user_provider.dart';
+import 'package:compair_hub/src/vendor/presentation/widgets/vendor_information.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -42,6 +46,7 @@ class ProductDetailsView extends ConsumerStatefulWidget {
 class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
   final productAdapterFamilyKey = GlobalKey();
   final cartAdapterFamilyKey = GlobalKey();
+  final authAdapterFamilyKey = GlobalKey();
 
   String? selectedSize;
   Color? selectedColour;
@@ -79,8 +84,17 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
             if (context.canPop()) context.pop();
           });
         }
+        if (next is ProductFetched) {
+          fetchUser(user: next.product.owner);
+        }
       },
     );
+
+    ref.listenManual(authUserProvider(authAdapterFamilyKey), (previous, next) {
+      if(next case AuthUserError(:final message)) {
+        CoreUtils.showSnackBar(context, message: 'Could Locate Seller Information',);
+      }
+    });
 
     ref.listenManual(
       cartAdapterProvider(cartAdapterFamilyKey),
@@ -124,6 +138,18 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
       transitionDuration: const Duration(milliseconds: 300),
     );
   }
+  
+  void fetchUser({required ProductUser user,}) {
+    final userAdapter = 
+        ref.read(authUserProvider(authAdapterFamilyKey).notifier);
+
+    userAdapter.getUserById(user.id,);
+  }
+
+  //Make seller route.
+  void _navigateToSellerInfo(User seller) {
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +157,8 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
       productAdapterProvider(productAdapterFamilyKey),
     );
     final cartState = ref.watch(cartAdapterProvider(cartAdapterFamilyKey));
+    final authUserState = ref.watch(authUserProvider(authAdapterFamilyKey));
+
     List<CartProduct> cartItems = [];
 
     if (cartState is CartFetched) {
@@ -167,6 +195,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                   Expanded(
                     child: ListView(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20).copyWith(bottom: 20),
+                          // Calling the widget to to display the name of the Seller.
+                          child: vendorNameSection(product, authUserState, context),
+                        ),
                         Builder(builder: (context) {
                           var images = product.images;
                           if (images.isEmpty) images = [product.image];

@@ -196,6 +196,24 @@ Fix add to cart from wishlist. ✔️
 
 Fix the 'In Cart!' button when the product is already in the cart so that they cannot add it more than once to cart. ✔️
 
+Add an icon for the FIRST 10 COMPANIES TO SIGN UP FOR THE APP. OUR UNIQUE TOUCH
+
+IF THE TOKEN IS UNAUTHORIZED OR REVOKED, THEN TAKE THEM BACK TO THE LOGIN PAGE. CHECK IT, BY LOGGING IN ON POSTMAN AND SEE WHAT IT DOES, IF IT DOES NOT TAKE YOU BACK TO THE LOGIN PAGE, AND JUST INFINATE LOADS, TEHN JUST IMPLEMENT IT.
+
+Implement a vendor profile display so that users can see who is selling what. And list all of their products in their profile section. ✔️
+
+Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY.
+
+Very important -> Remember to implement a filter by parish feature
+
+Display all of the that specific vendor's product or just leave it be? So that they don't just shop them and give competition a chance? Naaaah do it!
+
+Look into the logic for the users purchasing goods. How'd they get it, verified payments etc.
+
+Logic for users seeing the company that is selling it. (Still using badges for the first 10 companies or not? Still want them to view company details or not?)
+Do the above to ensure that they can gain trust of the company. Place company name at the top of the product view page. With info and address etc.
+
+Improve the logic to check if the product is in the cart. It is running many times.
 
 Click the category tab and when they do, it switches to the category.
 
@@ -217,6 +235,27 @@ Search for a specific Category seeing as though there can be many at once.
 Request a category feature?
 
 
+
+
+
+
+
+Error: The following assertion was thrown during a scheduler callback:
+ref.listen can only be used within the build method of a ConsumerWidget
+'package:flutter_riverpod/src/consumer.dart':
+Failed assertion: line 600 pos 7: 'debugDoingBuild'
+
+When the exception was thrown, this was the stack:
+#2      ConsumerStatefulElement.listen (package:flutter_riverpod/src/consumer.dart:600:7)
+#3      _CategorySelectorState.initState.<anonymous closure> (package:compair_hub/src/product/presentation/widgets/category_selector.dart:49:11)
+#4      CoreUtils.postFrameCall.<anonymous closure> (package:compair_hub/core/utils/core_utils.dart:31:15)
+#5      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1397:15)
+#6      SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1331:11)
+#7      SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1176:5)
+#8      _invoke (dart:ui/hooks.dart:312:13)
+#9      PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:419:5)
+#10     _drawFrame (dart:ui/hooks.dart:283:31)
+(elided 2 frames from class _AssertionError)
 
 
 

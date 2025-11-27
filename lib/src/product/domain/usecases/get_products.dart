@@ -11,18 +11,20 @@ class GetProducts extends UsecaseWithParams<List<Product>, GetProductsParams> {
 
   @override
   ResultFuture<List<Product>> call(GetProductsParams params) => _repo.getProducts(params.page
-  , type: params.type);
+  , type: params.type, owner: params.owner);
 }
 
 class GetProductsParams extends Equatable {
   const GetProductsParams({
     required this.page,
     this.type,
+    this.owner,
 });
 
   final int page;
   final String? type;
+  final String? owner;
 
   @override
-  List<dynamic> get props => [page, type];
+  List<dynamic> get props => [page, type, owner];
 }

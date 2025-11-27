@@ -50,7 +50,7 @@ class _CategorySelectorState extends ConsumerState<CategorySelector> {
         if(prev != next) {
           //Reset category to 'All' when the product type changes.
           selectCategory(const ProductCategory.all());
-          //Fetch new categories for teh newly selected type
+          //Fetch new categories for the newly selected type
           categories();
         }
       });

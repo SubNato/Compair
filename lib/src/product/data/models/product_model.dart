@@ -4,6 +4,7 @@ import 'package:compair_hub/core/extensions/color_extension.dart';
 import 'package:compair_hub/core/extensions/string_extensions.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:compair_hub/src/product/data/models/category_model.dart';
+import 'package:compair_hub/src/product/data/models/product_user_model.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
 
 class ProductModel extends Product {
@@ -22,8 +23,9 @@ class ProductModel extends Product {
     required super.numberOfReviews,
     required super.sizes,
     required super.category,
-    super.genderAgeCategory,
     required super.countInStock,
+    required super.owner,
+    super.genderAgeCategory,
     super.type,
   });
 
@@ -46,6 +48,7 @@ class ProductModel extends Product {
     genderAgeCategory: "Test String",
     countInStock: 1,
     type: "Test String",
+    owner: const ProductUserModel.empty(),
   );
 
   Map<String, dynamic> toMap() {
@@ -67,6 +70,7 @@ class ProductModel extends Product {
       'genderAgeCategory': genderAgeCategory,
       'countInStock': countInStock,
       'type': type,
+      'owner': owner,
     };
   }
 
@@ -76,6 +80,7 @@ class ProductModel extends Product {
     final reviewIds = map['reviewIds'] as List<dynamic>?;
     final sizes = map['sizes'] as List<dynamic>?;
     final category = map['category'];
+    final owner = map['owner'];
     return ProductModel(
       id: map['_id'] as String,
       name: map['name'] as String,
@@ -98,6 +103,9 @@ class ProductModel extends Product {
       genderAgeCategory: map['genderAgeCategory'] as String?,
       countInStock: (map['countInStock'] as num).toInt(),
       type: map['type'] as String?,
+      owner: owner is String
+          ? ProductUserModel(id: owner)
+          : ProductUserModel.fromMap(owner as DataMap),
     );
   }
 
@@ -119,6 +127,7 @@ class ProductModel extends Product {
     String? genderAgeCategory,
     int? countInStock,
     String? type,
+    ProductUserModel? owner,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -138,6 +147,7 @@ class ProductModel extends Product {
       genderAgeCategory: genderAgeCategory ?? this.genderAgeCategory,
       countInStock: countInStock ?? this.countInStock,
       type: type ?? this.type,
+      owner: owner ?? this.owner,
     );
   }
 }

@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 abstract interface class ProductRemoteDataSrc {
   const ProductRemoteDataSrc();
 
-  Future<List<ProductModel>> getProducts(int page, {String? type});
+  Future<List<ProductModel>> getProducts(int page, {String? type, String? owner});
 
   Future<ProductModel> getProduct(String productId);
 
@@ -361,13 +361,14 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
   }
 
   @override
-  Future<List<ProductModel>> getProducts(int page, {String? type}) async {
+  Future<List<ProductModel>> getProducts(int page, {String? type, String? owner}) async {
     try {print("The type is: $type --------------------------------------");
       const endpoint = '${NetworkConstants.apiUrl}$GET_PRODUCTS_ENDPOINT';
 
       final queryParams = {
         'page': '$page',
         if (type != null) 'type': type, //Adding the type to the query if provided
+        if (owner != null) 'owner': owner, //Adding the type to the query if provided
       };
       final uri = NetworkConstants.baseUrl.startsWith('https')
           ? Uri.https(NetworkConstants.authority, endpoint, queryParams)

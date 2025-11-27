@@ -94,9 +94,9 @@ class ProductRepoImpl implements ProductRepo {
   }
 
   @override
-  ResultFuture<List<Product>> getProducts(int page, {String? type}) async {
+  ResultFuture<List<Product>> getProducts(int page, {String? type, String? owner}) async {
     try {
-      final result = await _remoteDataSource.getProducts(page, type: type);
+      final result = await _remoteDataSource.getProducts(page, type: type, owner: owner);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
