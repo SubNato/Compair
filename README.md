@@ -196,17 +196,29 @@ Fix add to cart from wishlist. ✔️
 
 Fix the 'In Cart!' button when the product is already in the cart so that they cannot add it more than once to cart. ✔️
 
+FIX THE PAGINATEDPRODUCTSVIEW for the proper assertions. refer to line 24-27. Make updates to add in the parish assersions.
 Add an icon for the FIRST 10 COMPANIES TO SIGN UP FOR THE APP. OUR UNIQUE TOUCH
 
 IF THE TOKEN IS UNAUTHORIZED OR REVOKED, THEN TAKE THEM BACK TO THE LOGIN PAGE. CHECK IT, BY LOGGING IN ON POSTMAN AND SEE WHAT IT DOES, IF IT DOES NOT TAKE YOU BACK TO THE LOGIN PAGE, AND JUST INFINATE LOADS, TEHN JUST IMPLEMENT IT.
 
+SEARCH by a company? or would that cause like unfair biases? Like they just continue to look for their favorites? Not doing so lets them just browse by any. THOUGHTS?
 Implement a vendor profile display so that users can see who is selling what. And list all of their products in their profile section. ✔️
 
-Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY.
+Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY. <- Now at this
 
-Very important -> Remember to implement a filter by parish feature
+Very important -> Remember to implement a filter by parish feature ✅
 
-Display all of the that specific vendor's product or just leave it be? So that they don't just shop them and give competition a chance? Naaaah do it!
+In the backend add the address fields of the user. ORRRRRRRRRRRRRRRRRRR Just make BUSINESSES add their full info. DO IT FOR USERS SO THAT THEY CAN GET CUSTOM ITEMS. YEAAAAAAAAAAAAAAAAA
+
+Fix user changing name, pixel overflow.
+
+Fix the remove from cart. Pixel overflow.
+
+Fix compare feature, bottom pixel overflow by 14 pixels. for both current and similar products. 
+
+Fix compare the yellow lines are on all of the words and numbers at current, and only the label similar products at the bottom.
+
+Display all of the that specific vendor's product or just leave it be? So that they don't just shop them and give competition a chance? Naaaah do it! YES! DID IT 😁✅
 
 Look into the logic for the users purchasing goods. How'd they get it, verified payments etc.
 

@@ -3,9 +3,11 @@ import 'package:compair_hub/core/common/widgets/menu_icon.dart';
 import 'package:compair_hub/core/common/widgets/search_button.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
+import 'package:compair_hub/src/product/presentation/app/parish_notifier/parish_notifier.dart';
 import 'package:compair_hub/src/product/presentation/app/provider/product_type_notifier.dart';
 import 'package:compair_hub/src/product/presentation/widgets/category_selector.dart';
 import 'package:compair_hub/src/product/presentation/widgets/paginated_product_grid_view.dart';
+import 'package:compair_hub/src/product/presentation/widgets/parish_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -22,37 +24,49 @@ class ExploreView extends ConsumerStatefulWidget {
 class _ExploreViewState extends ConsumerState<ExploreView> {
   final productAdapterFamilyKey = GlobalKey();
   final categoryFamilyKey = GlobalKey();
+  final parishFamilyKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
 
-    ref.listenManual(productTypeNotifierProvider,
-        (previous, next) {
-      if(previous != next) {
-        //When the product type changes, trigger the refresh
-        setState(() {
+    ref.listenManual(parishNotifierProvider(parishFamilyKey), (prev, next) {
+      if (prev != next) {
+        //Trigger the refresh when the parish changes
+        setState(() {});
+      }
+    });
 
-        });
+    ref.listenManual(productTypeNotifierProvider, (previous, next) {
+      if (previous != next) {
+        //When the product type changes, trigger the refresh
+        ref.read(ParishNotifierProvider(parishFamilyKey).notifier).clearParish();
+        setState(() {});
       }
     });
   }
 
   Future<void> getProducts(
-      int page,
-      ) async {
+    int page,
+  ) async {
     final category = ref.watch(categoryNotifierProvider(categoryFamilyKey));
+    final parish = ref.watch(parishNotifierProvider(parishFamilyKey));
     final productAdapterNotifier =
-    ref.read(productAdapterProvider(productAdapterFamilyKey).notifier);
+        ref.read(productAdapterProvider(productAdapterFamilyKey).notifier);
     final productType = ref.watch(productTypeNotifierProvider);
 
     if (category.name?.toLowerCase() == 'all') {
-      return productAdapterNotifier.getProducts(page, type: productType.queryParam);
+      return productAdapterNotifier.getProducts(
+        page,
+        type: productType.queryParam,
+        parish: parish?.queryParam,
+      );
     }
     return productAdapterNotifier.getProductsByCategory(
       page: page,
       categoryId: category.id,
       type: productType.queryParam,
+      parish: parish?.queryParam,
     );
   }
 
@@ -60,6 +74,7 @@ class _ExploreViewState extends ConsumerState<ExploreView> {
   Widget build(BuildContext context) {
     //Watch the product type to ensure rebuild when the type changes
     final productType = ref.watch(productTypeNotifierProvider);
+    final parish = ref.watch(parishNotifierProvider(parishFamilyKey));
     return Scaffold(
       appBar: AppBar(
         title: const Text('Explore'),
@@ -72,7 +87,15 @@ class _ExploreViewState extends ConsumerState<ExploreView> {
           children: [
             Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 30),
+                  const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 15),
+              child: ParishSelector(
+                key: ValueKey('parish-$productType'), //Tells when it should be refreshed.
+                parishNotifierFamilyKey: parishFamilyKey,
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 5),
               child: CategorySelector(
                 key: ValueKey('category-$productType'),
                 categoryNotifierFamilyKey: categoryFamilyKey,
@@ -84,6 +107,7 @@ class _ExploreViewState extends ConsumerState<ExploreView> {
                 //The product Type is the key that forces the rebuild whenever the type changes
                 key: ValueKey(productType),
                 productAdapterFamilyKey: productAdapterFamilyKey,
+                parishFamilyKey: parishFamilyKey,
                 categoryFamilyKey: categoryFamilyKey,
                 fetchRequest: getProducts,
               ),

@@ -16,6 +16,7 @@ class GetProductsByCategory
         categoryId: params.categoryId,
         page: params.page,
         type: params.type,
+        parish: params.parish,
       );
 }
 
@@ -24,12 +25,14 @@ class GetProductsByCategoryParams extends Equatable {
     required this.categoryId,
     required this.page,
     this.type,
+    this.parish,
   });
 
   final String categoryId;
   final int page;
   final String? type;
+  final String? parish;
 
   @override
-  List<Object?> get props => [categoryId, page, type];
+  List<Object?> get props => [categoryId, page, type, parish];
 }

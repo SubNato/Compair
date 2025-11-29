@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product_adapter.dart';
+part of 'parish_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productAdapterHash() => r'243f313078d59384a052e37cb91d935c19c661f0';
+String _$parishNotifierHash() => r'67d678cdfea29dbbb10ddc505b84a23eea8aaa32';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,36 +29,36 @@ class _SystemHash {
   }
 }
 
-abstract class _$ProductAdapter
-    extends BuildlessAutoDisposeNotifier<ProductState> {
+abstract class _$ParishNotifier
+    extends BuildlessAutoDisposeNotifier<JamaicanParishes?> {
   late final GlobalKey<State<StatefulWidget>>? familyKey;
 
-  ProductState build([
+  JamaicanParishes? build([
     GlobalKey<State<StatefulWidget>>? familyKey,
   ]);
 }
 
-/// See also [ProductAdapter].
-@ProviderFor(ProductAdapter)
-const productAdapterProvider = ProductAdapterFamily();
+/// See also [ParishNotifier].
+@ProviderFor(ParishNotifier)
+const parishNotifierProvider = ParishNotifierFamily();
 
-/// See also [ProductAdapter].
-class ProductAdapterFamily extends Family<ProductState> {
-  /// See also [ProductAdapter].
-  const ProductAdapterFamily();
+/// See also [ParishNotifier].
+class ParishNotifierFamily extends Family<JamaicanParishes?> {
+  /// See also [ParishNotifier].
+  const ParishNotifierFamily();
 
-  /// See also [ProductAdapter].
-  ProductAdapterProvider call([
+  /// See also [ParishNotifier].
+  ParishNotifierProvider call([
     GlobalKey<State<StatefulWidget>>? familyKey,
   ]) {
-    return ProductAdapterProvider(
+    return ParishNotifierProvider(
       familyKey,
     );
   }
 
   @override
-  ProductAdapterProvider getProviderOverride(
-    covariant ProductAdapterProvider provider,
+  ParishNotifierProvider getProviderOverride(
+    covariant ParishNotifierProvider provider,
   ) {
     return call(
       provider.familyKey,
@@ -77,30 +77,30 @@ class ProductAdapterFamily extends Family<ProductState> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'productAdapterProvider';
+  String? get name => r'parishNotifierProvider';
 }
 
-/// See also [ProductAdapter].
-class ProductAdapterProvider
-    extends AutoDisposeNotifierProviderImpl<ProductAdapter, ProductState> {
-  /// See also [ProductAdapter].
-  ProductAdapterProvider([
+/// See also [ParishNotifier].
+class ParishNotifierProvider
+    extends AutoDisposeNotifierProviderImpl<ParishNotifier, JamaicanParishes?> {
+  /// See also [ParishNotifier].
+  ParishNotifierProvider([
     GlobalKey<State<StatefulWidget>>? familyKey,
   ]) : this._internal(
-          () => ProductAdapter()..familyKey = familyKey,
-          from: productAdapterProvider,
-          name: r'productAdapterProvider',
+          () => ParishNotifier()..familyKey = familyKey,
+          from: parishNotifierProvider,
+          name: r'parishNotifierProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$productAdapterHash,
-          dependencies: ProductAdapterFamily._dependencies,
+                  : _$parishNotifierHash,
+          dependencies: ParishNotifierFamily._dependencies,
           allTransitiveDependencies:
-              ProductAdapterFamily._allTransitiveDependencies,
+              ParishNotifierFamily._allTransitiveDependencies,
           familyKey: familyKey,
         );
 
-  ProductAdapterProvider._internal(
+  ParishNotifierProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -113,8 +113,8 @@ class ProductAdapterProvider
   final GlobalKey<State<StatefulWidget>>? familyKey;
 
   @override
-  ProductState runNotifierBuild(
-    covariant ProductAdapter notifier,
+  JamaicanParishes? runNotifierBuild(
+    covariant ParishNotifier notifier,
   ) {
     return notifier.build(
       familyKey,
@@ -122,10 +122,10 @@ class ProductAdapterProvider
   }
 
   @override
-  Override overrideWith(ProductAdapter Function() create) {
+  Override overrideWith(ParishNotifier Function() create) {
     return ProviderOverride(
       origin: this,
-      override: ProductAdapterProvider._internal(
+      override: ParishNotifierProvider._internal(
         () => create()..familyKey = familyKey,
         from: from,
         name: null,
@@ -138,14 +138,14 @@ class ProductAdapterProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<ProductAdapter, ProductState>
+  AutoDisposeNotifierProviderElement<ParishNotifier, JamaicanParishes?>
       createElement() {
-    return _ProductAdapterProviderElement(this);
+    return _ParishNotifierProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ProductAdapterProvider && other.familyKey == familyKey;
+    return other is ParishNotifierProvider && other.familyKey == familyKey;
   }
 
   @override
@@ -159,19 +159,18 @@ class ProductAdapterProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ProductAdapterRef on AutoDisposeNotifierProviderRef<ProductState> {
+mixin ParishNotifierRef on AutoDisposeNotifierProviderRef<JamaicanParishes?> {
   /// The parameter `familyKey` of this provider.
   GlobalKey<State<StatefulWidget>>? get familyKey;
 }
 
-class _ProductAdapterProviderElement
-    extends AutoDisposeNotifierProviderElement<ProductAdapter, ProductState>
-    with ProductAdapterRef {
-  _ProductAdapterProviderElement(super.provider);
+class _ParishNotifierProviderElement extends AutoDisposeNotifierProviderElement<
+    ParishNotifier, JamaicanParishes?> with ParishNotifierRef {
+  _ParishNotifierProviderElement(super.provider);
 
   @override
   GlobalKey<State<StatefulWidget>>? get familyKey =>
-      (origin as ProductAdapterProvider).familyKey;
+      (origin as ParishNotifierProvider).familyKey;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

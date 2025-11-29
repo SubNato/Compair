@@ -13,7 +13,10 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class CategorySelector extends ConsumerStatefulWidget {
-  const CategorySelector({required this.categoryNotifierFamilyKey, super.key});
+  const CategorySelector({
+    required this.categoryNotifierFamilyKey,
+    super.key,
+  });
 
   final GlobalKey categoryNotifierFamilyKey;
 
@@ -47,7 +50,7 @@ class _CategorySelectorState extends ConsumerState<CategorySelector> {
       categories();
 
       ref.listen(productTypeNotifierProvider, (prev, next) {
-        if(prev != next) {
+        if (prev != next) {
           //Reset category to 'All' when the product type changes.
           selectCategory(const ProductCategory.all());
           //Fetch new categories for the newly selected type

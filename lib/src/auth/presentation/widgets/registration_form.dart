@@ -220,7 +220,7 @@ class _RegistrationFormState extends ConsumerState<RegistrationForm> { // TODO: 
                 final email = emailController.text.trim();
                 final password = passwordController.text.trim();
                 final fullName = fullNameController.text.trim();
-                final parish = parishController.text.trim();
+                final parish = parishController.text.trim().replaceAll(' ', '').toLowerCase();
 
                 ref.read(authAdapterProvider().notifier).register(
                       name: fullName,

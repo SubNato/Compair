@@ -7,8 +7,10 @@ import 'package:compair_hub/src/product/domain/entities/category.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
 import 'package:compair_hub/src/product/presentation/app/gender_age_category_notifier/gender_age_category_notifier.dart';
+import 'package:compair_hub/src/product/presentation/app/parish_notifier/parish_notifier.dart';
 import 'package:compair_hub/src/product/presentation/widgets/category_selector.dart';
 import 'package:compair_hub/src/product/presentation/widgets/gender_age_category_selector.dart';
+import 'package:compair_hub/src/product/presentation/widgets/parish_selector.dart';
 import 'package:compair_hub/src/product/presentation/widgets/search_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +29,7 @@ class SearchView extends ConsumerStatefulWidget {
 
 class _SearchViewState extends ConsumerState<SearchView> {
   final categoryFamilyKey = GlobalKey();
+  final parishFamilyKey = GlobalKey();
   final genderAgeCategoryFamilyKey = GlobalKey();
   final productAdapterFamilyKey = GlobalKey();
   final searchController = TextEditingController();
@@ -43,6 +46,16 @@ class _SearchViewState extends ConsumerState<SearchView> {
     //   search(category: category);
     // });
 
+    //Parish notifier
+    ref.listenManual(parishNotifierProvider(parishFamilyKey), (prev, next){
+      if(prev != next) {
+        //Trigger refresh
+        setState(() {
+
+        });
+      }
+    });
+
     ref.listenManual(categoryNotifierProvider(categoryFamilyKey),
         (previous, next) {
           if (previous != next) {
@@ -58,6 +71,7 @@ class _SearchViewState extends ConsumerState<SearchView> {
   }) {
     final productAdapter =
         ref.read(productAdapterProvider(productAdapterFamilyKey).notifier);
+    final parish = ref.watch(parishNotifierProvider(parishFamilyKey));
     if (category.name!.toLowerCase() != 'all') {
       // means that the genderAgeCategory is considered
       /*if (genderAgeCategory?.title.toLowerCase() != 'all') {
@@ -127,6 +141,10 @@ class _SearchViewState extends ConsumerState<SearchView> {
                     ),
                   ),
                   const Gap(20),
+                  ParishSelector( //TODO: Implement the repo to allow a search by parish. So get ALL products by parish
+                    parishNotifierFamilyKey: parishFamilyKey,
+                  ),
+                  const Gap(5),
                   CategorySelector(
                     categoryNotifierFamilyKey: categoryFamilyKey,
                   ),

@@ -10,8 +10,13 @@ class GetProducts extends UsecaseWithParams<List<Product>, GetProductsParams> {
   final ProductRepo _repo;
 
   @override
-  ResultFuture<List<Product>> call(GetProductsParams params) => _repo.getProducts(params.page
-  , type: params.type, owner: params.owner);
+  ResultFuture<List<Product>> call(GetProductsParams params) =>
+      _repo.getProducts(
+        params.page,
+        type: params.type,
+        owner: params.owner,
+        parish: params.parish,
+      );
 }
 
 class GetProductsParams extends Equatable {
@@ -19,12 +24,14 @@ class GetProductsParams extends Equatable {
     required this.page,
     this.type,
     this.owner,
-});
+    this.parish,
+  });
 
   final int page;
   final String? type;
   final String? owner;
+  final String? parish;
 
   @override
-  List<dynamic> get props => [page, type, owner];
+  List<dynamic> get props => [page, type, owner, parish];
 }

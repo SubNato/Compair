@@ -94,9 +94,15 @@ class ProductRepoImpl implements ProductRepo {
   }
 
   @override
-  ResultFuture<List<Product>> getProducts(int page, {String? type, String? owner}) async {
+  ResultFuture<List<Product>> getProducts(int page,
+      {String? type, String? owner, String? parish}) async {
     try {
-      final result = await _remoteDataSource.getProducts(page, type: type, owner: owner);
+      final result = await _remoteDataSource.getProducts(
+        page,
+        type: type,
+        owner: owner,
+        parish: parish,
+      );
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
@@ -108,10 +114,11 @@ class ProductRepoImpl implements ProductRepo {
     required String categoryId,
     required int page,
     String? type,
+    String? parish,
   }) async {
     try {
       final result = await _remoteDataSource.getProductsByCategory(
-          categoryId: categoryId, page: page, type: type);
+          categoryId: categoryId, page: page, type: type, parish: parish);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
@@ -183,12 +190,12 @@ class ProductRepoImpl implements ProductRepo {
   }) async {
     try {
       final result =
-      await _remoteDataSource.searchByCategoryAndGenderAgeCategory(
-          query: query,
-          categoryId: categoryId,
-          genderAgeCategory: genderAgeCategory,
-          page: page,
-          type: type);
+          await _remoteDataSource.searchByCategoryAndGenderAgeCategory(
+              query: query,
+              categoryId: categoryId,
+              genderAgeCategory: genderAgeCategory,
+              page: page,
+              type: type);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message, statusCode: e.statusCode));

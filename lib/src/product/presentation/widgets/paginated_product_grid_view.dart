@@ -8,6 +8,7 @@ import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
+import 'package:compair_hub/src/product/presentation/app/parish_notifier/parish_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -15,6 +16,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 class PaginatedProductGridView extends ConsumerStatefulWidget {
   const PaginatedProductGridView({
     required this.productAdapterFamilyKey,
+    this.parishFamilyKey,
     this.categoryFamilyKey,
     required this.fetchRequest,
     this.categorized = true,
@@ -26,6 +28,7 @@ class PaginatedProductGridView extends ConsumerStatefulWidget {
 
   final GlobalKey productAdapterFamilyKey;
   final GlobalKey? categoryFamilyKey;
+  final GlobalKey? parishFamilyKey;
   final ValueChanged<int> fetchRequest;
   final bool categorized;
 
@@ -76,6 +79,13 @@ class _PaginatedProductGridView
         pageController.refresh();
       },
     );
+
+    if(widget.parishFamilyKey != null) {
+      ref.listenManual(parishNotifierProvider(widget.parishFamilyKey), (prev, next) {
+        pageController.refresh();
+      });
+    }
+
   }
 
   @override

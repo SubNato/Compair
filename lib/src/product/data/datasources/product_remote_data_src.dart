@@ -18,7 +18,12 @@ import 'package:http/http.dart' as http;
 abstract interface class ProductRemoteDataSrc {
   const ProductRemoteDataSrc();
 
-  Future<List<ProductModel>> getProducts(int page, {String? type, String? owner});
+  Future<List<ProductModel>> getProducts(
+    int page, {
+    String? type,
+    String? owner,
+    String? parish,
+  });
 
   Future<ProductModel> getProduct(String productId);
 
@@ -26,6 +31,7 @@ abstract interface class ProductRemoteDataSrc {
     required String categoryId,
     required int page,
     String? type,
+    String? parish,
   });
 
   Future<List<ProductModel>> getNewArrivals({
@@ -90,7 +96,8 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
 
   @override
   Future<List<ProductCategoryModel>> getCategories({String? type}) async {
-    try {/*
+    try {
+      /*
       final uri = Uri.parse(
         '${NetworkConstants.baseUrl}$GET_CATEGORIES_ENDPOINT',
       );*/
@@ -98,12 +105,12 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
       const endpoint = '${NetworkConstants.apiUrl}$GET_CATEGORIES_ENDPOINT';
 
       final queryParams = {
-        if (type != null) 'type': type, //Adding the type to the query if provided
+        if (type != null) 'type': type,
+        //Adding the type to the query if provided
       };
       final uri = NetworkConstants.baseUrl.startsWith('https')
           ? Uri.https(NetworkConstants.authority, endpoint, queryParams)
           : Uri.http(NetworkConstants.authority, endpoint, queryParams);
-
 
       final response = await _client.get(
         uri,
@@ -181,7 +188,8 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
     String? categoryId,
     String? type,
   }) async {
-    try { print("The type is: $type --------------------------------------");
+    try {
+      print("The type is: $type --------------------------------------");
       const endpoint = '${NetworkConstants.apiUrl}$GET_PRODUCTS_ENDPOINT';
 
       final queryParams = {
@@ -240,7 +248,7 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
         'criteria': 'popular',
         if (categoryId != null) 'category': categoryId,
         'page': '$page',
-        if (type != null ) 'type': type,
+        if (type != null) 'type': type,
       };
 
       final uri = NetworkConstants.baseUrl.startsWith('https')
@@ -361,14 +369,23 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
   }
 
   @override
-  Future<List<ProductModel>> getProducts(int page, {String? type, String? owner}) async {
-    try {print("The type is: $type --------------------------------------");
+  Future<List<ProductModel>> getProducts(
+    int page, {
+    String? type,
+    String? owner,
+    String? parish,
+  }) async {
+    try {print('$parish --------------------');
       const endpoint = '${NetworkConstants.apiUrl}$GET_PRODUCTS_ENDPOINT';
 
       final queryParams = {
         'page': '$page',
-        if (type != null) 'type': type, //Adding the type to the query if provided
-        if (owner != null) 'owner': owner, //Adding the type to the query if provided
+        if (type != null) 'type': type,
+        //Adding the type to the query if provided
+        if (owner != null) 'owner': owner,
+        //Adding the type to the query if provided
+        if (parish != null) 'parish': parish,
+        //Adding the parish to the query if provided
       };
       final uri = NetworkConstants.baseUrl.startsWith('https')
           ? Uri.https(NetworkConstants.authority, endpoint, queryParams)
@@ -411,11 +428,17 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
     required String categoryId,
     required int page,
     String? type,
+    String? parish,
   }) async {
-    try {
+    try {print('$parish --------------------');
       const endpoint = '${NetworkConstants.apiUrl}$GET_PRODUCTS_ENDPOINT';
 
-      final queryParams = {'category': categoryId, 'page': '$page', if (type != null) 'type': type};
+      final queryParams = {
+        'category': categoryId,
+        'page': '$page',
+        if (type != null) 'type': type,
+        if (parish != null) 'parish': parish,
+      };
       final uri = NetworkConstants.baseUrl.startsWith('https')
           ? Uri.https(NetworkConstants.authority, endpoint, queryParams)
           : Uri.http(NetworkConstants.authority, endpoint, queryParams);
@@ -462,7 +485,7 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
     try {
       final uri = Uri.parse(
         '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT'
-            '/$productId$GET_PRODUCT_REVIEWS_ENDPOINT',
+        '/$productId$GET_PRODUCT_REVIEWS_ENDPOINT',
       );
 
       final response = await _client.post(
@@ -507,7 +530,11 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
     try {
       const endpoint = '${NetworkConstants.apiUrl}$SEARCH_PRODUCTS_ENDPOINT';
 
-      final queryParams = {'q': query, 'page': '$page', if (type != null) 'type': type};
+      final queryParams = {
+        'q': query,
+        'page': '$page',
+        if (type != null) 'type': type
+      };
       final uri = NetworkConstants.baseUrl.startsWith('https')
           ? Uri.https(NetworkConstants.authority, endpoint, queryParams)
           : Uri.http(NetworkConstants.authority, endpoint, queryParams);
@@ -554,7 +581,12 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
     try {
       const endpoint = '${NetworkConstants.apiUrl}$SEARCH_PRODUCTS_ENDPOINT';
 
-      final queryParams = {'q': query, 'category': categoryId, 'page': '$page', if (type != null) 'type': type};
+      final queryParams = {
+        'q': query,
+        'category': categoryId,
+        'page': '$page',
+        if (type != null) 'type': type
+      };
       final uri = NetworkConstants.baseUrl.startsWith('https')
           ? Uri.https(NetworkConstants.authority, endpoint, queryParams)
           : Uri.http(NetworkConstants.authority, endpoint, queryParams);

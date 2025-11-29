@@ -125,9 +125,9 @@ class ProductAdapter extends _$ProductAdapter {
     );
   }
 
-  Future<void> getProducts(int page, {String? type, String? owner}) async {
+  Future<void> getProducts(int page, {String? type, String? owner, String? parish}) async {
     state = const FetchingProducts();
-    final result = await _getProducts(GetProductsParams(page: page, type: type, owner: owner));
+    final result = await _getProducts(GetProductsParams(page: page, type: type, owner: owner, parish: parish));
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
       (products) => state = ProductsFetched(products),
@@ -138,10 +138,11 @@ class ProductAdapter extends _$ProductAdapter {
     required String categoryId,
     required int page,
     String? type,
+    String? parish,
   }) async {
     state = const FetchingProducts();
     final result = await _getProductsByCategory(
-      GetProductsByCategoryParams(categoryId: categoryId, page: page, type: type,),
+      GetProductsByCategoryParams(categoryId: categoryId, page: page, type: type, parish: parish),
     );
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
