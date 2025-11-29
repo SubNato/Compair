@@ -274,6 +274,7 @@ When the exception was thrown, this was the stack:
 
 
 
+
 CODING NOTES:
 
 Easily expandable to include hardware stuff as well. Do it!!!!!
