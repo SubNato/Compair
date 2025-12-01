@@ -151,12 +151,14 @@ class ProductRepoImpl implements ProductRepo {
     required String query,
     required int page,
     String? type,
+    String? parish,
   }) async {
     try {
       final result = await _remoteDataSource.searchAllProducts(
         query: query,
         page: page,
         type: type,
+        parish: parish,
       );
       return Right(result);
     } on ServerException catch (e) {
@@ -170,10 +172,16 @@ class ProductRepoImpl implements ProductRepo {
     required String categoryId,
     required int page,
     String? type,
+    String? parish,
   }) async {
     try {
       final result = await _remoteDataSource.searchByCategory(
-          query: query, categoryId: categoryId, page: page, type: type);
+        query: query,
+        categoryId: categoryId,
+        page: page,
+        type: type,
+        parish: parish,
+      );
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message, statusCode: e.statusCode));

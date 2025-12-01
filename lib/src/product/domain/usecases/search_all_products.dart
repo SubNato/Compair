@@ -16,6 +16,7 @@ class SearchAllProducts
         query: params.query,
         page: params.page,
         type: params.type,
+        parish: params.parish,
       );
 }
 
@@ -24,16 +25,19 @@ class SearchAllProductsParams extends Equatable {
     required this.query,
     required this.page,
     this.type,
+    this.parish,
   });
 
   final String query;
   final int page;
   final String? type;
+  final String? parish;
 
   @override
   List<dynamic> get props => [
     query,
     page,
     type,
+    parish,
   ];
 }

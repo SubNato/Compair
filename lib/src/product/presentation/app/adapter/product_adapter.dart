@@ -19,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'product_adapter.g.dart';
+
 part 'product_state.dart';
 
 @riverpod
@@ -74,7 +75,8 @@ class ProductAdapter extends _$ProductAdapter {
     );
   }
 
-  Future<void> getNewArrivals({required int page, String? categoryId, String? type}) async {
+  Future<void> getNewArrivals(
+      {required int page, String? categoryId, String? type}) async {
     state = const FetchingProducts();
     final result = await _getNewArrivals(GetNewArrivalsParams(
       page: page,
@@ -87,7 +89,8 @@ class ProductAdapter extends _$ProductAdapter {
     );
   }
 
-  Future<void> getPopular({required int page, String? categoryId, String? type}) async {
+  Future<void> getPopular(
+      {required int page, String? categoryId, String? type}) async {
     state = const FetchingProducts();
     final result = await _getPopular(GetPopularParams(
       page: page,
@@ -125,9 +128,11 @@ class ProductAdapter extends _$ProductAdapter {
     );
   }
 
-  Future<void> getProducts(int page, {String? type, String? owner, String? parish}) async {
+  Future<void> getProducts(int page,
+      {String? type, String? owner, String? parish}) async {
     state = const FetchingProducts();
-    final result = await _getProducts(GetProductsParams(page: page, type: type, owner: owner, parish: parish));
+    final result = await _getProducts(GetProductsParams(
+        page: page, type: type, owner: owner, parish: parish));
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
       (products) => state = ProductsFetched(products),
@@ -142,7 +147,8 @@ class ProductAdapter extends _$ProductAdapter {
   }) async {
     state = const FetchingProducts();
     final result = await _getProductsByCategory(
-      GetProductsByCategoryParams(categoryId: categoryId, page: page, type: type, parish: parish),
+      GetProductsByCategoryParams(
+          categoryId: categoryId, page: page, type: type, parish: parish),
     );
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
@@ -175,10 +181,16 @@ class ProductAdapter extends _$ProductAdapter {
     required String query,
     required int page,
     String? type,
+    String? parish,
   }) async {
     state = const Searching();
     final result = await _searchAllProducts(
-      SearchAllProductsParams(query: query, page: page, type: type,),
+      SearchAllProductsParams(
+        query: query,
+        page: page,
+        type: type,
+        parish: parish,
+      ),
     );
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
@@ -191,10 +203,12 @@ class ProductAdapter extends _$ProductAdapter {
     required String categoryId,
     required int page,
     String? type,
+    String? parish,
   }) async {
     state = const Searching();
     final result = await _searchByCategory(
-      SearchByCategoryParams(query: query, categoryId: categoryId, page: page, type: type),
+      SearchByCategoryParams(
+          query: query, categoryId: categoryId, page: page, type: type, parish: parish),
     );
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),

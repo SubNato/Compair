@@ -50,9 +50,11 @@ class _SearchViewState extends ConsumerState<SearchView> {
     ref.listenManual(parishNotifierProvider(parishFamilyKey), (prev, next){
       if(prev != next) {
         //Trigger refresh
-        setState(() {
+       final category = ref.read(categoryNotifierProvider(categoryFamilyKey));
+       search(category: category);
+       setState(() {
 
-        });
+       });
       }
     });
 
@@ -60,6 +62,9 @@ class _SearchViewState extends ConsumerState<SearchView> {
         (previous, next) {
           if (previous != next) {
             search(category: next);
+            setState(() {
+
+            });
           }
         }
       );
@@ -71,7 +76,7 @@ class _SearchViewState extends ConsumerState<SearchView> {
   }) {
     final productAdapter =
         ref.read(productAdapterProvider(productAdapterFamilyKey).notifier);
-    final parish = ref.watch(parishNotifierProvider(parishFamilyKey));
+    final parish = ref.read(parishNotifierProvider(parishFamilyKey));
     if (category.name!.toLowerCase() != 'all') {
       // means that the genderAgeCategory is considered
       /*if (genderAgeCategory?.title.toLowerCase() != 'all') {
@@ -88,12 +93,14 @@ class _SearchViewState extends ConsumerState<SearchView> {
         productAdapter.searchByCategory(
           query: searchController.text.trim(),
           categoryId: category.id,
+          parish: parish?.queryParam,
           page: page,
         );
       //}
     } else {
       productAdapter.searchAllProducts(
         query: searchController.text.trim(),
+        parish: parish?.queryParam,
         page: page,
       );
     }
@@ -142,10 +149,12 @@ class _SearchViewState extends ConsumerState<SearchView> {
                   ),
                   const Gap(20),
                   ParishSelector( //TODO: Implement the repo to allow a search by parish. So get ALL products by parish
+                    key: const ValueKey('parish-selector'),
                     parishNotifierFamilyKey: parishFamilyKey,
                   ),
                   const Gap(5),
                   CategorySelector(
+                    key: const ValueKey('category-selector'),
                     categoryNotifierFamilyKey: categoryFamilyKey,
                   ),
                   const Gap(10),

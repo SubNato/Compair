@@ -17,6 +17,7 @@ class SearchByCategory
         categoryId: params.categoryId,
         page: params.page,
         type: params.type,
+        parish: params.parish,
       );
 }
 
@@ -26,12 +27,14 @@ class SearchByCategoryParams extends Equatable {
     required this.categoryId,
     required this.page,
     this.type,
+    this.parish,
   });
 
   final String query;
   final String categoryId;
   final int page;
   final String? type;
+  final String? parish;
 
 
   @override
@@ -40,5 +43,6 @@ class SearchByCategoryParams extends Equatable {
     categoryId,
     page,
     type,
+    parish,
   ];
 }

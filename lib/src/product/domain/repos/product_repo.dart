@@ -36,6 +36,7 @@ abstract interface class ProductRepo {
     required String query,
     required int page,
     String? type,
+    String? parish,
   });
 
   ResultFuture<List<Product>> searchByCategory({
@@ -43,6 +44,7 @@ abstract interface class ProductRepo {
     required String categoryId,
     required int page,
     String? type,
+    String? parish,
   });
 
   ResultFuture<List<Product>> searchByCategoryAndGenderAgeCategory({
