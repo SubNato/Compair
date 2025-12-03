@@ -17,6 +17,7 @@ class UserModel extends User {
     required super.wishlist,
     super.address,
     super.phone,
+    super.profilePicture,
   });
 
   const UserModel.empty()
@@ -29,6 +30,7 @@ class UserModel extends User {
     wishlist: const [],
     address: null,
     phone: null,
+    profilePicture: "Test String",
   );
 
   User copyWith({
@@ -40,6 +42,7 @@ class UserModel extends User {
     List<WishlistProduct>? wishlist,
     Address? address,
     String? phone,
+    String? profilePicture,
   }) {
     return User(
       id: id ?? this.id,
@@ -50,6 +53,7 @@ class UserModel extends User {
       wishlist: wishlist ?? this.wishlist,
       address: address ?? this.address,
       phone: phone ?? this.phone,
+      profilePicture: profilePicture ?? this.profilePicture,
     );
   }
 
@@ -65,6 +69,7 @@ class UserModel extends User {
           .toList(),
       if (address != null) 'address': (address as AddressModel).toMap(),
       if (phone != null) 'phone': phone,
+      if (profilePicture != null) 'profilePicture': profilePicture,
     };
   }
 
@@ -91,6 +96,7 @@ class UserModel extends User {
           .toList(),
       address: address.isEmpty ? null : address,
       phone: map['phone'] as String?,
+      profilePicture: map['profilePicture'] as String?,
     );
   }
 

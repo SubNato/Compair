@@ -208,11 +208,15 @@ Implement a vendor profile display so that users can see who is selling what. An
 
 Upgraded search view to include a search by parish feature. Additionally, immediate search when a category or parish is selected. ✔️ 
 
-Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY. <- Now at this
+Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY. (Works, but please implement a feature to remove the profile picture without replacing it. Literally remove it)<- Now at this
 
 Very important -> Remember to implement a filter by parish feature ✅
 
+Protect the upload on the backend. If you are not a business nor admin, no user uploads.
+
 In the backend add the address fields of the user. ORRRRRRRRRRRRRRRRRRR Just make BUSINESSES add their full info. DO IT FOR USERS SO THAT THEY CAN GET CUSTOM ITEMS. YEAAAAAAAAAAAAAAAAA
+
+Let businesses see their own products with the option of deleting them.
 
 Fix user changing name, pixel overflow.
 

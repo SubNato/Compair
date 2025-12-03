@@ -13,6 +13,7 @@ class User extends Equatable {
     required this.wishlist,
     this.address,
     this.phone,
+    this.profilePicture,
   });
 
   //To test it
@@ -24,7 +25,8 @@ class User extends Equatable {
         isBusiness = true,
         wishlist = const [],
         address = null,
-        phone = null;
+        phone = null,
+        profilePicture = "Test String";
 
   final String id;
   final String name;
@@ -34,7 +36,8 @@ class User extends Equatable {
   final List<WishlistProduct> wishlist;
   final Address? address;
   final String? phone;
+  final String? profilePicture;
 
   @override
-  List<Object?> get props => [id, name, email, isAdmin, isBusiness, wishlist.length];
+  List<Object?> get props => [id, name, email, isAdmin, isBusiness, wishlist.length, profilePicture];
 }
