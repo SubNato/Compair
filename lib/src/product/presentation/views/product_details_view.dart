@@ -92,7 +92,7 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
 
     ref.listenManual(authUserProvider(authAdapterFamilyKey), (previous, next) {
       if(next case AuthUserError(:final message)) {
-        CoreUtils.showSnackBar(context, message: 'Could Locate Seller Information',);
+        CoreUtils.showSnackBar(context, message: 'Could Not Locate Seller Information',);
       }
     });
 

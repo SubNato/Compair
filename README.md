@@ -208,23 +208,18 @@ Implement a vendor profile display so that users can see who is selling what. An
 
 Upgraded search view to include a search by parish feature. Additionally, immediate search when a category or parish is selected. ✔️ 
 
-Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY. (Works, but please implement a feature to remove the profile picture without replacing it. Literally remove it)<- Now at this
+Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY. (Works, but please implement a feature to remove the profile picture without replacing it. Literally remove it) ✔️
 
 Very important -> Remember to implement a filter by parish feature ✅
 
 Protect the upload on the backend. If you are not a business nor admin, no user uploads.
 
+ALL BUSINESSES MUST have a profile picture, no removal of profile pictures.
+
 In the backend add the address fields of the user. ORRRRRRRRRRRRRRRRRRR Just make BUSINESSES add their full info. DO IT FOR USERS SO THAT THEY CAN GET CUSTOM ITEMS. YEAAAAAAAAAAAAAAAAA
 
-Let businesses see their own products with the option of deleting them.
-
-Fix user changing name, pixel overflow.
-
-Fix the remove from cart. Pixel overflow.
-
-Fix compare feature, bottom pixel overflow by 14 pixels. for both current and similar products. 
-
-Fix compare the yellow lines are on all of the words and numbers at current, and only the label similar products at the bottom.
+Let businesses see their own products with the option of deleting them. _<- Now at this_
+(Create a new product details page dedicated to the editing of a SPECIFIC PRODUCT. So when the tile is clicked, send the tag and check IF it is coming from the profile view, then show that one.)
 
 Display all of the that specific vendor's product or just leave it be? So that they don't just shop them and give competition a chance? Naaaah do it! YES! DID IT 😁✅
 
@@ -254,6 +249,29 @@ Search for a specific Category seeing as though there can be many at once.
 
 Request a category feature?
 
+
+
+
+#### **_BUGS FOUND ON MOBILE TESTING:_**
+
+Fix user changing name, pixel overflow.
+
+Fix the remove from cart. Pixel overflow.
+
+Fix compare feature, bottom pixel overflow by 14 pixels. for both current and similar products.
+
+Fix compare the yellow lines are on all of the words and numbers at current, and only the label similar products at the bottom.
+
+
+
+### Sales Ideas:
+
+THIS IS NOT A PARTNERSHIP!!!!!!!!!!
+It is simply me telling them about a business idea that will benefit us!
+Pitch the idea of them telling businesses about compair. So then, businesses would come to them to manage that source of 
+social media. Coming to them, they could go to them and pitch it.
+
+Long stretch but it will work.
 
 
 

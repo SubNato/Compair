@@ -189,6 +189,50 @@ class ProductRepoImpl implements ProductRepo {
   }
 
   @override
+  ResultFuture<Product> updateProduct({
+    required String productId,
+    required Map<String, dynamic> updateData,
+  }) async {
+    try {
+      final result = await _remoteDataSource.updateProduct(
+        productId: productId,
+        updateData: updateData,
+      );
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+    }
+  }
+
+  @override
+  ResultFuture<void> deleteProduct({
+    required String productId,
+  }) async {
+    try {
+      await _remoteDataSource.deleteProduct(productId: productId);
+      return const Right(null);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+    }
+  }
+
+  @override
+  ResultFuture<List<String>> deleteProductImages({
+    required String productId,
+    required List<String> imageUrls,
+  }) async {
+    try {
+      final remainingImages = await _remoteDataSource.deleteProductImages(
+        productId: productId,
+        imageUrls: imageUrls,
+      );
+      return Right(remainingImages);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+    }
+  }
+
+  @override
   ResultFuture<List<Product>> searchByCategoryAndGenderAgeCategory({
     required String query,
     required String categoryId,

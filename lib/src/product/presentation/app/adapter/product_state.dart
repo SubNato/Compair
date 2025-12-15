@@ -96,3 +96,37 @@ final class ProductError extends ProductState {
   @override
   List<Object> get props => [message];
 }
+
+final class UpdatingProduct extends ProductState {
+  const UpdatingProduct();
+}
+
+final class ProductUpdated extends ProductState {
+  const ProductUpdated(this.product);
+
+  final Product product;
+
+  @override
+  List<Object> get props => [product];
+}
+
+final class DeletingProduct extends ProductState {
+  const DeletingProduct();
+}
+
+final class ProductDeleted extends ProductState {
+  const ProductDeleted();
+}
+
+final class DeletingProductImages extends ProductState {
+  const DeletingProductImages();
+}
+
+final class ProductImagesDeleted extends ProductState {
+  const ProductImagesDeleted(this.remainingImages);
+
+  final List<String> remainingImages;
+
+  @override
+  List<Object> get props => [remainingImages];
+}

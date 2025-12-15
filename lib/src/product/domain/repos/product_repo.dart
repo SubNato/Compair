@@ -70,4 +70,18 @@ abstract interface class ProductRepo {
     required String productId,
     required int page,
   });
+
+  ResultFuture<Product> updateProduct({
+    required String productId,
+    required Map<String, dynamic> updateData,
+  });
+
+  ResultFuture<void> deleteProduct({
+    required String productId,
+  });
+
+  ResultFuture<List<String>> deleteProductImages({
+    required String productId,
+    required List<String> imageUrls,
+  });
 }

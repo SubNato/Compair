@@ -9,8 +9,10 @@ import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
 import 'package:compair_hub/src/product/presentation/app/parish_notifier/parish_notifier.dart';
+import 'package:compair_hub/src/product/presentation/views/product_edit_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PaginatedProductGridView extends ConsumerStatefulWidget {
@@ -20,6 +22,7 @@ class PaginatedProductGridView extends ConsumerStatefulWidget {
     this.categoryFamilyKey,
     required this.fetchRequest,
     this.categorized = true,
+    this.isEditMode = false,
     super.key,
   }) : assert(
           !categorized || (categorized && categoryFamilyKey != null),
@@ -31,6 +34,7 @@ class PaginatedProductGridView extends ConsumerStatefulWidget {
   final GlobalKey? parishFamilyKey;
   final ValueChanged<int> fetchRequest;
   final bool categorized;
+  final bool isEditMode;
 
   @override
   ConsumerState<PaginatedProductGridView> createState() =>
@@ -80,18 +84,28 @@ class _PaginatedProductGridView
       },
     );
 
-    if(widget.parishFamilyKey != null) {
-      ref.listenManual(parishNotifierProvider(widget.parishFamilyKey), (prev, next) {
+    if (widget.parishFamilyKey != null) {
+      ref.listenManual(parishNotifierProvider(widget.parishFamilyKey),
+          (prev, next) {
         pageController.refresh();
       });
     }
-
   }
 
   @override
   void dispose() {
     pageController.dispose();
     super.dispose();
+  }
+
+  void _handleProductTap(Product product) {
+    if (widget.isEditMode) {
+      //Navigate to edit page
+      context.push(
+        ProductEditView.path,
+        extra: product,
+      );
+    }
   }
 
   @override
@@ -107,8 +121,51 @@ class _PaginatedProductGridView
         pagingController: pageController,
         crossAxisCount: 2,
         builderDelegate: PagedChildBuilderDelegate<Product>(
-          itemBuilder: (context, product, index) => Center(
-            child: ClassicProductTile(product),
+          itemBuilder: (context, product, index) => Stack(
+            children: [
+              // If it is not in edit mode (coming from profileView page) then Let ClassicProductTile handle navigation
+              if (!widget.isEditMode)
+                Center(
+                  child: ClassicProductTile(product),
+                )
+              else
+                // If it is coming from the ProfileView Page (Is in edit mode), then Wrap with our GestureDetector and disable inner one (Classic Product Tile gesture detecture)
+                GestureDetector(
+                  onTap: () => _handleProductTap(product),
+                  child: Center(
+                    child: IgnorePointer(
+                      // Prevents ClassicProductTile's GestureDetector from firing. Just in case, as we added a fail safe in the handle product tap method
+                      child: ClassicProductTile(product),
+                    ),
+                  ),
+                ),
+
+              //Edit Overlay
+              if (widget.isEditMode)
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colours.lightThemePrimaryColour,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.edit,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+            ],
           ),
           firstPageProgressIndicatorBuilder: (_) {
             return const Center(
@@ -143,7 +200,8 @@ class _PaginatedProductGridView
                 children: [
                   Text(
                     'Something went wrong. Please try again.',
-                    style: TextStyles.paragraphSubTextRegular2.adaptiveColour(context),
+                    style: TextStyles.paragraphSubTextRegular2
+                        .adaptiveColour(context),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
@@ -151,7 +209,8 @@ class _PaginatedProductGridView
                     onPressed: () => pageController.refresh(),
                     child: Text(
                       'Retry',
-                      style: TextStyles.paragraphSubTextRegular2.adaptiveColour(context),
+                      style: TextStyles.paragraphSubTextRegular2
+                          .adaptiveColour(context),
                     ),
                   ),
                 ],

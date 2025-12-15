@@ -2,16 +2,21 @@ import 'dart:io';
 
 import 'package:compair_hub/core/common/app/riverpod/current_user_provider.dart';
 import 'package:compair_hub/core/common/widgets/app_bar_bottom.dart';
+import 'package:compair_hub/core/extensions/string_extensions.dart';
 import 'package:compair_hub/core/extensions/text_style_extensions.dart';
+import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/src/product/presentation/app/provider/product_type_notifier.dart';
 import 'package:compair_hub/src/user/presentation/adapter/auth_user_provider.dart';
 import 'package:compair_hub/src/user/presentation/widgets/profile_form.dart';
 import 'package:compair_hub/src/user/presentation/widgets/profile_picture.dart';
 import 'package:compair_hub/src/user/presentation/widgets/update_user_button.dart';
+import 'package:compair_hub/src/vendor/presentation/views/vendor_products_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -44,7 +49,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     super.initState();
     ref.listenManual(
       authUserProvider(authUserAdapterFamilyKey),
-          (previous, next) {
+      (previous, next) {
         if (next case AuthUserError(:final message)) {
           CoreUtils.showSnackBar(context, message: message);
         } else if (next is UserUpdated) {
@@ -57,8 +62,13 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
         }
       },
     );
-  }
 
+    ref.listenManual(productTypeNotifierProvider, (prev, next) {
+      if (prev != next) {
+        setState(() {});
+      }
+    });
+  }
 
   Future<void> _pickProfileImage() async {
     if (lockNotifier.value) return; // Safety check
@@ -127,10 +137,11 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
+    final productType = ref.watch(productTypeNotifierProvider);
+    final isAutoPart = productType.queryParam.toLowerCase() == 'autopart';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -148,8 +159,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                       nameFocusNode.requestFocus();
                     } else {
                       FocusManager.instance.primaryFocus?.unfocus();
-                      if (changeNotifier
-                          .value) { //If locking without saving the profilePicture change
+                      if (changeNotifier.value) {
+                        //If locking without saving the profilePicture change
                         _resetProfilePictureState();
                       }
                     }
@@ -168,55 +179,53 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Center(
+          child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+              //mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ValueListenableBuilder(
                   valueListenable: nameNotifier,
                   builder: (_, nameFromController, __) {
                     final name =
-                    lockNotifier.value && nameFromController.isEmpty
-                        ? currentUser!.name
-                        : nameFromController;
+                        lockNotifier.value && nameFromController.isEmpty
+                            ? currentUser!.name
+                            : nameFromController;
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ValueListenableBuilder(
+                          valueListenable: lockNotifier,
+                          builder: (_, isLocked, __) {
+                            return _profilePictureRemoved
+                                ? CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor:
+                                        Colours.lightThemePrimaryColour,
+                                    child: Center(
+                                      child: Text(
+                                        name.initials,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyles.headingMedium.white,
+                                      ),
+                                    ),
+                                  )
+                                : ProfilePictureWidget(
+                                    name: name,
+                                    isAdmin: currentUser!.isAdmin,
+                                    isBusiness: currentUser!.isBusiness,
+                                    currentProfilePictureUrl:
+                                        _profilePictureRemoved
+                                            ? null
+                                            : currentUser?.profilePicture,
+                                    selectedImage: _selectedProfileImage,
+                                    isLocked: isLocked,
+                                    onImagePicked: _pickProfileImage,
+                                    onImageRemoved: _removeProfilePicture,
+                                  );
+                          },
+                        ),
 
-
-
-
-
-
-
-
-                            valueListenable: lockNotifier, builder: (_,
-                            isLocked, __) {
-                          return ProfilePictureWidget(
-                            name: name,
-                            isAdmin: currentUser!.isAdmin,
-                            isBusiness: currentUser!.isBusiness,
-                            currentProfilePictureUrl: _profilePictureRemoved
-                                ? null
-                                : currentUser?.profilePicture,
-                            selectedImage: _selectedProfileImage,
-                            isLocked: isLocked,
-                            onImagePicked: _pickProfileImage,
-                            onImageRemoved: _removeProfilePicture,);
-                        },),
-                        // CircleAvatar(
-                        //   radius: 50,
-                        //   backgroundColor: Colours.lightThemePrimaryColour,
-                        //   child: Center(
-                        //     child: Text(
-                        //       name.initials,
-                        //       textAlign: TextAlign.center,
-                        //       style: TextStyles.headingMedium.white,
-                        //     ),
-                        //   ),
-                        // ),
                         const Gap(15),
                         Center(
                           child: Text(
@@ -228,28 +237,90 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                 .adaptiveColour(context),
                           ),
                         ),
+                        //Place the vendor's products here for them to be able to edit the product details here.
+                        //Display for ALL of an vendor's their products here
+                        Text(
+                          'Complete Product Catalogue: ',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyles.headingBold.copyWith(
+                              fontSize: 20,
+                              color: isAutoPart
+                                  ? Colours.lightThemePrimaryColour
+                                  : Colours.lightThemeSecondaryColour),
+                        ),
+
+                        GestureDetector(
+                          onTap: () => context.push(VendorProductsView.path,
+                              extra: {
+                                'vendor': currentUser,
+                                'isEditMode': true
+                              }),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colours.lightThemePrimaryColour
+                                  .withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colours.lightThemePrimaryColour
+                                    .withOpacity(0.3),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'All Products',
+                                      style: TextStyles.headingBold.copyWith(
+                                        fontSize: 18,
+                                        color: Colours.lightThemePrimaryColour,
+                                      ),
+                                    ),
+                                    const Gap(4),
+                                    Text(
+                                      'Browse or Edit complete catalog',
+                                      style: TextStyles.paragraphSubTextRegular2
+                                          .adaptiveColour(context),
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colours.lightThemePrimaryColour,
+                                  size: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     );
                   },
                 ),
                 const Gap(20),
-                Expanded(
-                  flex: 2,
-                  child: ValueListenableBuilder(
-                    valueListenable: lockNotifier,
-                    builder: (_, isLocked, __) {
-                      return AbsorbPointer(
-                        absorbing: isLocked,
-                        child: ProfileForm(
-                          nameFocusNode: nameFocusNode,
-                          nameNotifier: nameNotifier,
-                          changeNotifier: changeNotifier,
-                          updateContainer: updateContainer,
-                        ),
-                      );
-                    },
-                  ),
+                ValueListenableBuilder(
+                  valueListenable: lockNotifier,
+                  builder: (_, isLocked, __) {
+                    return AbsorbPointer(
+                      absorbing: isLocked,
+                      child: ProfileForm(
+                        nameFocusNode: nameFocusNode,
+                        nameNotifier: nameNotifier,
+                        changeNotifier: changeNotifier,
+                        updateContainer: updateContainer,
+                      ),
+                    );
+                  },
                 ),
+                const Gap(20),
                 ValueListenableBuilder(
                   valueListenable: changeNotifier,
                   builder: (_, versionConflict, __) {

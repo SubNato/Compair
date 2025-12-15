@@ -53,7 +53,6 @@ class _VendorViewState extends ConsumerState<VendorView> {
     );
   }
 
-//TODO: FINISH THE OWNER PRODUCTS IMPLEMENTATION. List the products that that owner has posted.
   @override
   Widget build(BuildContext context) {
     final productType = ref.watch(productTypeNotifierProvider);
@@ -76,17 +75,36 @@ class _VendorViewState extends ConsumerState<VendorView> {
             const Gap(5),
             //Vendor Avatar. Currently only initials. TODO: Implement a vendor avatar on the backend.
             Center(
-              child: CircleAvatar(
+              child: (widget.vendor?.profilePicture != null) ? CircleAvatar(
                 radius: 50,
+                backgroundImage: NetworkImage(widget.vendor!.profilePicture!),
                 backgroundColor: Colours.lightThemePrimaryColour,
-                child: Center(
-                  child: Text(
-                    widget.vendor!.name.initials,
-                    textAlign: TextAlign.center,
-                    style: TextStyles.headingMedium.white,
+                onBackgroundImageError: (exception, stackTrace) {
+                  debugPrint('Failed to load profile picture: $exception');
+                },
+                child: Container(), // Shows only if image fails to load
+              ) : CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colours.lightThemePrimaryColour,
+                  child: Center(
+                    child: Text(
+                      widget.vendor!.name.initials,
+                      textAlign: TextAlign.center,
+                      style: TextStyles.headingMedium.white,
+                    ),
                   ),
                 ),
-              ),
+              // child: CircleAvatar(
+              //   radius: 50,
+              //   backgroundColor: Colours.lightThemePrimaryColour,
+              //   child: Center(
+              //     child: Text(
+              //       widget.vendor!.name.initials,
+              //       textAlign: TextAlign.center,
+              //       style: TextStyles.headingMedium.white,
+              //     ),
+              //   ),
+              // ),
             ),
 
             const Gap(20),

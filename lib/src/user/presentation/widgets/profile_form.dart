@@ -124,7 +124,8 @@ class _ProfileFormState extends ConsumerState<ProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         VerticalLabelField(
           label: 'Full Name',

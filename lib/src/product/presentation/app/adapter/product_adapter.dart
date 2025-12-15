@@ -2,6 +2,8 @@ import 'package:compair_hub/core/services/injection_container.dart';
 import 'package:compair_hub/src/product/domain/entities/category.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/domain/entities/review.dart';
+import 'package:compair_hub/src/product/domain/usecases/delete_product.dart';
+import 'package:compair_hub/src/product/domain/usecases/delete_product_images.dart';
 import 'package:compair_hub/src/product/domain/usecases/get_categories.dart';
 import 'package:compair_hub/src/product/domain/usecases/get_category.dart';
 import 'package:compair_hub/src/product/domain/usecases/get_new_arrivals.dart';
@@ -14,6 +16,7 @@ import 'package:compair_hub/src/product/domain/usecases/leave_review.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_all_products.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_by_category.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_by_category_and_gender_age_category.dart';
+import 'package:compair_hub/src/product/domain/usecases/update_product.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -37,6 +40,9 @@ class ProductAdapter extends _$ProductAdapter {
     _leaveReview = sl<LeaveReview>();
     _searchAllProducts = sl<SearchAllProducts>();
     _searchByCategory = sl<SearchByCategory>();
+    _updateProduct = sl<UpdateProduct>();
+    _deleteProduct = sl<DeleteProduct>();
+    _deleteProductImages = sl<DeleteProductImages>();
     _searchByCategoryAndGenderAgeCategory =
         sl<SearchByCategoryAndGenderAgeCategory>();
     return const ProductInitial();
@@ -53,6 +59,9 @@ class ProductAdapter extends _$ProductAdapter {
   late LeaveReview _leaveReview;
   late SearchAllProducts _searchAllProducts;
   late SearchByCategory _searchByCategory;
+  late UpdateProduct _updateProduct;
+  late DeleteProduct _deleteProduct;
+  late DeleteProductImages _deleteProductImages;
   late SearchByCategoryAndGenderAgeCategory
       _searchByCategoryAndGenderAgeCategory;
 
@@ -236,6 +245,49 @@ class ProductAdapter extends _$ProductAdapter {
     result.fold(
       (failure) => state = ProductError(failure.errorMessage),
       (products) => state = ProductsFetched(products),
+    );
+  }
+
+  Future<void> updateProduct({
+    required String productId,
+    required Map<String, dynamic> updateData,
+  }) async {
+    state = const UpdatingProduct();
+    final result = await _updateProduct(
+      UpdateProductParams(
+        productId: productId,
+        updateData: updateData,
+      ),
+    );
+    result.fold(
+        (failure) => state = ProductError(failure.errorMessage),
+        (product) => state = ProductUpdated(product),
+    );
+  }
+
+  Future<void> deleteProduct(String productId) async {
+    state = const DeletingProduct();
+    final result = await _deleteProduct(productId);
+    result.fold(
+          (failure) => state = ProductError(failure.errorMessage),
+          (_) => state = const ProductDeleted(),
+    );
+  }
+
+  Future<void> deleteProductImages({
+    required String productId,
+    required List<String> imageUrls,
+  }) async {
+    state = const DeletingProductImages();
+    final result = await _deleteProductImages(
+      DeleteProductImagesParams(
+        productId: productId,
+        imageUrls: imageUrls,
+      ),
+    );
+    result.fold(
+          (failure) => state = ProductError(failure.errorMessage),
+          (remainingImages) => state = ProductImagesDeleted(remainingImages),
     );
   }
 }

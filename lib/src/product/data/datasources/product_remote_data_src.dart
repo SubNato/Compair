@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:compair_hub/core/common/singletons/cache.dart';
 import 'package:compair_hub/core/errors/exceptions.dart';
@@ -83,6 +84,20 @@ abstract interface class ProductRemoteDataSrc {
   Future<List<ReviewModel>> getProductReviews({
     required String productId,
     required int page,
+  });
+
+  Future<ProductModel> updateProduct({
+    required String productId,
+    required Map<String, dynamic> updateData,
+  });
+
+  Future<void> deleteProduct({
+    required String productId,
+  });
+
+  Future<List<String>> deleteProductImages({
+    required String productId,
+    required List<String> imageUrls,
   });
 }
 
@@ -673,6 +688,207 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
           .cast<DataMap>()
           .map((product) => ProductModel.fromMap(product))
           .toList();
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      throw const ServerException(
+        message: "Error Occurred: It's not your fault, it's ours",
+        statusCode: 500,
+      );
+    }
+  }
+
+  @override
+  Future<ProductModel> updateProduct({
+    required String productId,
+    required Map<String, dynamic> updateData,
+  }) async {
+    try {
+      //Check to see if there are any image uploads
+      final hasImages =
+          updateData.containsKey('image') || updateData.containsKey('images');
+
+      if (hasImages) {
+        final uri = Uri.parse(
+          '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT/$productId',
+        );
+
+        final request = http.MultipartRequest('PUT', uri);
+
+        // Add auth headers
+        request.headers.addAll(Cache.instance.sessionToken!.toAuthHeaders);
+
+        // Add regular fields (non-file fields)
+        updateData.forEach((key, value) {
+          if (key == 'image') {
+            // Handle main image file
+            final imageFile = value as File;
+            request.files.add(
+              http.MultipartFile.fromBytes(
+                'image',
+                imageFile.readAsBytesSync(),
+                filename: imageFile.path.split('/').last,
+              ),
+            );
+          } else if (key == 'images') {
+            // Handle gallery images
+            final imageFiles = value as List<File>;
+            for (final imageFile in imageFiles) {
+              request.files.add(
+                http.MultipartFile.fromBytes(
+                  'images',
+                  imageFile.readAsBytesSync(),
+                  filename: imageFile.path.split('/').last,
+                ),
+              );
+            }
+          } else {
+            // Add regular field - convert to string
+            request.fields[key] = value.toString();
+          }
+        });
+
+        final streamedResponse = await request.send();
+        final response = await http.Response.fromStream(streamedResponse);
+
+        await NetworkUtils.renewToken(response);
+
+        final payload = jsonDecode(response.body) as DataMap;
+
+        if (response.statusCode != 200) {
+          final errorResponse = ErrorResponse.fromMap(payload);
+          debugPrint(response.body);
+          debugPrintStack();
+          throw ServerException(
+            message: errorResponse.errorMessage,
+            statusCode: response.statusCode,
+          );
+        }
+
+        return ProductModel.fromMap(payload);
+      } else {
+        final uri = Uri.parse(
+          '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT/$productId',
+        );
+
+        final response = await _client.put(
+          uri,
+          headers: {
+            ...Cache.instance.sessionToken!.toAuthHeaders,
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(updateData),
+        );
+
+        await NetworkUtils.renewToken(response);
+
+        final payload = jsonDecode(response.body) as DataMap;
+
+        if (response.statusCode != 200) {
+          final errorResponse = ErrorResponse.fromMap(payload);
+          debugPrint(response.body);
+          debugPrintStack();
+          throw ServerException(
+            message: errorResponse.errorMessage,
+            statusCode: response.statusCode,
+          );
+        }
+
+        return ProductModel.fromMap(payload);
+      }
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      throw const ServerException(
+        message: "Error Occurred: It's not your fault, it's ours",
+        statusCode: 500,
+      );
+    }
+  }
+
+  @override
+  Future<void> deleteProduct({
+    required String productId,
+  }) async {
+    try {
+      final uri = Uri.parse(
+        '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT/$productId',
+      );
+
+      final response = await _client.delete(
+        uri,
+        headers: Cache.instance.sessionToken!.toAuthHeaders,
+      );
+
+      await NetworkUtils.renewToken(response);
+
+      // Backend returns 200 with success message
+      if (response.statusCode != 200) {
+        final payload = jsonDecode(response.body) as DataMap;
+        final errorResponse = ErrorResponse.fromMap(payload);
+        debugPrint(response.body);
+        debugPrintStack();
+        throw ServerException(
+          message: errorResponse.errorMessage,
+          statusCode: response.statusCode,
+        );
+      }
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      throw const ServerException(
+        message: "Error Occurred: It's not your fault, it's ours",
+        statusCode: 500,
+      );
+    }
+  }
+
+  @override
+  Future<List<String>> deleteProductImages({
+    required String productId,
+    required List<String> imageUrls,
+  }) async {
+    try {
+      final uri = Uri.parse(
+        '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT/$productId/images',
+      );
+
+      final response = await _client.delete(
+        uri,
+        headers: {
+          ...Cache.instance.sessionToken!.toAuthHeaders,
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'deletedImageUrls': imageUrls,
+        }),
+      );
+
+      await NetworkUtils.renewToken(response);
+
+      final payload = jsonDecode(response.body) as DataMap;
+
+      // Backend returns 200 with remaining images
+      if (response.statusCode != 200) {
+        final errorResponse = ErrorResponse.fromMap(payload);
+        debugPrint(response.body);
+        debugPrintStack();
+        throw ServerException(
+          message: errorResponse.errorMessage,
+          statusCode: response.statusCode,
+        );
+      }
+
+      final remainingImages =
+          (payload['remainingImages'] as List).cast<String>();
+
+      return remainingImages;
     } on ServerException {
       rethrow;
     } catch (e, s) {

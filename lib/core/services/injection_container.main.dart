@@ -70,6 +70,9 @@ Future<void> _productInit() async {
     ..registerLazySingleton(() => LeaveReview(sl()))
     ..registerLazySingleton(() => SearchAllProducts(sl()))
     ..registerLazySingleton(() => SearchByCategory(sl()))
+    ..registerLazySingleton(() => UpdateProduct(sl()))
+    ..registerLazySingleton(() => DeleteProduct(sl()))
+    ..registerLazySingleton(() => DeleteProductImages(sl()))
     ..registerLazySingleton(() => SearchByCategoryAndGenderAgeCategory(sl()))
     ..registerLazySingleton<ProductRepo>(() => ProductRepoImpl(sl()))
     ..registerLazySingleton<ProductRemoteDataSrc>(

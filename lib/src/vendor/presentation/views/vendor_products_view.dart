@@ -14,9 +14,11 @@ class VendorProductsView extends ConsumerStatefulWidget {
   const VendorProductsView({
     super.key,
     required this.vendor,
+    this.isEditMode = false,
   });
 
   final User vendor;
+  final bool isEditMode;
 
   static const path = '/vendorProducts';
 
@@ -41,7 +43,7 @@ class _VendorProductsViewState extends ConsumerState<VendorProductsView> {
 
   Future<void> getProducts(int page) async {
     final productAdapterNotifier =
-    ref.read(productAdapterProvider(productAdapterFamilyKey).notifier);
+        ref.read(productAdapterProvider(productAdapterFamilyKey).notifier);
 
     return productAdapterNotifier.getProducts(
       page,
@@ -54,8 +56,10 @@ class _VendorProductsViewState extends ConsumerState<VendorProductsView> {
     final productType = ref.watch(productTypeNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(//Optional 's ?
-        title: const Text('Vendor\'s Catalogue'),//Text('${widget.vendor.name}\'s Products'), //User's name might be too long for the app bar?
+      appBar: AppBar(
+        //Optional 's ?
+        title: const Text('Vendor\'s Catalogue'),
+        //Text('${widget.vendor.name}\'s Products'), //User's name might be too long for the app bar?
         bottom: const AppBarBottom(),
       ),
       body: SafeArea(
@@ -77,16 +81,27 @@ class _VendorProductsViewState extends ConsumerState<VendorProductsView> {
               ),
               child: Row(
                 children: [
-                  CircleAvatar(  //TODO: Change the circle icon here to dealer profile picture
-                    radius: 30,
-                    backgroundColor: Colours.lightThemePrimaryColour,
-                    child: Text(
-                      widget.vendor.name.isNotEmpty
-                          ? widget.vendor.name[0].toUpperCase()
-                          : 'V',
-                      style: TextStyles.headingMedium.white.copyWith(fontSize: 24),
-                    ),
-                  ),
+                  (widget.vendor.profilePicture != null)
+                      ? CircleAvatar(
+                          radius: 30,
+                          backgroundImage:
+                              NetworkImage(widget.vendor.profilePicture!),
+                          backgroundColor: Colours.lightThemePrimaryColour,
+                          onBackgroundImageError: (exception, stackTrace) {
+                            debugPrint('Failed to load profile picture');
+                          }, // Shows only if image fails to load
+                        )
+                      : CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colours.lightThemePrimaryColour,
+                          child: Text(
+                            widget.vendor.name.isNotEmpty
+                                ? widget.vendor.name[0].toUpperCase()
+                                : 'V',
+                            style: TextStyles.headingMedium.white
+                                .copyWith(fontSize: 24),
+                          ),
+                        ),
                   const Gap(15),
                   Expanded(
                     child: Column(
@@ -113,6 +128,41 @@ class _VendorProductsViewState extends ConsumerState<VendorProductsView> {
               ),
             ),
 
+            //When the edit mode flag is true, then show
+            if (widget.isEditMode)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colours.lightThemePrimaryColour.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Colours.lightThemePrimaryColour,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.edit,
+                      size: 16,
+                      color: Colours.lightThemePrimaryColour,
+                    ),
+                    const Gap(4),
+                    Text(
+                      'Edit Mode',
+                      style: TextStyles.paragraphSubTextRegular2.copyWith(
+                        color: Colours.lightThemePrimaryColour,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
             const Gap(10),
 
             // Products Grid
@@ -122,6 +172,7 @@ class _VendorProductsViewState extends ConsumerState<VendorProductsView> {
                 productAdapterFamilyKey: productAdapterFamilyKey,
                 fetchRequest: getProducts,
                 categorized: false,
+                isEditMode: widget.isEditMode,
               ),
             ),
           ],

@@ -2,6 +2,7 @@ import 'package:compair_hub/core/common/entities/user.dart';
 import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
+import 'package:compair_hub/core/utils/enums/jamaican_parishes.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/user/presentation/adapter/auth_user_provider.dart';
 import 'package:compair_hub/src/vendor/presentation/views/vendor_view.dart';
@@ -148,6 +149,7 @@ Widget _vendorContent(
 
 Widget addressView(
     User vendor, BuildContext context) {
+  final String parish = JamaicanParishExtension.fromApi(vendor.address!.parish!).title;
   return Padding(
     padding: const EdgeInsets.only(left: 20),
     child: Column(
@@ -163,7 +165,7 @@ Widget addressView(
                 .adaptiveColour(context).copyWith(fontSize: 25),
           ),
 
-          const Gap(5),
+          if(vendor.address?.apartment != null) const Gap(5),
 
           //Vendor Street
           if(vendor.address?.street != null) Text(
@@ -187,11 +189,11 @@ Widget addressView(
                 .adaptiveColour(context).copyWith(fontSize: 25),
           ),
 
-          const Gap(5),
+          if(vendor.address?.city != null) const Gap(5),
 
           //Vendor Parish
           if(vendor.address?.parish != null) Text(
-            vendor.address!.parish!,
+            parish,
             maxLines: 1,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
@@ -199,7 +201,7 @@ Widget addressView(
                 .adaptiveColour(context).copyWith(fontSize: 25),
           ),
 
-          const Gap(5),
+          if(vendor.address?.parish != null) const Gap(5),
 
           //Vendor Country
           if(vendor.address?.country != null) Text(
@@ -211,7 +213,7 @@ Widget addressView(
                 .adaptiveColour(context).copyWith(fontSize: 25),
           ),
 
-          const Gap(5),
+          if(vendor.address?.country != null) const Gap(5),
 
           //Vendor PostalCode
           if(vendor.address?.postalCode != null) Text(

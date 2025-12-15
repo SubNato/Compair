@@ -63,7 +63,7 @@ class ProfilePictureWidget extends StatelessWidget {
         backgroundImage: NetworkImage(currentProfilePictureUrl!),
         backgroundColor: Colours.lightThemePrimaryColour,
         onBackgroundImageError: (exception, stackTrace) {
-          debugPrint('Failed to load profile picture: $exception');
+          debugPrint('Failed to load profile picture');
         },
         child: Container(), // Shows only if image fails to load
       );
