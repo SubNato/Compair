@@ -100,6 +100,7 @@ class _PaginatedProductGridView
 
   void _handleProductTap(Product product) {
     if (widget.isEditMode) {
+      print('Clicked ');
       //Navigate to edit page
       context.push(
         ProductEditView.path,
@@ -130,12 +131,15 @@ class _PaginatedProductGridView
                 )
               else
                 // If it is coming from the ProfileView Page (Is in edit mode), then Wrap with our GestureDetector and disable inner one (Classic Product Tile gesture detecture)
-                GestureDetector(
+                InkWell( //Inkwell works better with scrollable views than a regular gesture detecture.
                   onTap: () => _handleProductTap(product),
                   child: Center(
                     child: IgnorePointer(
                       // Prevents ClassicProductTile's GestureDetector from firing. Just in case, as we added a fail safe in the handle product tap method
-                      child: ClassicProductTile(product),
+                      child: ClassicProductTile(
+                        product,
+                        isEditMode: widget.isEditMode,
+                      ),
                     ),
                   ),
                 ),
@@ -143,8 +147,8 @@ class _PaginatedProductGridView
               //Edit Overlay
               if (widget.isEditMode)
                 Positioned(
-                  top: 8,
-                  right: 8,
+                  top: 5,
+                  right: 20,
                   child: Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(

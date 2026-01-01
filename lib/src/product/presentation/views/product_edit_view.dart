@@ -617,7 +617,7 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
                     borderRadius: BorderRadius.circular(12),
                     child: Image.file(
                       _selectedMainImage!,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   )
                 : widget.product.image.isNotEmpty
@@ -625,7 +625,7 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
                         borderRadius: BorderRadius.circular(12),
                         child: Image.network(
                           widget.product.image,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           errorBuilder: (_, __, ___) =>
                               _buildImagePlaceholder(),
                         ),
@@ -638,7 +638,7 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
             padding: const EdgeInsets.only(top: 8),
             child: Text(
               'Tap to change main image',
-              style: TextStyles.paragraphSubTextRegular2.grey,
+              style: TextStyles.headingMedium4.grey,
             ),
           ),
       ],

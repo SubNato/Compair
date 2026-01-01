@@ -700,30 +700,143 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
     }
   }
 
+  //Working
+  // @override
+  // Future<ProductModel> updateProduct({
+  //   required String productId,
+  //   required Map<String, dynamic> updateData,
+  // }) async {
+  //   try {
+  //     //Check to see if there are any image uploads
+  //     final hasImages =
+  //         updateData.containsKey('image') || updateData.containsKey('images');
+  //
+  //     if (hasImages) {
+  //       final uri = Uri.parse(
+  //         '${NetworkConstants.adminUrl}$GET_PRODUCTS_ENDPOINT/$productId',
+  //       );
+  //
+  //       final request = http.MultipartRequest('PUT', uri)
+  //       ..headers.addAll(Cache.instance.sessionToken!.toAuthHeaders);
+  //        // Add auth headers
+  //       //request.headers.addAll(Cache.instance.sessionToken!.toAuthHeaders);
+  //
+  //       // Add regular fields (non-file fields)
+  //       updateData.forEach((key, value) {
+  //         if (key == 'image') {
+  //           // Handle main image file
+  //           final imageFile = value as File;
+  //           request.files.add(
+  //             http.MultipartFile.fromBytes(
+  //               'image',
+  //               imageFile.readAsBytesSync(),
+  //               filename: imageFile.path.split('/').last,
+  //             ),
+  //           );
+  //         } else if (key == 'images') {
+  //           // Handle gallery images
+  //           final imageFiles = value as List<File>;
+  //           for (final imageFile in imageFiles) {
+  //             request.files.add(
+  //               http.MultipartFile.fromBytes(
+  //                 'images',
+  //                 imageFile.readAsBytesSync(),
+  //                 filename: imageFile.path.split('/').last,
+  //               ),
+  //             );
+  //           }
+  //         } else {
+  //           // Add regular field - convert to string
+  //           request.fields[key] = value.toString();
+  //         }
+  //       });
+  //
+  //       final streamedResponse = await request.send();
+  //       final response = await http.Response.fromStream(streamedResponse);
+  //
+  //       print('Status Code: ${response.statusCode}');
+  //       print('Response Body: ${response.body}');
+  //       print('Response Headers: ${response.headers}');
+  //
+  //       await NetworkUtils.renewToken(response);
+  //
+  //       final payload = jsonDecode(response.body) as DataMap;
+  //
+  //       if (response.statusCode != 200) {
+  //         final errorResponse = ErrorResponse.fromMap(payload);
+  //         debugPrint(response.body);
+  //         debugPrintStack();
+  //         throw ServerException(
+  //           message: errorResponse.errorMessage,
+  //           statusCode: response.statusCode,
+  //         );
+  //       }
+  //
+  //       return ProductModel.fromMap(payload);
+  //     } else {
+  //       final uri = Uri.parse(
+  //         '${NetworkConstants.adminUrl}$GET_PRODUCTS_ENDPOINT/$productId',
+  //       );
+  //
+  //       final response = await _client.put(
+  //         uri,
+  //         headers: {
+  //           ...Cache.instance.sessionToken!.toAuthHeaders,
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: jsonEncode(updateData),
+  //       );
+  //       //TODO: TAKE THIS OUT!
+  //       print('Token: ${Cache.instance.sessionToken!}');
+  //
+  //       await NetworkUtils.renewToken(response);
+  //
+  //       final payload = jsonDecode(response.body) as DataMap;
+  //
+  //       if (response.statusCode != 200) {
+  //         final errorResponse = ErrorResponse.fromMap(payload);
+  //         debugPrint(response.body);
+  //         debugPrintStack();
+  //         throw ServerException(
+  //           message: errorResponse.errorMessage,
+  //           statusCode: response.statusCode,
+  //         );
+  //       }
+  //
+  //       return ProductModel.fromMap(payload);
+  //     }
+  //   } on ServerException {
+  //     rethrow;
+  //   } catch (e, s) {
+  //     debugPrint(e.toString());
+  //     debugPrintStack(stackTrace: s);
+  //     throw const ServerException(
+  //       message: "Error Occurred: It's not your fault, it's ours",
+  //       statusCode: 500,
+  //     );
+  //   }
+  // }
+
   @override
   Future<ProductModel> updateProduct({
     required String productId,
     required Map<String, dynamic> updateData,
   }) async {
     try {
-      //Check to see if there are any image uploads
       final hasImages =
           updateData.containsKey('image') || updateData.containsKey('images');
 
       if (hasImages) {
         final uri = Uri.parse(
-          '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT/$productId',
+          '${NetworkConstants.adminUrl}$GET_PRODUCTS_ENDPOINT/$productId',
         );
 
-        final request = http.MultipartRequest('PUT', uri);
-
-        // Add auth headers
-        request.headers.addAll(Cache.instance.sessionToken!.toAuthHeaders);
+        final request = http.MultipartRequest('PUT', uri)
+          ..headers.addAll(Cache.instance.sessionToken!.toAuthHeadersOnly);
 
         // Add regular fields (non-file fields)
         updateData.forEach((key, value) {
           if (key == 'image') {
-            // Handle main image file
             final imageFile = value as File;
             request.files.add(
               http.MultipartFile.fromBytes(
@@ -733,7 +846,6 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
               ),
             );
           } else if (key == 'images') {
-            // Handle gallery images
             final imageFiles = value as List<File>;
             for (final imageFile in imageFiles) {
               request.files.add(
@@ -745,7 +857,6 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
               );
             }
           } else {
-            // Add regular field - convert to string
             request.fields[key] = value.toString();
           }
         });
@@ -769,16 +880,14 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
 
         return ProductModel.fromMap(payload);
       } else {
+        // For non-image updates, keep using toAuthHeaders (with Content-Type)
         final uri = Uri.parse(
-          '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT/$productId',
+          '${NetworkConstants.adminUrl}$GET_PRODUCTS_ENDPOINT/$productId',
         );
 
         final response = await _client.put(
           uri,
-          headers: {
-            ...Cache.instance.sessionToken!.toAuthHeaders,
-            'Content-Type': 'application/json',
-          },
+          headers: Cache.instance.sessionToken!.toAuthHeaders, // ✅ This is fine for JSON
           body: jsonEncode(updateData),
         );
 
@@ -788,8 +897,6 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
 
         if (response.statusCode != 200) {
           final errorResponse = ErrorResponse.fromMap(payload);
-          debugPrint(response.body);
-          debugPrintStack();
           throw ServerException(
             message: errorResponse.errorMessage,
             statusCode: response.statusCode,

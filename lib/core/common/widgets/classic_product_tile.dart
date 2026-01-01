@@ -10,9 +10,10 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class ClassicProductTile extends StatelessWidget {
-  const ClassicProductTile(this.product, {super.key});
+  const ClassicProductTile(this.product, {this.isEditMode, super.key});
 
   final Product product;
+  final bool? isEditMode;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +39,11 @@ class ClassicProductTile extends StatelessWidget {
                         image: NetworkImage(product.image),
                       )),
                 ),
-                Positioned(
-                  right: 0,
-                  child: FavouriteIcon(productId: product.id),
-                ),
+                if (!(isEditMode == true))
+                  Positioned(
+                    right: 0,
+                    child: FavouriteIcon(productId: product.id),
+                  ),
               ],
             ),
             const Gap(5),

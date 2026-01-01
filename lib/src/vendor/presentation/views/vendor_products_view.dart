@@ -130,36 +130,39 @@ class _VendorProductsViewState extends ConsumerState<VendorProductsView> {
 
             //When the edit mode flag is true, then show
             if (widget.isEditMode)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colours.lightThemePrimaryColour.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colours.lightThemePrimaryColour,
-                    width: 1,
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0,left: 20.0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
                   ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.edit,
-                      size: 16,
+                  decoration: BoxDecoration(
+                    color: Colours.lightThemePrimaryColour.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
                       color: Colours.lightThemePrimaryColour,
+                      width: 1,
                     ),
-                    const Gap(4),
-                    Text(
-                      'Edit Mode',
-                      style: TextStyles.paragraphSubTextRegular2.copyWith(
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.edit,
+                        size: 16,
                         color: Colours.lightThemePrimaryColour,
-                        fontWeight: FontWeight.w600,
                       ),
-                    ),
-                  ],
+                      const Gap(4),
+                      Text(
+                        'Click to edit or view details',
+                        style: TextStyles.paragraphSubTextRegular2.copyWith(
+                          color: Colours.lightThemePrimaryColour,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 

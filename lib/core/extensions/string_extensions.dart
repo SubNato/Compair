@@ -8,6 +8,13 @@ extension StringExt on String {
     };
   }
 
+  //For multer file uploads
+  Map<String, String> get toAuthHeadersOnly {
+    return {
+      'Authorization': 'Bearer $this',
+    };
+  }
+
   ThemeMode get toThemeMode {
     return switch (toLowerCase()) {
       'light' => ThemeMode.light,

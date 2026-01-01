@@ -49,7 +49,7 @@ class _CategorySelectorState extends ConsumerState<CategorySelector> {
     CoreUtils.postFrameCall(() {
       categories();
 
-      ref.listen(productTypeNotifierProvider, (prev, next) {
+      ref.listenManual(productTypeNotifierProvider, (prev, next) { //TODO: Is this correct?
         if (prev != next) {
           //Reset category to 'All' when the product type changes.
           selectCategory(const ProductCategory.all());

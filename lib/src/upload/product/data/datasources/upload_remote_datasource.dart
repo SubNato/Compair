@@ -59,8 +59,9 @@ class UploadRemoteDataSourceImplementation implements UploadRemoteDataSource {
       //In order to send images or multiple images to the backend,
       //You need to use an http. MultipartRequest.
       final request = http.MultipartRequest('POST', uri)
-        ..headers.addAll(Cache.instance.sessionToken!.toAuthHeaders);
+        ..headers.addAll(Cache.instance.sessionToken!.toAuthHeadersOnly); //For multer to work correctly
 
+      //        ..headers.addAll(Cache.instance.sessionToken!.toAuthHeaders);
       //Then add the body items as fields
       request.fields['name'] = name;
       request.fields['description'] = description;

@@ -235,7 +235,8 @@ Click the category tab and when they do, it switches to the category.
 
 Put in safety measures, so that they can't spam stuff.
 
-
+Use upload model for editing the product, why? cause it uses the MultiPart file, while the product model oes not.
+The multipart thing supports uploads while file does not. That might cause an issue.
 
 Add a different checkout system for users like PayAveta etc.
 
@@ -249,7 +250,10 @@ Search for a specific Category seeing as though there can be many at once.
 
 Request a category feature?
 
+Display all images for them to choose which to remove?
 
+So now when you try to upload a new image from the edit product screen, it is sent as an octet when it is an actual jpg or jpeg etc. Needs to be fixed
+Everything else works tho when uploading.
 
 
 #### **_BUGS FOUND ON MOBILE TESTING:_**
@@ -262,6 +266,31 @@ Fix compare feature, bottom pixel overflow by 14 pixels. for both current and si
 
 Fix compare the yellow lines are on all of the words and numbers at current, and only the label similar products at the bottom.
 
+Fix the 500 error message.
+
+Fix: ======== Exception caught by scheduler library =====================================================
+The following assertion was thrown during a scheduler callback:
+Looking up a deactivated widget's ancestor is unsafe.
+
+At this point the state of the widget's element tree is no longer stable.
+
+To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
+
+When the exception was thrown, this was the stack:
+#0      Element._debugCheckStateIsActiveForAncestorLookup.<anonymous closure> (package:flutter/src/widgets/framework.dart:4873:9)
+#1      Element._debugCheckStateIsActiveForAncestorLookup (package:flutter/src/widgets/framework.dart:4887:6)
+#2      Element.findAncestorWidgetOfExactType (package:flutter/src/widgets/framework.dart:4948:12)
+#3      debugCheckHasScaffoldMessenger.<anonymous closure> (package:flutter/src/material/debug.dart:175:17)
+#4      debugCheckHasScaffoldMessenger (package:flutter/src/material/debug.dart:187:4)
+#5      ScaffoldMessenger.of (package:flutter/src/material/scaffold.dart:146:12)
+#6      CoreUtils.showSnackBar.<anonymous closure> (package:compair_hub/core/utils/core_utils.dart:23:25)
+#7      CoreUtils.postFrameCall.<anonymous closure> (package:compair_hub/core/utils/core_utils.dart:31:15)
+#8      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1397:15)
+#9      SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1331:11)
+#10     SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1176:5)
+#11     _invoke (dart:ui/hooks.dart:312:13)
+#12     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:419:5)
+#13     _drawFrame (dart:ui/hooks.dart:283:31)
 
 
 ### Sales Ideas:
