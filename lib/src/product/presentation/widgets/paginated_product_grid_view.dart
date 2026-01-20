@@ -100,7 +100,6 @@ class _PaginatedProductGridView
 
   void _handleProductTap(Product product) {
     if (widget.isEditMode) {
-      print('Clicked ');
       //Navigate to edit page
       context.push(
         ProductEditView.path,

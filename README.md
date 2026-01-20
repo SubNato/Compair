@@ -250,11 +250,12 @@ Search for a specific Category seeing as though there can be many at once.
 
 Request a category feature?
 
-Display all images for them to choose which to remove?
+Display all images for them to choose which to remove? (product edit view) ⬅️ CURRENT TASK
 
 So now when you try to upload a new image from the edit product screen, it is sent as an octet when it is an actual jpg or jpeg etc. Needs to be fixed
-Everything else works tho when uploading.
+Everything else works tho when uploading. ⬅️ CON-CURRENT TASK
 
+Look into is the CRON Job on backend actually being used? You added teh delete product image instantly, which may have bypassed it.
 
 #### **_BUGS FOUND ON MOBILE TESTING:_**
 
@@ -266,11 +267,17 @@ Fix compare feature, bottom pixel overflow by 14 pixels. for both current and si
 
 Fix compare the yellow lines are on all of the words and numbers at current, and only the label similar products at the bottom.
 
+FIX: Let the comparing products be randomized, and not the same products everytime.
+
 Fix the 500 error message.
 
 Fix: ======== Exception caught by scheduler library =====================================================
 The following assertion was thrown during a scheduler callback:
 Looking up a deactivated widget's ancestor is unsafe.
+
+FIX: For the Category in the vendor edit view, sometimes throws a null check operator error red. FIX that
+
+FIX: What is the default for the images when they cannot be displayed for whatever reason on frontend.
 
 At this point the state of the widget's element tree is no longer stable.
 

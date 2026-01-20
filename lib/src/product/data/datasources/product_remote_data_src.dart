@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:compair_hub/core/common/singletons/cache.dart';
 import 'package:compair_hub/core/errors/exceptions.dart';
+import 'package:compair_hub/core/extensions/image_extension.dart';
 import 'package:compair_hub/core/extensions/string_extensions.dart';
 import 'package:compair_hub/core/utils/constants/network_constants.dart';
 import 'package:compair_hub/core/utils/error_response.dart';
@@ -843,6 +844,7 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
                 'image',
                 imageFile.readAsBytesSync(),
                 filename: imageFile.path.split('/').last,
+                contentType: imageFile.path.imageMimeType,
               ),
             );
           } else if (key == 'images') {
@@ -853,6 +855,7 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
                   'images',
                   imageFile.readAsBytesSync(),
                   filename: imageFile.path.split('/').last,
+                  contentType: imageFile.path.imageMimeType
                 ),
               );
             }
@@ -963,7 +966,7 @@ class ProductRemoteDataSrcImpl implements ProductRemoteDataSrc {
   }) async {
     try {
       final uri = Uri.parse(
-        '${NetworkConstants.baseUrl}$GET_PRODUCTS_ENDPOINT/$productId/images',
+        '${NetworkConstants.adminUrl}$GET_PRODUCTS_ENDPOINT/$productId/images',
       );
 
       final response = await _client.delete(

@@ -5,7 +5,9 @@ import 'package:compair_hub/core/extensions/string_extensions.dart';
 import 'package:compair_hub/core/utils/typedefs.dart';
 import 'package:compair_hub/src/product/data/models/category_model.dart';
 import 'package:compair_hub/src/product/data/models/product_user_model.dart';
+import 'package:compair_hub/src/product/domain/entities/category.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
+import 'package:compair_hub/src/product/domain/entities/product_user.dart';
 
 class ProductModel extends Product {
   const ProductModel({
@@ -109,7 +111,8 @@ class ProductModel extends Product {
     );
   }
 
-  ProductModel copyWith({
+  @override
+  Product copyWith({
     String? id,
     String? name,
     String? description,
@@ -123,11 +126,11 @@ class ProductModel extends Product {
     List<String>? reviewIds,
     int? numberOfReviews,
     List<String>? sizes,
-    ProductCategoryModel? category,
-    String? genderAgeCategory,
+    ProductCategory? category,
+    ProductUser? owner,
     int? countInStock,
+    String? genderAgeCategory,
     String? type,
-    ProductUserModel? owner,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -144,10 +147,53 @@ class ProductModel extends Product {
       numberOfReviews: numberOfReviews ?? this.numberOfReviews,
       sizes: sizes ?? this.sizes,
       category: category ?? this.category,
-      genderAgeCategory: genderAgeCategory ?? this.genderAgeCategory,
-      countInStock: countInStock ?? this.countInStock,
-      type: type ?? this.type,
       owner: owner ?? this.owner,
+      countInStock: countInStock ?? this.countInStock,
+      genderAgeCategory:
+      genderAgeCategory ?? this.genderAgeCategory,
+      type: type ?? this.type,
     );
   }
+
+// ProductModel copyWith({
+  //   String? id,
+  //   String? name,
+  //   String? description,
+  //   double? price,
+  //   String? brand,
+  //   String? model,
+  //   double? rating,
+  //   List<Color>? colours,
+  //   String? image,
+  //   List<String>? images,
+  //   List<String>? reviewIds,
+  //   int? numberOfReviews,
+  //   List<String>? sizes,
+  //   ProductCategoryModel? category,
+  //   String? genderAgeCategory,
+  //   int? countInStock,
+  //   String? type,
+  //   ProductUserModel? owner,
+  // }) {
+  //   return ProductModel(
+  //     id: id ?? this.id,
+  //     name: name ?? this.name,
+  //     description: description ?? this.description,
+  //     price: price ?? this.price,
+  //     brand: brand ?? this.brand,
+  //     model: model ?? this.model,
+  //     rating: rating ?? this.rating,
+  //     colours: colours ?? this.colours,
+  //     image: image ?? this.image,
+  //     images: images ?? this.images,
+  //     reviewIds: reviewIds ?? this.reviewIds,
+  //     numberOfReviews: numberOfReviews ?? this.numberOfReviews,
+  //     sizes: sizes ?? this.sizes,
+  //     category: category ?? this.category,
+  //     genderAgeCategory: genderAgeCategory ?? this.genderAgeCategory,
+  //     countInStock: countInStock ?? this.countInStock,
+  //     type: type ?? this.type,
+  //     owner: owner ?? this.owner,
+  //   );
+  // }
 }

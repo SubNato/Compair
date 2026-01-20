@@ -5,6 +5,7 @@ import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
+import 'package:compair_hub/src/product/data/models/product_model.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
@@ -69,9 +70,13 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
   String? _selectedProductType;
   String? _selectedGenderAgeCategory;
 
+  late final ValueNotifier<Product> _currentProductNotifier;
+
   @override
   void initState() {
     super.initState();
+
+    _currentProductNotifier = ValueNotifier(widget.product);
 
     // Initialize controllers with current values
     nameController = TextEditingController(text: widget.product.name);
@@ -93,7 +98,11 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
       (previous, next) {
         if (next is ProductError) {
           CoreUtils.showSnackBar(context, message: next.message);
+          //Revert changes to prevent data loss
+          _resetChanges();
         } else if (next is ProductUpdated) {
+          _currentProductNotifier.value = next.product;
+
           CoreUtils.showSnackBar(context,
               message: 'Product updated successfully');
           // Lock after successful update
@@ -107,6 +116,59 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
           CoreUtils.showSnackBar(context,
               message: 'Product deleted successfully');
           context.pop(); // Go back after deletion
+        } else if (next is ProductImagesDeleted) {
+          //New product instance for updating images
+          // _currentProductNotifier.value = ProductModel(
+          //   id: _currentProductNotifier.value.id,
+          //   name: _currentProductNotifier.value.name,
+          //   description: _currentProductNotifier.value.description,
+          //   price: _currentProductNotifier.value.price,
+          //   brand: _currentProductNotifier.value.brand,
+          //   model: _currentProductNotifier.value.model,
+          //   rating: _currentProductNotifier.value.rating,
+          //   colours: _currentProductNotifier.value.colours,
+          //   image: _currentProductNotifier.value.image,
+          //   images: next.remainingImages, //So that when you delete an image/s, then the set of current images are updated.
+          //   reviewIds: _currentProductNotifier.value.reviewIds,
+          //   numberOfReviews: _currentProductNotifier.value.numberOfReviews,
+          //   sizes: _currentProductNotifier.value.sizes,
+          //   category: _currentProductNotifier.value.category,
+          //   countInStock: _currentProductNotifier.value.countInStock,
+          //   owner: _currentProductNotifier.value.owner,
+          //   genderAgeCategory: _currentProductNotifier.value.genderAgeCategory,
+          //   type: _currentProductNotifier.value.type,
+          // );
+
+          //Clearing the list since the product images list has been updated
+
+          /*_imagesToDelete.clear();
+
+          ref
+              .read(productAdapterProvider(productAdapterFamilyKey).notifier)
+              .getProduct(_currentProductNotifier.value.id);
+          */
+
+          _currentProductNotifier.value =
+              _currentProductNotifier.value.copyWith(
+                images: List<String>.from(next.remainingImages),
+              );
+
+
+          //Not the best method, but works for now
+          // final product = _currentProductNotifier.value as ProductModel;
+          //
+          // _currentProductNotifier.value = product.copyWith(
+          //   images: List<String>.from(next.remainingImages),
+          // );
+
+          _imagesToDelete.clear();
+
+          //Images successfully deleted, the state contains remainingImages. You can use this to update the UI if needed
+          CoreUtils.showSnackBar(context,
+              message: 'Image removed successfully');
+        } else if (next is ProductFetched) {
+          //Update the product when fetched.
+          _currentProductNotifier.value = next.product;
         }
       },
     );
@@ -238,7 +300,7 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
     if (lockNotifier.value) return;
 
     final remainingSlots = 10 -
-        (widget.product.images.length -
+        (_currentProductNotifier.value.images.length -
             _imagesToDelete.length +
             _newGalleryImages.length);
 
@@ -353,23 +415,34 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
       return;
     }
 
+    final hasImagesDeletion = _imagesToDelete.isNotEmpty;
+    final hasFieldUpdates = updateContainer.isNotEmpty;
+
+    //Now only delete images if there are any, to avoid both endpoint being called simultaneously.
+
     // First, delete images if any
-    if (_imagesToDelete.isNotEmpty) {
+    if (hasImagesDeletion) {
       ref
           .read(productAdapterProvider(productAdapterFamilyKey).notifier)
           .deleteProductImages(
-            productId: widget.product.id,
+            productId: _currentProductNotifier.value.id,
             imageUrls: _imagesToDelete,
           );
     }
 
     // Then update product
-    ref
-        .read(productAdapterProvider(productAdapterFamilyKey).notifier)
-        .updateProduct(
-          productId: widget.product.id,
-          updateData: updateContainer,
-        );
+    if (hasFieldUpdates) {
+      ref
+          .read(productAdapterProvider(productAdapterFamilyKey).notifier)
+          .updateProduct(
+            productId: _currentProductNotifier.value.id,
+            updateData: updateContainer,
+          );
+    }
+
+    if (!hasFieldUpdates && !hasImagesDeletion) {
+      CoreUtils.showSnackBar(context, message: 'No changes to save');
+    }
   }
 
   Future<void> _deleteProduct() async {
@@ -399,29 +472,31 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
     if (confirmed == true) {
       ref
           .read(productAdapterProvider(productAdapterFamilyKey).notifier)
-          .deleteProduct(widget.product.id);
+          .deleteProduct(_currentProductNotifier.value.id);
     }
   }
 
   void _resetChanges() {
     // Reset all controllers
-    nameController.text = widget.product.name;
-    descriptionController.text = widget.product.description;
-    priceController.text = widget.product.price.toString();
-    brandController.text = widget.product.brand;
-    modelController.text = widget.product.model;
-    stockController.text = widget.product.countInStock.toString();
+    nameController.text = _currentProductNotifier.value.name;
+    descriptionController.text = _currentProductNotifier.value.description;
+    priceController.text = _currentProductNotifier.value.price.toString();
+    brandController.text = _currentProductNotifier.value.brand;
+    modelController.text = _currentProductNotifier.value.model;
+    stockController.text =
+        _currentProductNotifier.value.countInStock.toString();
 
     // Reset product type and gender/age
     setState(() {
-      _selectedProductType = widget.product.type;
-      _selectedGenderAgeCategory = widget.product.genderAgeCategory;
+      _selectedProductType = _currentProductNotifier.value.type;
+      _selectedGenderAgeCategory =
+          _currentProductNotifier.value.genderAgeCategory;
     });
 
     // Reset category
     ref
         .read(categoryNotifierProvider(categoryFamilyKey).notifier)
-        .changeCategory(widget.product.category);
+        .changeCategory(_currentProductNotifier.value.category);
 
     // Clear temp image state
     _clearTempImageState();
@@ -449,6 +524,8 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
 
     lockNotifier.dispose();
     changeNotifier.dispose();
+
+    _currentProductNotifier.dispose();
 
     super.dispose();
   }
@@ -527,6 +604,8 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
                         _buildCategorySection(),
                         const Gap(24),
                         _buildProductTypeSection(),
+                        const Gap(24),
+                        _buildCurrentImagesSection(),
                         const Gap(24),
                         _buildGallerySection(),
                         const Gap(80), // Space for save button
@@ -620,11 +699,11 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
                       fit: BoxFit.contain,
                     ),
                   )
-                : widget.product.image.isNotEmpty
+                : _currentProductNotifier.value.image.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.network(
-                          widget.product.image,
+                          _currentProductNotifier.value.image,
                           fit: BoxFit.contain,
                           errorBuilder: (_, __, ___) =>
                               _buildImagePlaceholder(),
@@ -816,100 +895,12 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
             ),
           ],
         ),
-        const Gap(16),
-        Text(
-          'Gender/Age Category (Optional)',
-          style: TextStyles.headingMedium4.adaptiveColour(context),
-        ),
-        const Gap(8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ChoiceChip(
-              label: const Text('Men'),
-              selected: _selectedGenderAgeCategory == 'men',
-              onSelected: (selected) {
-                setState(() {
-                  _selectedGenderAgeCategory = selected ? 'men' : null;
-                });
-                if (selected) {
-                  updateContainer['genderAgeCategory'] = 'men';
-                } else {
-                  updateContainer.remove('genderAgeCategory');
-                }
-                changeNotifier.value = true;
-              },
-              selectedColor: Colours.lightThemePrimaryColour,
-              labelStyle: _selectedGenderAgeCategory == 'men'
-                  ? TextStyles.headingSemiBold1.white
-                  : TextStyles.paragraphSubTextRegular1.grey,
-            ),
-            ChoiceChip(
-              label: const Text('Women'),
-              selected: _selectedGenderAgeCategory == 'women',
-              onSelected: (selected) {
-                setState(() {
-                  _selectedGenderAgeCategory = selected ? 'women' : null;
-                });
-                if (selected) {
-                  updateContainer['genderAgeCategory'] = 'women';
-                } else {
-                  updateContainer.remove('genderAgeCategory');
-                }
-                changeNotifier.value = true;
-              },
-              selectedColor: Colours.lightThemePrimaryColour,
-              labelStyle: _selectedGenderAgeCategory == 'women'
-                  ? TextStyles.headingSemiBold1.white
-                  : TextStyles.paragraphSubTextRegular1.grey,
-            ),
-            ChoiceChip(
-              label: const Text('Unisex'),
-              selected: _selectedGenderAgeCategory == 'unisex',
-              onSelected: (selected) {
-                setState(() {
-                  _selectedGenderAgeCategory = selected ? 'unisex' : null;
-                });
-                if (selected) {
-                  updateContainer['genderAgeCategory'] = 'unisex';
-                } else {
-                  updateContainer.remove('genderAgeCategory');
-                }
-                changeNotifier.value = true;
-              },
-              selectedColor: Colours.lightThemePrimaryColour,
-              labelStyle: _selectedGenderAgeCategory == 'unisex'
-                  ? TextStyles.headingSemiBold1.white
-                  : TextStyles.paragraphSubTextRegular1.grey,
-            ),
-            ChoiceChip(
-              label: const Text('Kids'),
-              selected: _selectedGenderAgeCategory == 'kids',
-              onSelected: (selected) {
-                setState(() {
-                  _selectedGenderAgeCategory = selected ? 'kids' : null;
-                });
-                if (selected) {
-                  updateContainer['genderAgeCategory'] = 'kids';
-                } else {
-                  updateContainer.remove('genderAgeCategory');
-                }
-                changeNotifier.value = true;
-              },
-              selectedColor: Colours.lightThemePrimaryColour,
-              labelStyle: _selectedGenderAgeCategory == 'kids'
-                  ? TextStyles.headingSemiBold1.white
-                  : TextStyles.paragraphSubTextRegular1.grey,
-            ),
-          ],
-        ),
       ],
     );
   }
 
   Widget _buildGallerySection() {
-    final currentImages = widget.product.images
+    final currentImages = _currentProductNotifier.value.images
         .where((url) => !_imagesToDelete.contains(url))
         .toList();
 
@@ -918,21 +909,14 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Product Gallery',
-              style: TextStyles.headingBold1.adaptiveColour(context),
-            ),
-            Text(
-              '$totalImages/10',
-              style: TextStyles.paragraphSubTextRegular1.grey,
-            ),
-          ],
+        Text(
+          'New Images',
+          style: TextStyles.headingBold1.adaptiveColour(context),
         ),
         const Gap(12),
-        if (totalImages == 0)
+
+        // Show add button or grid of new images
+        if (_newGalleryImages.isEmpty)
           GestureDetector(
             onTap: _pickGalleryImages,
             child: Container(
@@ -955,8 +939,14 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
                   ),
                   const Gap(8),
                   Text(
-                    'Add Gallery Images',
+                    'Add New Images',
                     style: TextStyles.paragraphSubTextRegular1.grey,
+                  ),
+                  const Gap(4),
+                  Text(
+                    '${10 - totalImages} slot${(10 - totalImages) != 1 ? 's' : ''} available',
+                    style: TextStyles.paragraphSubTextRegular2.grey
+                        .copyWith(fontSize: 11),
                   ),
                 ],
               ),
@@ -971,10 +961,10 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
             ),
-            itemCount: totalImages + (totalImages < 10 ? 1 : 0),
+            itemCount: _newGalleryImages.length + (totalImages < 10 ? 1 : 0),
             itemBuilder: (context, index) {
               // Add button
-              if (index == totalImages && totalImages < 10) {
+              if (index == _newGalleryImages.length && totalImages < 10) {
                 return GestureDetector(
                   onTap: _pickGalleryImages,
                   child: Container(
@@ -985,65 +975,28 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
                         color: Colours.lightThemePrimaryColour.withOpacity(0.3),
                       ),
                     ),
-                    child: Icon(
-                      Icons.add,
-                      size: 32,
-                      color: Colours.lightThemePrimaryColour,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          size: 32,
+                          color: Colours.lightThemePrimaryColour,
+                        ),
+                      ],
                     ),
                   ),
                 );
               }
 
-              // Existing images from server
-              if (index < currentImages.length) {
-                final imageUrl = currentImages[index];
-                return Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
-                          color: Colors.grey.shade300,
-                          child: const Icon(Icons.broken_image),
-                        ),
-                      ),
-                    ),
-                    if (!lockNotifier.value)
-                      Positioned(
-                        top: 4,
-                        right: 4,
-                        child: GestureDetector(
-                          onTap: () => _removeGalleryImage(imageUrl),
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.close,
-                              size: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                );
-              }
-
               // New images (not yet uploaded)
-              final newImageIndex = index - currentImages.length;
               return Stack(
                 fit: StackFit.expand,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.file(
-                      _newGalleryImages[newImageIndex],
+                      _newGalleryImages[index],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -1063,7 +1016,8 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
                       child: Text(
                         'NEW',
                         style: TextStyles.paragraphSubTextRegular.white
-                            .copyWith(fontSize: 10),
+                            .copyWith(
+                                fontSize: 10, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -1073,7 +1027,7 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
                       top: 4,
                       right: 4,
                       child: GestureDetector(
-                        onTap: () => _removeNewImage(newImageIndex),
+                        onTap: () => _removeNewImage(index),
                         child: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: const BoxDecoration(
@@ -1092,77 +1046,470 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
               );
             },
           ),
+      ],
+    );
+  }
 
-        // Show deleted images with undo option
-        if (_imagesToDelete.isNotEmpty) ...[
-          const Gap(16),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.red.withOpacity(0.3)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.warning, color: Colors.red, size: 20),
-                    const Gap(8),
-                    Expanded(
-                      child: Text(
-                        '${_imagesToDelete.length} image(s) marked for deletion',
-                        style: TextStyles.paragraphSubTextRegular2
-                            .copyWith(color: Colors.red),
+  // Widget _buildGallerySection() {
+  //   final currentImages = widget.product.images
+  //       .where((url) => !_imagesToDelete.contains(url))
+  //       .toList();
+  //
+  //   final totalImages = currentImages.length + _newGalleryImages.length;
+  //
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Text(
+  //             'Product Gallery',
+  //             style: TextStyles.headingBold1.adaptiveColour(context),
+  //           ),
+  //           Text(
+  //             '$totalImages/10',
+  //             style: TextStyles.paragraphSubTextRegular1.grey,
+  //           ),
+  //         ],
+  //       ),
+  //       const Gap(12),
+  //       if (totalImages == 0)
+  //         GestureDetector(
+  //           onTap: _pickGalleryImages,
+  //           child: Container(
+  //             height: 120,
+  //             width: double.infinity,
+  //             decoration: BoxDecoration(
+  //               color: Colours.lightThemePrimaryColour.withOpacity(0.1),
+  //               borderRadius: BorderRadius.circular(12),
+  //               border: Border.all(
+  //                 color: Colours.lightThemePrimaryColour.withOpacity(0.3),
+  //               ),
+  //             ),
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: [
+  //                 Icon(
+  //                   Icons.add_photo_alternate_outlined,
+  //                   size: 40,
+  //                   color: Colours.lightThemePrimaryColour,
+  //                 ),
+  //                 const Gap(8),
+  //                 Text(
+  //                   'Add Gallery Images',
+  //                   style: TextStyles.paragraphSubTextRegular1.grey,
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         )
+  //       else
+  //         GridView.builder(
+  //           shrinkWrap: true,
+  //           physics: const NeverScrollableScrollPhysics(),
+  //           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //             crossAxisCount: 3,
+  //             crossAxisSpacing: 8,
+  //             mainAxisSpacing: 8,
+  //           ),
+  //           itemCount: totalImages + (totalImages < 10 ? 1 : 0),
+  //           itemBuilder: (context, index) {
+  //             // Add button
+  //             if (index == totalImages && totalImages < 10) {
+  //               return GestureDetector(
+  //                 onTap: _pickGalleryImages,
+  //                 child: Container(
+  //                   decoration: BoxDecoration(
+  //                     color: Colours.lightThemePrimaryColour.withOpacity(0.1),
+  //                     borderRadius: BorderRadius.circular(8),
+  //                     border: Border.all(
+  //                       color: Colours.lightThemePrimaryColour.withOpacity(0.3),
+  //                     ),
+  //                   ),
+  //                   child: Icon(
+  //                     Icons.add,
+  //                     size: 32,
+  //                     color: Colours.lightThemePrimaryColour,
+  //                   ),
+  //                 ),
+  //               );
+  //             }
+  //
+  //             // Existing images from server
+  //             if (index < currentImages.length) {
+  //               final imageUrl = currentImages[index];
+  //               return Stack(
+  //                 fit: StackFit.expand,
+  //                 children: [
+  //                   ClipRRect(
+  //                     borderRadius: BorderRadius.circular(8),
+  //                     child: Image.network(
+  //                       imageUrl,
+  //                       fit: BoxFit.cover,
+  //                       errorBuilder: (_, __, ___) => Container(
+  //                         color: Colors.grey.shade300,
+  //                         child: const Icon(Icons.broken_image),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   if (!lockNotifier.value)
+  //                     Positioned(
+  //                       top: 4,
+  //                       right: 4,
+  //                       child: GestureDetector(
+  //                         onTap: () => _removeGalleryImage(imageUrl),
+  //                         child: Container(
+  //                           padding: const EdgeInsets.all(4),
+  //                           decoration: const BoxDecoration(
+  //                             color: Colors.red,
+  //                             shape: BoxShape.circle,
+  //                           ),
+  //                           child: const Icon(
+  //                             Icons.close,
+  //                             size: 16,
+  //                             color: Colors.white,
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                 ],
+  //               );
+  //             }
+  //
+  //             // New images (not yet uploaded)
+  //             final newImageIndex = index - currentImages.length;
+  //             return Stack(
+  //               fit: StackFit.expand,
+  //               children: [
+  //                 ClipRRect(
+  //                   borderRadius: BorderRadius.circular(8),
+  //                   child: Image.file(
+  //                     _newGalleryImages[newImageIndex],
+  //                     fit: BoxFit.cover,
+  //                   ),
+  //                 ),
+  //                 // NEW badge
+  //                 Positioned(
+  //                   top: 4,
+  //                   left: 4,
+  //                   child: Container(
+  //                     padding: const EdgeInsets.symmetric(
+  //                       horizontal: 6,
+  //                       vertical: 2,
+  //                     ),
+  //                     decoration: BoxDecoration(
+  //                       color: Colors.green,
+  //                       borderRadius: BorderRadius.circular(4),
+  //                     ),
+  //                     child: Text(
+  //                       'NEW',
+  //                       style: TextStyles.paragraphSubTextRegular.white
+  //                           .copyWith(fontSize: 10),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 // Remove button
+  //                 if (!lockNotifier.value)
+  //                   Positioned(
+  //                     top: 4,
+  //                     right: 4,
+  //                     child: GestureDetector(
+  //                       onTap: () => _removeNewImage(newImageIndex),
+  //                       child: Container(
+  //                         padding: const EdgeInsets.all(4),
+  //                         decoration: const BoxDecoration(
+  //                           color: Colors.red,
+  //                           shape: BoxShape.circle,
+  //                         ),
+  //                         child: const Icon(
+  //                           Icons.close,
+  //                           size: 16,
+  //                           color: Colors.white,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //               ],
+  //             );
+  //           },
+  //         ),
+  //
+  //       // Show deleted images with undo option
+  //       if (_imagesToDelete.isNotEmpty) ...[
+  //         const Gap(16),
+  //         Container(
+  //           padding: const EdgeInsets.all(12),
+  //           decoration: BoxDecoration(
+  //             color: Colors.red.withOpacity(0.1),
+  //             borderRadius: BorderRadius.circular(8),
+  //             border: Border.all(color: Colors.red.withOpacity(0.3)),
+  //           ),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Row(
+  //                 children: [
+  //                   const Icon(Icons.warning, color: Colors.red, size: 20),
+  //                   const Gap(8),
+  //                   Expanded(
+  //                     child: Text(
+  //                       '${_imagesToDelete.length} image(s) marked for deletion',
+  //                       style: TextStyles.paragraphSubTextRegular2
+  //                           .copyWith(color: Colors.red),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               const Gap(8),
+  //               Wrap(
+  //                 spacing: 8,
+  //                 runSpacing: 8,
+  //                 children: _imagesToDelete
+  //                     .map(
+  //                       (url) => GestureDetector(
+  //                         onTap: () => _undoRemoveImage(url),
+  //                         child: Container(
+  //                           padding: const EdgeInsets.symmetric(
+  //                             horizontal: 8,
+  //                             vertical: 4,
+  //                           ),
+  //                           decoration: BoxDecoration(
+  //                             color: Colors.red.withOpacity(0.2),
+  //                             borderRadius: BorderRadius.circular(4),
+  //                             border: Border.all(color: Colors.red),
+  //                           ),
+  //                           child: Row(
+  //                             mainAxisSize: MainAxisSize.min,
+  //                             children: [
+  //                               const Icon(Icons.undo,
+  //                                   size: 14, color: Colors.red),
+  //                               const Gap(4),
+  //                               Text(
+  //                                 'Undo',
+  //                                 style: TextStyles.paragraphSubTextRegular2
+  //                                     .copyWith(
+  //                                   color: Colors.red,
+  //                                   fontWeight: FontWeight.w600,
+  //                                 ),
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     )
+  //                     .toList(),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ],
+  //   );
+  // }
+
+  Widget _buildCurrentImagesSection() {
+    return ValueListenableBuilder<Product>(
+        valueListenable: _currentProductNotifier,
+        builder: (context, currentProduct, _) {
+          final currentImages = currentProduct.images
+              .where((url) => !_imagesToDelete.contains(url))
+              .toList();
+
+          final totalActiveImages =
+              currentImages.length + _newGalleryImages.length;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Current Images',
+                    style: TextStyles.headingBold1.adaptiveColour(context),
+                  ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colours.lightThemePrimaryColour.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colours.lightThemePrimaryColour.withOpacity(0.3),
                       ),
                     ),
-                  ],
-                ),
-                const Gap(8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: _imagesToDelete
-                      .map(
-                        (url) => GestureDetector(
-                          onTap: () => _undoRemoveImage(url),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(color: Colors.red),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(Icons.undo,
-                                    size: 14, color: Colors.red),
-                                const Gap(4),
-                                Text(
-                                  'Undo',
-                                  style: TextStyles.paragraphSubTextRegular2
-                                      .copyWith(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
+                    child: Text(
+                      '$totalActiveImages/10',
+                      style: TextStyles.headingSemiBold1.copyWith(
+                        color: Colours.lightThemePrimaryColour,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(12),
+
+              //Displays existing images for the product
+              if (currentProduct.images.isEmpty)
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'No Additional Images to Display',
+                      style: TextStyles.paragraphSubTextRegular1.grey,
+                    ),
+                  ),
+                )
+              else
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                  ),
+                  itemCount: currentProduct.images.length,
+                  itemBuilder: (context, index) {
+                    final imageUrl = currentProduct.images[index];
+                    final isMarkedForDeletion =
+                        _imagesToDelete.contains(imageUrl);
+
+                    return Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        // In the Stack for each image in _buildCurrentImagesSection():
+                        AnimatedOpacity(
+                          duration: const Duration(milliseconds: 300),
+                          opacity: isMarkedForDeletion ? 0.3 : 1.0,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Container(
+                                color: Colors.grey.shade300,
+                                child: const Icon(Icons.broken_image),
+                              ),
                             ),
                           ),
                         ),
-                      )
-                      .toList(),
+
+                        // ClipRRect(
+                        //   borderRadius: BorderRadius.circular(8),
+                        //   child: Opacity(
+                        //     opacity: isMarkedForDeletion ? 0.3 : 1.0,
+                        //     child: Image.network(
+                        //       imageUrl,
+                        //       fit: BoxFit.cover,
+                        //       errorBuilder: (_, __, ___) => Container(
+                        //         color: Colors.grey.shade300,
+                        //         child: const Icon(Icons.broken_image),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+
+                        //An Overlay for marked images
+                        if (isMarkedForDeletion)
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.black.withOpacity(0.4),
+                            ),
+                          ),
+
+                        //An Action button for the 'x' or '+'
+                        if (!lockNotifier.value)
+                          Positioned(
+                            top: 4,
+                            right: 4,
+                            child: GestureDetector(
+                              onTap: () {
+                                if (isMarkedForDeletion) {
+                                  //Try to restore the image
+                                  _restoreDeletedImage(imageUrl);
+                                } else {
+                                  //Mark Image for Deletion
+                                  _removeGalleryImage(imageUrl);
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: isMarkedForDeletion
+                                      ? Colors.green
+                                      : Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  isMarkedForDeletion ? Icons.add : Icons.close,
+                                  size: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        //Marked badge for images marked for deletion
+                        if (isMarkedForDeletion)
+                          Positioned(
+                            bottom: 4,
+                            left: 4,
+                            right: 4,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                '\'+\' to Restore',
+                                textAlign: TextAlign.center,
+                                style: TextStyles.paragraphSubTextRegular.white
+                                    .copyWith(
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
-              ],
-            ),
-          ),
-        ],
-      ],
-    );
+            ],
+          );
+        });
+  }
+
+  //To Restore created images
+  void _restoreDeletedImage(String imageUrl) {
+    if (lockNotifier.value) return;
+
+    final currentActiveImages =
+        (_currentProductNotifier.value.images.length - _imagesToDelete.length) +
+            _newGalleryImages.length;
+
+    //Check to see if restoring an image would exceed the length
+    if (currentActiveImages >= 10) {
+      CoreUtils.showSnackBar(context,
+          message: 'Cannot restore image. Maximum of 10 images reached!');
+      return;
+    }
+
+    //Restore the image
+    setState(() {
+      _imagesToDelete.remove(imageUrl);
+    });
+    _checkIfChangesExist();
   }
 }

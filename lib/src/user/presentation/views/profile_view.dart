@@ -237,21 +237,24 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                                 .adaptiveColour(context),
                           ),
                         ),
-                        //Place the vendor's products here for them to be able to edit the product details here.
+                        // IF user is a vendor, Place the vendor's products here for them to be able to edit the product details here.
                         //Display for ALL of an vendor's their products here
-                        Text(
-                          'Complete Product Catalogue: ',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyles.headingBold.copyWith(
-                              fontSize: 20,
-                              color: isAutoPart
-                                  ? Colours.lightThemePrimaryColour
-                                  : Colours.lightThemeSecondaryColour),
-                        ),
+                        currentUser!.isBusiness ? Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            'Complete Product Catalogue: ',
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyles.headingBold.copyWith(
+                                fontSize: 15,
+                                color: isAutoPart
+                                    ? Colours.lightThemePrimaryColour
+                                    : Colours.lightThemeSecondaryColour),
+                          ),
+                        ): const SizedBox.shrink(),
 
-                        GestureDetector(
+                        currentUser!.isBusiness ? GestureDetector(
                           onTap: () => context.push(VendorProductsView.path,
                               extra: {
                                 'vendor': currentUser,
@@ -300,7 +303,7 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                               ],
                             ),
                           ),
-                        ),
+                        ) : const SizedBox.shrink(),
                       ],
                     );
                   },

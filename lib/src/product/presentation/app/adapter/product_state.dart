@@ -128,5 +128,5 @@ final class ProductImagesDeleted extends ProductState {
   final List<String> remainingImages;
 
   @override
-  List<Object> get props => [remainingImages];
+  List<Object?> get props => [...remainingImages]; //So now it compares by items in list and not with the reference by name of overall list
 }

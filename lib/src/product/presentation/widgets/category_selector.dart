@@ -116,7 +116,7 @@ class _CategorySelectorState extends ConsumerState<CategorySelector> {
               final category = categories[index - 1];
               final selected = selectedCategory == category;
               return ChoiceChip(
-                label: Text(category.name!),
+                label: Text(category.name == null ? '' : category.name!),
                 labelStyle: selected
                     ? TextStyles.headingSemiBold1.white
                     : TextStyles.paragraphSubTextRegular1.grey,
