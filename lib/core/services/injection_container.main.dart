@@ -16,18 +16,20 @@ Future<void> init() async {
 Future<void> _categoryUploadInit() async {
   sl
     ..registerLazySingleton(() => CategoryUpload(sl()))
-    ..registerLazySingleton<CategoryUploadRepository>(() => CategoryUploadRepositoryImplementation(sl()))
+    ..registerLazySingleton<CategoryUploadRepository>(
+        () => CategoryUploadRepositoryImplementation(sl()))
     ..registerLazySingleton<CategoryUploadRemoteDataSource>(
-          () => CategoryUploadRemoteDataSourceImplementation(sl()),
+      () => CategoryUploadRemoteDataSourceImplementation(sl()),
     );
 }
 
 Future<void> _uploadInit() async {
   sl
     ..registerLazySingleton(() => Upload(sl()))
-    ..registerLazySingleton<UploadRepository>(() => UploadRepositoryImplementation(sl()))
+    ..registerLazySingleton<UploadRepository>(
+        () => UploadRepositoryImplementation(sl()))
     ..registerLazySingleton<UploadRemoteDataSource>(
-        () => UploadRemoteDataSourceImplementation(sl()),
+      () => UploadRemoteDataSourceImplementation(sl()),
     );
 }
 
@@ -42,7 +44,7 @@ Future<void> _cartInit() async {
     ..registerLazySingleton(() => InitiateCheckout(sl()))
     ..registerLazySingleton<CartRepo>(() => CartRepoImpl(sl()))
     ..registerLazySingleton<CartRemoteDataSrc>(
-          () => CartRemoteDataSrcImpl(sl()),
+      () => CartRemoteDataSrcImpl(sl()),
     );
 }
 
@@ -53,7 +55,7 @@ Future<void> _wishlistInit() async {
     ..registerLazySingleton(() => RemoveFromWishlist(sl()))
     ..registerLazySingleton<WishlistRepo>(() => WishlistRepoImpl(sl()))
     ..registerLazySingleton<WishlistRemoteDataSrc>(
-          () => WishlistRemoteDataSrcImpl(sl()),
+      () => WishlistRemoteDataSrcImpl(sl()),
     );
 }
 
@@ -70,13 +72,15 @@ Future<void> _productInit() async {
     ..registerLazySingleton(() => LeaveReview(sl()))
     ..registerLazySingleton(() => SearchAllProducts(sl()))
     ..registerLazySingleton(() => SearchByCategory(sl()))
+    ..registerLazySingleton(() => SearchCategories(sl()))
     ..registerLazySingleton(() => UpdateProduct(sl()))
     ..registerLazySingleton(() => DeleteProduct(sl()))
     ..registerLazySingleton(() => DeleteProductImages(sl()))
     ..registerLazySingleton(() => SearchByCategoryAndGenderAgeCategory(sl()))
-    ..registerLazySingleton<ProductRepo>(() => ProductRepoImpl(sl()))
+    ..registerLazySingleton<ProductRepo>(() => ProductRepoImpl(
+        sl<ProductRemoteDataSrc>(), sl<CategoryUploadRemoteDataSource>()))
     ..registerLazySingleton<ProductRemoteDataSrc>(
-          () => ProductRemoteDataSrcImpl(sl()),
+      () => ProductRemoteDataSrcImpl(sl()),
     );
 }
 
@@ -87,7 +91,7 @@ Future<void> _userInit() async {
     ..registerLazySingleton(() => UpdateUser(sl()))
     ..registerLazySingleton<UserRepo>(() => UserRepoImpl(sl()))
     ..registerLazySingleton<UserRemoteDataSrc>(
-          () => UserRemoteDataSrcImpl(sl()),
+      () => UserRemoteDataSrcImpl(sl()),
     );
 }
 
@@ -100,9 +104,9 @@ Future<void> _authInit() async {
     ..registerLazySingleton(() => VerifyOTP(sl()))
     ..registerLazySingleton(() => VerifyToken(sl()))
     ..registerLazySingleton<AuthRepository>(
-            () => AuthRepositoryImplementation(sl()))
+        () => AuthRepositoryImplementation(sl()))
     ..registerLazySingleton<AuthRemoteDataSource>(
-            () => AuthRemoteDataSourceImplementation(sl()))
+        () => AuthRemoteDataSourceImplementation(sl()))
     ..registerLazySingleton(http.Client.new);
 }
 

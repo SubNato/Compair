@@ -5,10 +5,10 @@ import 'package:compair_hub/core/extensions/text_style_extensions.dart';
 import 'package:compair_hub/core/res/styles/colours.dart';
 import 'package:compair_hub/core/res/styles/text.dart';
 import 'package:compair_hub/core/utils/core_utils.dart';
-import 'package:compair_hub/src/product/data/models/product_model.dart';
 import 'package:compair_hub/src/product/domain/entities/product.dart';
 import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter.dart';
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
+import 'package:compair_hub/src/product/presentation/widgets/category_search_box.dart';
 import 'package:compair_hub/src/product/presentation/widgets/category_selector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +69,9 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
   //Product Type
   String? _selectedProductType;
   String? _selectedGenderAgeCategory;
+
+  //For Category ID
+  String? _selectedCategoryId;
 
   late final ValueNotifier<Product> _currentProductNotifier;
 
@@ -150,9 +153,8 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
 
           _currentProductNotifier.value =
               _currentProductNotifier.value.copyWith(
-                images: List<String>.from(next.remainingImages),
-              );
-
+            images: List<String>.from(next.remainingImages),
+          );
 
           //Not the best method, but works for now
           // final product = _currentProductNotifier.value as ProductModel;
@@ -494,9 +496,10 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
     });
 
     // Reset category
-    ref
+    /*ref
         .read(categoryNotifierProvider(categoryFamilyKey).notifier)
-        .changeCategory(_currentProductNotifier.value.category);
+        .changeCategory(_currentProductNotifier.value.category);*/
+    _selectedCategoryId = "";
 
     // Clear temp image state
     _clearTempImageState();
@@ -831,6 +834,8 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
   }
 
   Widget _buildCategorySection() {
+    bool catName = false;
+    if (_currentProductNotifier.value.category.name != null) catName = true;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -838,10 +843,53 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
           'Category *',
           style: TextStyles.headingBold1.adaptiveColour(context),
         ),
-        const Gap(12),
-        CategorySelector(
-          categoryNotifierFamilyKey: categoryFamilyKey,
+        const Gap(10),
+        Row(
+          children: [
+            Text(
+              'Current Category: ',
+              style: TextStyles.headingMedium4.adaptiveColour(context),
+            ),
+            Flexible(
+              fit: FlexFit.loose,
+              child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colours.lightThemePrimaryColour.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Colours.lightThemePrimaryColour,
+                      width: 1,
+                    ),
+                  ),
+                  child: Tooltip(
+                      message: catName ? _currentProductNotifier.value.category.name! : "",
+                      waitDuration: const Duration(milliseconds: 300),
+                      showDuration: const Duration(seconds: 3),
+                      child: Text(
+                        catName ? _currentProductNotifier.value.category.name! : "",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                      ))),
+            )
+          ],
         ),
+        const Gap(5),
+        CategorySearchBox(
+            tag: true,
+            onSelected: (selectedCategory) {
+              setState(() {
+                _selectedCategoryId = selectedCategory.id;
+                updateContainer['category'] = selectedCategory.id;
+              });
+            }),
+        /*CategorySelector(
+          categoryNotifierFamilyKey: categoryFamilyKey,
+        ),*/
       ],
     );
   }

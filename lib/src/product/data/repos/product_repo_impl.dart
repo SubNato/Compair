@@ -1,3 +1,5 @@
+import 'package:compair_hub/src/product/data/models/category_model.dart';
+import 'package:compair_hub/src/upload/category/data/datasources/category_upload_remote_datasource.dart';
 import 'package:dartz/dartz.dart';
 import 'package:compair_hub/core/errors/exceptions.dart';
 import 'package:compair_hub/core/errors/failures.dart';
@@ -9,9 +11,10 @@ import 'package:compair_hub/src/product/domain/entities/review.dart';
 import 'package:compair_hub/src/product/domain/repos/product_repo.dart';
 
 class ProductRepoImpl implements ProductRepo {
-  const ProductRepoImpl(this._remoteDataSource);
+  const ProductRepoImpl(this._remoteDataSource, this._catRemoteDataSource);
 
   final ProductRemoteDataSrc _remoteDataSource;
+  final CategoryUploadRemoteDataSource _catRemoteDataSource;
 
   @override
   ResultFuture<List<ProductCategory>> getCategories({String? type}) async {
@@ -181,6 +184,22 @@ class ProductRepoImpl implements ProductRepo {
         page: page,
         type: type,
         parish: parish,
+      );
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+    }
+  }
+
+  @override
+  ResultFuture<List<ProductCategory>> searchCategories({
+    required String query,
+    String? type,
+  }) async {
+    try {
+      final result = await _catRemoteDataSource.searchCategories(
+        query: query,
+        type: type,
       );
       return Right(result);
     } on ServerException catch (e) {

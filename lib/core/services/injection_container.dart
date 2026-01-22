@@ -35,6 +35,7 @@ import 'package:compair_hub/src/product/domain/usecases/leave_review.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_all_products.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_by_category.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_by_category_and_gender_age_category.dart';
+import 'package:compair_hub/src/product/domain/usecases/search_categories.dart';
 import 'package:compair_hub/src/product/domain/usecases/update_product.dart';
 import 'package:compair_hub/src/upload/category/data/datasources/category_upload_remote_datasource.dart';
 import 'package:compair_hub/src/upload/category/data/repositories/category_upload_repo_impl.dart';

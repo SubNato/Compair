@@ -59,6 +59,11 @@ abstract interface class ProductRepo {
 
   ResultFuture<ProductCategory> getCategory(String categoryId);
 
+  ResultFuture<List<ProductCategory>> searchCategories({
+    required String query,
+    String? type,
+  });
+
   ResultFuture<void> leaveReview({
     required String productId,
     required String userId,

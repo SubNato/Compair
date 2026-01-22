@@ -477,7 +477,8 @@ class _RelatedProductsList extends StatelessWidget {
                   case ProductsFetched(:final products)) {
                 final filteredProducts = products
                     .where((product) => product.id != currentProductId)
-                    .toList();
+                    .toList()
+                    ..shuffle();
 
                 if (filteredProducts.isEmpty) {
                   return Center(

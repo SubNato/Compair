@@ -4,7 +4,7 @@ class ProductCategory extends Equatable {
   const ProductCategory({
     required this.id,
     this.name,
-    this.colour,
+    this.color,
     this.image,
     this.type,
   });
@@ -15,10 +15,10 @@ class ProductCategory extends Equatable {
 
   final String id;
   final String? name;
-  final String? colour;
+  final String? color;
   final String? image;
   final String? type;
 
   @override
-  List<Object?> get props => [id, name, colour, image, type];
+  List<Object?> get props => [id, name, color, image, type];
 }

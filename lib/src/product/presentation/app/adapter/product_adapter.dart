@@ -16,6 +16,7 @@ import 'package:compair_hub/src/product/domain/usecases/leave_review.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_all_products.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_by_category.dart';
 import 'package:compair_hub/src/product/domain/usecases/search_by_category_and_gender_age_category.dart';
+import 'package:compair_hub/src/product/domain/usecases/search_categories.dart';
 import 'package:compair_hub/src/product/domain/usecases/update_product.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,6 +46,7 @@ class ProductAdapter extends _$ProductAdapter {
     _deleteProductImages = sl<DeleteProductImages>();
     _searchByCategoryAndGenderAgeCategory =
         sl<SearchByCategoryAndGenderAgeCategory>();
+    _searchCategories = sl<SearchCategories>();
     return const ProductInitial();
   }
 
@@ -63,15 +65,16 @@ class ProductAdapter extends _$ProductAdapter {
   late DeleteProduct _deleteProduct;
   late DeleteProductImages _deleteProductImages;
   late SearchByCategoryAndGenderAgeCategory
-      _searchByCategoryAndGenderAgeCategory;
+  _searchByCategoryAndGenderAgeCategory;
+  late SearchCategories _searchCategories;
 
   Future<void> getCategories({String? type}) async {
     state = const FetchingCategories();
     final result = await _getCategories(GetCategoriesParams(type: type));
 
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (categories) => state = CategoriesFetched(categories),
+          (failure) => state = ProductError(failure.errorMessage),
+          (categories) => state = CategoriesFetched(categories),
     );
   }
 
@@ -79,8 +82,8 @@ class ProductAdapter extends _$ProductAdapter {
     state = const FetchingCategory();
     final result = await _getCategory(categoryId);
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (category) => state = CategoryFetched(category),
+          (failure) => state = ProductError(failure.errorMessage),
+          (category) => state = CategoryFetched(category),
     );
   }
 
@@ -93,8 +96,8 @@ class ProductAdapter extends _$ProductAdapter {
       type: type,
     ));
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (products) => state = ProductsFetched(products),
+          (failure) => state = ProductError(failure.errorMessage),
+          (products) => state = ProductsFetched(products),
     );
   }
 
@@ -107,8 +110,8 @@ class ProductAdapter extends _$ProductAdapter {
       type: type,
     ));
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (products) => state = ProductsFetched(products),
+          (failure) => state = ProductError(failure.errorMessage),
+          (products) => state = ProductsFetched(products),
     );
   }
 
@@ -116,8 +119,8 @@ class ProductAdapter extends _$ProductAdapter {
     state = const FetchingProduct();
     final result = await _getProduct(productId);
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (product) => state = ProductFetched(product),
+          (failure) => state = ProductError(failure.errorMessage),
+          (product) => state = ProductFetched(product),
     );
   }
 
@@ -130,8 +133,8 @@ class ProductAdapter extends _$ProductAdapter {
       GetProductReviewsParams(productId: productId, page: page),
     );
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (reviews) {
+          (failure) => state = ProductError(failure.errorMessage),
+          (reviews) {
         state = ReviewsFetched(reviews);
       },
     );
@@ -143,8 +146,8 @@ class ProductAdapter extends _$ProductAdapter {
     final result = await _getProducts(GetProductsParams(
         page: page, type: type, owner: owner, parish: parish));
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (products) => state = ProductsFetched(products),
+          (failure) => state = ProductError(failure.errorMessage),
+          (products) => state = ProductsFetched(products),
     );
   }
 
@@ -160,8 +163,8 @@ class ProductAdapter extends _$ProductAdapter {
           categoryId: categoryId, page: page, type: type, parish: parish),
     );
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (products) => state = ProductsFetched(products),
+          (failure) => state = ProductError(failure.errorMessage),
+          (products) => state = ProductsFetched(products),
     );
   }
 
@@ -181,8 +184,8 @@ class ProductAdapter extends _$ProductAdapter {
       ),
     );
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (_) => state = const ProductReviewed(),
+          (failure) => state = ProductError(failure.errorMessage),
+          (_) => state = const ProductReviewed(),
     );
   }
 
@@ -202,8 +205,8 @@ class ProductAdapter extends _$ProductAdapter {
       ),
     );
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (products) => state = ProductsFetched(products),
+          (failure) => state = ProductError(failure.errorMessage),
+          (products) => state = ProductsFetched(products),
     );
   }
 
@@ -217,11 +220,15 @@ class ProductAdapter extends _$ProductAdapter {
     state = const Searching();
     final result = await _searchByCategory(
       SearchByCategoryParams(
-          query: query, categoryId: categoryId, page: page, type: type, parish: parish),
+          query: query,
+          categoryId: categoryId,
+          page: page,
+          type: type,
+          parish: parish),
     );
     result.fold(
-      (failure) => state = ProductError(failure.errorMessage),
-      (products) => state = ProductsFetched(products),
+          (failure) => state = ProductError(failure.errorMessage),
+          (products) => state = ProductsFetched(products),
     );
   }
 
@@ -243,8 +250,24 @@ class ProductAdapter extends _$ProductAdapter {
       ),
     );
     result.fold(
+          (failure) => state = ProductError(failure.errorMessage),
+          (products) => state = ProductsFetched(products),
+    );
+  }
+
+  Future<void> searchCategories({
+    required String query,
+    String? type,
+  }) async {
+    state = const SearchingCategories();
+
+    final result = await _searchCategories(
+      SearchCategoriesParams(query: query, type: type),
+    );
+
+    result.fold(
       (failure) => state = ProductError(failure.errorMessage),
-      (products) => state = ProductsFetched(products),
+      (categories) => state = CategoriesSearched(categories),
     );
   }
 
@@ -260,8 +283,8 @@ class ProductAdapter extends _$ProductAdapter {
       ),
     );
     result.fold(
-        (failure) => state = ProductError(failure.errorMessage),
-        (product) => state = ProductUpdated(product),
+          (failure) => state = ProductError(failure.errorMessage),
+          (product) => state = ProductUpdated(product),
     );
   }
 

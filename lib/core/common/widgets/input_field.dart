@@ -28,6 +28,7 @@ class InputField extends StatelessWidget {
     this.suffixIconConstraints,
     this.onTapOutside,
     this.onSubmitted,
+    this.onChanged,
   });
 
   final Widget? suffixIcon;
@@ -49,6 +50,7 @@ class InputField extends StatelessWidget {
   final BoxConstraints? suffixIconConstraints;
   final ValueChanged<PointerDownEvent>? onTapOutside;
   final ValueChanged<String>? onSubmitted;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +101,7 @@ class InputField extends StatelessWidget {
         return validator?.call(value);
       }
           : validator,
+      onChanged: onChanged,
     );
   }
 }

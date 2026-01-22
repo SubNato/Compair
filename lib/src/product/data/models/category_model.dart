@@ -4,7 +4,7 @@ class ProductCategoryModel extends ProductCategory {
   const ProductCategoryModel({
     required super.id,
     super.name,
-    super.colour,
+    super.color,
     super.image,
     super.type,
   });
@@ -15,7 +15,7 @@ class ProductCategoryModel extends ProductCategory {
     return {
       'id': id,
       'name': name,
-      'colour': colour,
+      'color': color,
       'image': image,
       'type': type
     };
@@ -25,7 +25,7 @@ class ProductCategoryModel extends ProductCategory {
     return ProductCategoryModel(
       id: map['id'] as String? ?? map['_id'] as String,
       name: map['name'] as String?,
-      colour: map['colour'] as String?,
+      color: map['color'] as String?,
       image: map['image'] as String?,
       type: map['type'] as String?,
     );
@@ -34,14 +34,14 @@ class ProductCategoryModel extends ProductCategory {
   ProductCategoryModel copyWith({
     String? id,
     String? name,
-    String? colour,
+    String? color,
     String? image,
     String? type,
   }) {
     return ProductCategoryModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      colour: colour ?? this.colour,
+      color: color ?? this.color,
       image: image ?? this.image,
       type: type ?? this.type,
     );

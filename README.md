@@ -30,10 +30,7 @@ If you are trying to login, and all you get is a spinning indicator, it is likel
 Added this line in the android/app/src/main/AndroidManifest.xml android manifest file: android:enableOnBackInvokedCallback="true"
 
 
-//TODOs: 
-
--Fix the Register screen to accept the parish as well to send to the database ✅
-
+//TODOs:
 -Create Logic for businesses to register on the register page. Eg, request to be a business
 by pressing a button or a slider? Send the flag for backend, then do it manually as an admin?
 Or on clicking Register, you give the option as a regular user or as a business! (Might be better to seperate logic)
@@ -45,7 +42,6 @@ Or, just let it check the list of registered businesses on frontend to see if it
     FIX: IT IS ACTUALLY THE STYLE, CHANGEABLE IN "app_bar_bottom class" line 18.
 
 -Fix the errors popping up on login and screen changes
-changed as String map['_id'] as String to as String? ?? map['_id'] as String ✅
 
 -Create the comparing feature(Which si the main selling part of the app)
 
@@ -81,9 +77,6 @@ changed as String map['_id'] as String to as String? ?? map['_id'] as String ✅
 
 - Remember your router.main.dart files
 - NEXTjs learn it for web apps. React Native. Laravel/ PHP for work
-- Fix the upload banner (Not going into dark mode)) ✅
-- The text color is not changing with the dark mode, in category upload ✅
-res issue with cron_job ✅
 
 Cat upload and product upload, fully functional!
 
@@ -122,7 +115,6 @@ Cat upload and product upload, fully functional!
 
 
 IMPORTANT FEATURES TO ADD!
-- Create the "COMPAIR FUNCTION" in the product details view section! ✅
 - Create new controllers and routes in order to get either FURNITURE/APPLIANCES OR AUTOPARTS on APP OPENING, so that users can choose which to shop on the app!
 - Create a feature on the mobile app for only admins to set a company as a business or remove their privileges as a business!!!!!!! So handle seeing their isBusiness status, and toggling the value to send to backend from the frontend!
 The backend implementation is ready. Route with middleware: router.patch('/users/:id/business', verifyAdminUser, usersController.setBusiness);
@@ -139,36 +131,21 @@ In the category_upload_remote_datasource? research it!
 
 2 seperate logos for compairing the autoparts vs. furniture/appliance.
 
-Not getting the products under the Car Guys Unite Category section ✅
-
-Add a button to surround retry in the categories on the home page above pop. products when something goes wrong ✅
 (maybe shut off server to get the error again)
 
 No required fields and yet it says to fill in required fields. (Check all form instances)
 
 Replace the beginning app splash screen
 
-Add a home button to the STACK (products preview page) IF they have opened like tons of compairs, else, let it be just the back button ✅
 Name is not label 
 
 When you log on from a different IP from what the pictures were uploaded from, then the photos don't show. Why?
 
 How can I make the compare button and then the logo jump? On the Top of the product image? Or where?
 
-Already added to cart, then show something else like a green tick button. ✅
-
-Recurring error when trying to update the amount of something in a cart ✅
-
-Adding a product to the cart that is already there. 1 product more than 1 times. 1 product like 10 times. (FIXED BY CHANGING THE BUTTON WHEN THE PRODUCT IS ALREADY IN THE CART) ✅
-
 Fix up the email that they get from us OTP stuff
 
 Checkout not working, crashes the server!!!!!!!!!!!!!
-
-When searching for a category by the list of category user the search bar, does not work.
-
-Feature idea, when you hit the compare logo, it changes the products from autoparts to furniture/appliances and viceversa.
-And it additionally switches the colors. From blue 'com' and orange 'pare', to orange 'com' and blue 'pare'
 
 The Git push before November 5, 2025 works perfectly. This is before the additions to the product files 
 that helps with changing the products type (Auto Parts vs. furniture/ appliance).
@@ -177,24 +154,10 @@ extra is sent to the GoRouter through the 'categories section' and 'compare_view
 
 TOP PRIORITY
 -------------
-Work on fetching Appliances-Furniture vs. autoparts. ⬅️
-    - Backend completely implemented for this feature. It works by using a query for the type on the products table in the database. ✔️
-    - So just send a query for finding a autopart vs furniture-appliance! ✔️
-    - Get it done next ✔️
-    - Add a physical button to toggle product types. ✔️
-    - Add type to the UPLOADS of a category and a product. ️✔️
-    - Add the type to the categories search in Explore View. ✔️
-    - Add the type of the returned products in the Explore View. ✔️
+Work on fetching Appliances-Furniture vs. autoparts. ✅
     - A pop up message on every app turn on reminding them that they can search also for the other IF you allow persisting states.
 Bugs:
-    - The type does not persist after you navigate to wishlist and back to home. Anytime you go to wishlist and navigate to anywhere else it happens.
-    - The drawer change option does not work on the explore page for the category selector slider. ✔️
-
-Fix the wishlist crashing issue. ✔️
-
-Fix add to cart from wishlist. ✔️
-
-Fix the 'In Cart!' button when the product is already in the cart so that they cannot add it more than once to cart. ✔️
+    - The type does not persist after you navigate to somewhere. Probably navigating from wishlist to somewhere else. Probably, not sure tho.
 
 FIX THE PAGINATEDPRODUCTSVIEW for the proper assertions. refer to line 24-27. Make updates to add in the parish assersions.
 
@@ -204,24 +167,9 @@ IF THE TOKEN IS UNAUTHORIZED OR REVOKED, THEN TAKE THEM BACK TO THE LOGIN PAGE. 
 
 SEARCH by a company? or would that cause like unfair biases? Like they just continue to look for their favorites? Not doing so lets them just browse by any. THOUGHTS?
 
-Implement a vendor profile display so that users can see who is selling what. And list all of their products in their profile section. ✔️
-
-Upgraded search view to include a search by parish feature. Additionally, immediate search when a category or parish is selected. ✔️ 
-
-Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY. (Works, but please implement a feature to remove the profile picture without replacing it. Literally remove it) ✔️
-
-Very important -> Remember to implement a filter by parish feature ✅
-
-Protect the upload on the backend. If you are not a business nor admin, no user uploads.
-
 ALL BUSINESSES MUST have a profile picture, no removal of profile pictures.
 
 In the backend add the address fields of the user. ORRRRRRRRRRRRRRRRRRR Just make BUSINESSES add their full info. DO IT FOR USERS SO THAT THEY CAN GET CUSTOM ITEMS. YEAAAAAAAAAAAAAAAAA
-
-Let businesses see their own products with the option of deleting them. _<- Now at this_
-(Create a new product details page dedicated to the editing of a SPECIFIC PRODUCT. So when the tile is clicked, send the tag and check IF it is coming from the profile view, then show that one.)
-
-Display all of the that specific vendor's product or just leave it be? So that they don't just shop them and give competition a chance? Naaaah do it! YES! DID IT 😁✅
 
 Look into the logic for the users purchasing goods. How'd they get it, verified payments etc.
 
@@ -229,9 +177,6 @@ Logic for users seeing the company that is selling it. (Still using badges for t
 Do the above to ensure that they can gain trust of the company. Place company name at the top of the product view page. With info and address etc.
 
 Improve the logic to check if the product is in the cart. It is running many times.
-
-Click the category tab and when they do, it switches to the category.
-
 
 Put in safety measures, so that they can't spam stuff.
 
@@ -246,14 +191,7 @@ Adding the logic on the registration page for checking if someone wants to be co
 
 Changing the UI Ads and Posters on first time screen.
 
-Search for a specific Category seeing as though there can be many at once.
-
 Request a category feature?
-
-Display all images for them to choose which to remove? (product edit view) ⬅️ CURRENT TASK
-
-So now when you try to upload a new image from the edit product screen, it is sent as an octet when it is an actual jpg or jpeg etc. Needs to be fixed
-Everything else works tho when uploading. ⬅️ CON-CURRENT TASK
 
 Look into is the CRON Job on backend actually being used? You added teh delete product image instantly, which may have bypassed it.
 
@@ -275,11 +213,18 @@ Fix: ======== Exception caught by scheduler library ============================
 The following assertion was thrown during a scheduler callback:
 Looking up a deactivated widget's ancestor is unsafe.
 
-FIX: For the Category in the vendor edit view, sometimes throws a null check operator error red. FIX that
-
 FIX: What is the default for the images when they cannot be displayed for whatever reason on frontend.
 
+FIX: Refactor edit product view and make it cleaner by removing some of the functions and placing them in widgets and then calling them back in the product edit view page.
+
+Add the search for category to teh discover page so that if the user knows the category, they can type it in. Maybe like a search icon beside all? 
+
+FIX: Take out all of the print statements in wishlist.
 At this point the state of the widget's element tree is no longer stable.
+
+FIX: For long term, Add an endpoint that actually shuffles teh products for real randomness, or that shuffles more of one product when a business pays for them to be recommended more.
+
+Recheck the logic for popular and new products.
 
 To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
 
@@ -337,6 +282,13 @@ When the exception was thrown, this was the stack:
 
 
 
+
+
+
+
+
+
+
 CODING NOTES:
 
 Easily expandable to include hardware stuff as well. Do it!!!!!
@@ -350,3 +302,123 @@ Implemented, but nothing is being sent in as the type when there is already a gl
 In ALL things, pray about it. For the right features to add. The right ways to add then. The right time to get things done. 
 
 God will work it out for our good :)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**Completed aspects of compare by personal notes:** 
+
+Display all images for them to choose which to remove? (product edit view) ✅
+
+So now when you try to upload a new image from the edit product screen, it is sent as an octet when it is an actual jpg or jpeg etc. Needs to be fixed
+Everything else works tho when uploading. ✅
+
+Display all of the that specific vendor's product or just leave it be? So that they don't just shop them and give competition a chance? Naaaah do it! YES! DID IT 😁✅
+
+Let businesses see their own products with the option of deleting them. ✅
+(Create a new product details page dedicated to the editing of a SPECIFIC PRODUCT. So when the tile is clicked, send the tag and check IF it is coming from the profile view, then show that one.) ✅
+
+Implement a vendor profile display so that users can see who is selling what. And list all of their products in their profile section. ✅
+
+Upgraded search view to include a search by parish feature. Additionally, immediate search when a category or parish is selected. ✅
+
+Implement a profile picture upload for BUSINESSES AND ADMINS OR SUPER ADMIN ONLY. (Works, but please implement a feature to remove the profile picture without replacing it. Literally remove it) ✅
+
+Very important -> Remember to implement a filter by parish feature ✅
+
+Protect the upload on the backend. If you are not a business nor admin, no user uploads. ✅
+
+The drawer change option does not work on the explore page for the category selector slider. ✅
+
+Fix the wishlist crashing issue. ✅
+
+Fix add to cart from wishlist. ✅
+
+Fix the 'In Cart!' button when the product is already in the cart so that they cannot add it more than once to cart. ✅
+
+The type does not persist after you navigate to wishlist and back to home. Anytime you go to wishlist and navigate to anywhere else it happens. ✅
+
+Work on fetching Appliances-Furniture vs. autoparts. ✅
+- Backend completely implemented for this feature. It works by using a query for the type on the products table in the database. ✅
+- So just send a query for finding a autopart vs furniture-appliance! ✅
+- Get it done next ✅
+- Add a physical button to toggle product types. ✅
+- Add type to the UPLOADS of a category and a product. ️✅
+- Add the type to the categories search in Explore View. ✅
+- Add the type of the returned products in the Explore View. ✅
+
+When searching for a category by the list of category user the search bar, does not work. WORKS ✅
+
+Feature idea, when you hit the compare logo, it changes the products from autoparts to furniture/appliances and viceversa. ✅
+And it additionally switches the colors. From blue 'com' and orange 'pare', to orange 'com' and blue 'pare' ✅
+
+Already added to cart, then show something else like a green tick button. ✅
+
+Recurring error when trying to update the amount of something in a cart ✅
+
+Adding a product to the cart that is already there. 1 product more than 1 times. 1 product like 10 times. (FIXED BY CHANGING THE BUTTON WHEN THE PRODUCT IS ALREADY IN THE CART) ✅
+
+Add a home button to the STACK (products preview page) IF they have opened like tons of compairs, else, let it be just the back button ✅
+
+Not getting the products under the Car Guys Unite Category section ✅
+
+Add a button to surround retry in the categories on the home page above pop. products when something goes wrong ✅
+
+Create the "COMPAIR FUNCTION" in the product details view section! ✅
+
+- Fix the upload banner (Not going into dark mode)) ✅
+- The text color is not changing with the dark mode, in category upload ✅
+
+res issue with cron_job ✅
+
+changed as String map['_id'] as String to as String? ?? map['_id'] as String ✅
+
+Fix the Register screen to accept the parish as well to send to the database ✅
+
+FIX: Categories coming in as null for editing products. FIXED!!!!!!! ✅
+
+Search for a specific Category seeing as though there can be many at once. ✅
+
+Click the category tab and when they do, it switches to the category. ✅
+
+FIX: For the Category in the vendor edit view, sometimes throws a null check operator error red. FIX that. FIXED!!!!! By replacing the old category display with a new searchable category widget, that allows the user to search for a category instead of scrolling through all of them manually. ✅
+
+FIX: Counter for Current Images in edit product view. ✅
+
+FIX: Randomize the returned Compare products ✅

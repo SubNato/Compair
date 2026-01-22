@@ -25,6 +25,7 @@ class VerticalLabelField extends StatelessWidget {
     this.contentPadding,
     this.prefixIcon,
     this.focusNode,
+    this.onChanged,
   });
 
   final String label;
@@ -44,6 +45,7 @@ class VerticalLabelField extends StatelessWidget {
   final FocusNode? focusNode;
   final int mainFieldFlex;
   final int prefixFlex;
+  final ValueChanged<String>? onChanged; //If you need to add debounce functionality
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +78,7 @@ class VerticalLabelField extends StatelessWidget {
                 enabled: enabled,
                 readOnly: readOnly,
                 contentPadding: contentPadding,
+                onChanged: onChanged,
               ),
             ),
           ],

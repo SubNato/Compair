@@ -9,6 +9,7 @@ import 'package:compair_hub/core/utils/core_utils.dart';
 import 'package:compair_hub/core/utils/enums/product_type.dart';
 import 'package:compair_hub/core/utils/product_type_selector.dart';
 import 'package:compair_hub/src/product/domain/entities/category.dart';
+import 'package:compair_hub/src/product/presentation/widgets/category_search_box.dart';
 import 'package:compair_hub/src/upload/product/presentation/app/adapter/upload_adapter.dart';
 import 'package:compair_hub/src/upload/product/presentation/app/category/category_adapter.dart';
 import 'package:compair_hub/src/upload/product/presentation/widgets/category_glider.dart';
@@ -224,25 +225,32 @@ class _UploadFormState extends ConsumerState<UploadForm> {
             keyboardType: TextInputType.text,
             hintText: 'Enter Product Brand',
           ),
-          const Gap(30),
-          Align(
+          const Gap(10),
+          /*Align(
             //Since we just want Alignment.
             alignment: Alignment.centerLeft,
             child: Text(
               'Category',
               style: TextStyles.headingMedium4.adaptiveColour(context),
             ),
-          ),
+          ),*/
           const Gap(10),
-          CategoryGlider(
-            categories: categories,
-            selectedCategoryId: selectedCategoryId,
-            onSelectCategory: (id) {
-              setState(() {
-                selectedCategoryId = id;
-              });
-            },
-          ),
+          CategorySearchBox(
+              tag: false,
+              onSelected: (selectedCategory) {
+                setState(() {
+                  selectedCategoryId = selectedCategory.id;
+                });
+              }),
+          // CategoryGlider(
+          //   categories: categories,
+          //   selectedCategoryId: selectedCategoryId,
+          //   onSelectCategory: (id) {
+          //     setState(() {
+          //       selectedCategoryId = id;
+          //     });
+          //   },
+          // ),
           const Gap(30),
           VerticalLabelField(
             label: 'Count In Stock',
@@ -432,7 +440,12 @@ class _UploadFormState extends ConsumerState<UploadForm> {
               color: Colours.classicAdaptiveTextColour(context),
             ),
             label: state is UploadLoading
-                ? const SizedBox(height: 25, width: 25, child: CircularProgressIndicator( backgroundColor: Colours.lightThemeStockColour,))
+                ? const SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colours.lightThemeStockColour,
+                    ))
                 : Text(
                     'Upload',
                     style: TextStyle(

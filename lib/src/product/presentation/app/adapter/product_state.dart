@@ -130,3 +130,13 @@ final class ProductImagesDeleted extends ProductState {
   @override
   List<Object?> get props => [...remainingImages]; //So now it compares by items in list and not with the reference by name of overall list
 }
+
+final class SearchingCategories extends ProductState {
+  const SearchingCategories();
+}
+
+final class CategoriesSearched extends ProductState {
+  final List<ProductCategory> categories;
+
+  const CategoriesSearched(this.categories);
+}
