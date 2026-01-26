@@ -91,8 +91,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
     );
 
     ref.listenManual(authUserProvider(authAdapterFamilyKey), (previous, next) {
-      if(next case AuthUserError(:final message)) {
-        CoreUtils.showSnackBar(context, message: 'Could Not Locate Seller Information',);
+      if (next case AuthUserError(:final message)) {
+        CoreUtils.showSnackBar(
+          context,
+          message: 'Could Not Locate Seller Information',
+        );
       }
     });
 
@@ -138,18 +141,20 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
       transitionDuration: const Duration(milliseconds: 300),
     );
   }
-  
-  void fetchUser({required ProductUser user,}) {
-    final userAdapter = 
+
+  void fetchUser({
+    required ProductUser user,
+  }) {
+    final userAdapter =
         ref.read(authUserProvider(authAdapterFamilyKey).notifier);
 
-    userAdapter.getUserById(user.id,);
+    userAdapter.getUserById(
+      user.id,
+    );
   }
 
   //Make seller route.
-  void _navigateToSellerInfo(User seller) {
-
-  }
+  void _navigateToSellerInfo(User seller) {}
 
   @override
   Widget build(BuildContext context) {
@@ -196,9 +201,11 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
                     child: ListView(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(20).copyWith(bottom: 20),
+                          padding:
+                              const EdgeInsets.all(20).copyWith(bottom: 20),
                           // Calling the widget to to display the name of the Seller.
-                          child: vendorNameSection(product, authUserState, context),
+                          child: vendorNameSection(
+                              product, authUserState, context),
                         ),
                         Builder(builder: (context) {
                           var images = product.images;
@@ -351,18 +358,18 @@ class _ProductDetailsViewState extends ConsumerState<ProductDetailsView> {
 
                   //Add to Cart button
                   Padding(
-                    //Wrap an icon infront of it
+                    //Wrap an icon in front of it
                     padding: const EdgeInsets.all(20).copyWith(bottom: 40),
                     child: isInCart
                         ? RoundedButton(
                             height: 50,
-                            onPressed: null,
+                            onPressed: () => context.push('/cart'),
                             backgroundColour: Colors.green.withOpacity(0.8),
-                            text: 'Already In Cart',
+                            text: 'View In Cart',
                             textStyle: TextStyles.buttonTextHeadingSemiBold
                                 .copyWith(fontSize: 16)
                                 .white,
-                            cart: true,
+                            leadingIcon: const Icon(Icons.shopping_bag, color: Colors.white,),
                           )
                         : RoundedButton(
                             height: 50,

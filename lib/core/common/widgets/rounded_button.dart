@@ -12,7 +12,7 @@ class RoundedButton extends StatelessWidget {
     this.padding,
     this.textStyle,
     this.backgroundColour,
-    this.cart,
+    this.leadingIcon,
   });
 
   final VoidCallback? onPressed;
@@ -21,7 +21,7 @@ class RoundedButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final TextStyle? textStyle;
   final Color? backgroundColour;
-  final bool? cart;
+  final Widget? leadingIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +40,13 @@ class RoundedButton extends StatelessWidget {
           FocusManager.instance.primaryFocus?.unfocus();
           onPressed?.call();
         },
-        child: Row(mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            cart == true ? const Icon(Icons.check_circle_rounded) : const SizedBox.shrink(),
-            cart == true ? const Gap(10) : const SizedBox.shrink(),
+            if (leadingIcon != null) ...[
+              leadingIcon!,
+              const Gap(10),
+            ],
             Text(
               text,
               style: textStyle ?? TextStyles.buttonTextHeadingSemiBold.white,
@@ -54,4 +57,3 @@ class RoundedButton extends StatelessWidget {
     );
   }
 }
-
