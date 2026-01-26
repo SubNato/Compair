@@ -9,11 +9,13 @@ class CategoryGlider extends StatelessWidget {
     required this.categories,
     required this.selectedCategoryId,
     required this.onSelectCategory,
+    this.scrollController,
   });
 
   final List<ProductCategory> categories;
   final String selectedCategoryId;
   final ValueChanged<String> onSelectCategory;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class CategoryGlider extends StatelessWidget {
         },
         blendMode: BlendMode.dstIn, // Keeps overlapping parts
         child: ListView.separated(
+          controller: scrollController,
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           itemCount: categories.length,

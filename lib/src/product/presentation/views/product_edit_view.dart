@@ -10,6 +10,7 @@ import 'package:compair_hub/src/product/presentation/app/adapter/product_adapter
 import 'package:compair_hub/src/product/presentation/app/category_notifier/category_notifier.dart';
 import 'package:compair_hub/src/product/presentation/widgets/category_search_box.dart';
 import 'package:compair_hub/src/product/presentation/widgets/category_selector.dart';
+import 'package:compair_hub/src/upload/product/presentation/app/category/category_adapter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -94,6 +95,10 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
 
     _selectedProductType = widget.product.type;
     _selectedGenderAgeCategory = widget.product.genderAgeCategory;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(categoryAdapterProvider.notifier).fetchCategories();
+    });
 
     // Listen to adapter state changes
     ref.listenManual(
@@ -193,6 +198,7 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
     brandController.addListener(_onBrandChanged);
     modelController.addListener(_onModelChanged);
     stockController.addListener(_onStockChanged);
+    _selectedCategoryId = widget.product.category.id;
   }
 
   void _onNameChanged() {
@@ -626,7 +632,8 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
               child: ValueListenableBuilder(
                 valueListenable: changeNotifier,
                 builder: (_, hasChanges, __) {
-                  if (!hasChanges) return const SizedBox.shrink();
+                  //Is displayed if any changes exists
+                  if (!hasChanges && updateContainer.isEmpty) return const SizedBox.shrink();
 
                   return Container(
                     padding: const EdgeInsets.all(16),
@@ -731,7 +738,7 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
+        const Icon(
           Icons.add_photo_alternate_outlined,
           size: 48,
           color: Colours.lightThemePrimaryColour,
@@ -881,10 +888,17 @@ class _ProductEditViewState extends ConsumerState<ProductEditView> {
         const Gap(5),
         CategorySearchBox(
             tag: true,
+            selectedCategoryId: _selectedCategoryId ?? '',
             onSelected: (selectedCategory) {
               setState(() {
                 _selectedCategoryId = selectedCategory.id;
-                updateContainer['category'] = selectedCategory.id;
+                if(selectedCategory.id != widget.product.category.id) {
+                  updateContainer['category'] = selectedCategory.id;
+                  changeNotifier.value = true;
+                } else {
+                  updateContainer.remove('category');
+                  _checkIfChangesExist();
+                }
               });
             }),
         /*CategorySelector(

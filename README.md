@@ -226,6 +226,16 @@ FIX: For long term, Add an endpoint that actually shuffles teh products for real
 
 Recheck the logic for popular and new products.
 
+FIX: How the text looks on the current product compare view.
+
+FIX: To let it seem more unique, under both popular and new arrivals, put a down arrow respocetfully that when pressed takes the user to a full page view that displays the products respectfully. So that it have a better UI. And on last product, when they slide up for 2 seconds, takes them back to the home page.
+
+FIX: Wrap compare product's name with a tooltip
+
+FIX: Allow the user to remove from the cart in the product DETAIL view.
+
+FIX: Add a category search to the discover view. ⬅️
+
 To safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.
 
 When the exception was thrown, this was the stack:
@@ -422,3 +432,11 @@ FIX: For the Category in the vendor edit view, sometimes throws a null check ope
 FIX: Counter for Current Images in edit product view. ✅
 
 FIX: Randomize the returned Compare products ✅
+
+FIX: Fix the search category, all categories aren't showed immediately unless you search and then when you select, you cannot immediately save. ✅
+
+FIX: I selected the category in upload view but it did not select the id to send, still sets as null ✅
+
+FIX: If there is a required field, tell them with a snackbar. ✅
+
+FIX: Let after selection, it jumps to the front with the user if they manually selected it. ✅

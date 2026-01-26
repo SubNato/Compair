@@ -155,7 +155,7 @@ class _VendorProductsViewState extends ConsumerState<VendorProductsView> {
                       ),
                       const Gap(4),
                       Text(
-                        'Click to edit or view details',
+                        'Tap product to edit or view details',
                         style: TextStyles.paragraphSubTextRegular2.copyWith(
                           color: Colours.lightThemePrimaryColour,
                           fontWeight: FontWeight.w600,

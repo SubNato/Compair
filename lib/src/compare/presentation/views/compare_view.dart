@@ -349,10 +349,10 @@ class _CurrentProductCard extends StatelessWidget {
                         style: TextStyles.headingMedium4
                             .adaptiveColour(context)
                             .copyWith(
-                              fontSize: 19,
+                              fontSize: 17,
                             ),
                         maxLines: 1,
-                        overflow: TextOverflow.fade,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                       ),
                       const Gap(1),
@@ -615,7 +615,7 @@ class _RelatedProductItem extends StatelessWidget {
                           style:
                               TextStyles.headingMedium4.adaptiveColour(context),
                           maxLines: 1,
-                          overflow: TextOverflow.fade,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

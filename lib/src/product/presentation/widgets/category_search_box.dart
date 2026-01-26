@@ -11,10 +11,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 
 class CategorySearchBox extends ConsumerStatefulWidget {
-  const CategorySearchBox({super.key, required this.onSelected, required this.tag});
+  const CategorySearchBox(
+      {super.key,
+      required this.selectedCategoryId,
+      required this.onSelected,
+      required this.tag});
 
   final Function(ProductCategory) onSelected;
   final bool tag;
+  final String selectedCategoryId;
 
   @override
   ConsumerState<CategorySearchBox> createState() => _CategorySearchBoxState();
@@ -24,15 +29,28 @@ class _CategorySearchBoxState extends ConsumerState<CategorySearchBox> {
   final productAdapterFamilyKey = GlobalKey();
 
   final controller = TextEditingController();
+  final _scrollController = ScrollController();
   Timer? _debounce;
-  String selectedCategoryId = '';
+  String _previousSelectedId = '';
 
+  //String selectedCategoryId = '';
+
+  @override
+  void dispose() {
+    controller.dispose();
+    _scrollController.dispose();
+    _debounce?.cancel();
+
+    super.dispose();
+  }
 
   void _onChanged(String value) {
     _debounce?.cancel();
 
     if (value.isEmpty) {
-      ref.invalidate(productAdapterProvider(productAdapterFamilyKey));
+      setState(() {
+        //Force rebuild so that base cats show
+      });
       return;
     }
 
@@ -44,9 +62,9 @@ class _CategorySearchBoxState extends ConsumerState<CategorySearchBox> {
   }
 
   List<ProductCategory> _reorder(
-      List<ProductCategory> list,
-      String selectedId,
-      ) {
+    List<ProductCategory> list,
+    String selectedId,
+  ) {
     if (selectedId.isEmpty) return list;
 
     final index = list.indexWhere((category) => category.id == selectedId);
@@ -59,23 +77,36 @@ class _CategorySearchBoxState extends ConsumerState<CategorySearchBox> {
     return [selected, ...others];
   }
 
+  //Allows smooth scroll for the category list back to start position (position 0)
+  void _scrollToStart() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          0.0,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool tag = widget.tag;
-    final searchState = ref.watch(
-        productAdapterProvider(productAdapterFamilyKey));
+    final searchState =
+        ref.watch(productAdapterProvider(productAdapterFamilyKey));
     final catState = ref.watch(categoryAdapterProvider);
 
     List<ProductCategory> displayCategories = [];
 
     //For Search Results
-    if (searchState is CategoriesSearched) {
-      displayCategories = searchState.categories;
-    } else if (controller.text.isEmpty && catState is CategoryLoaded) {
+    if (controller.text.isEmpty && catState is CategoryLoaded) {
       displayCategories = catState.categories;
+    } else if (searchState is CategoriesSearched) {
+      displayCategories = searchState.categories;
     }
 
-    displayCategories = _reorder(displayCategories, selectedCategoryId);
+    displayCategories = _reorder(displayCategories, widget.selectedCategoryId);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,31 +117,36 @@ class _CategorySearchBoxState extends ConsumerState<CategorySearchBox> {
           hintText: "Search for category by name",
           keyboardType: TextInputType.text,
           onChanged: _onChanged,
+          defaultValidation: false,
           prefixIcon: const Icon(Icons.search),
         ),
         const Gap(4),
-        if (searchState is SearchingCategories)
-          const LinearProgressIndicator(),
-
+        if (searchState is SearchingCategories) const LinearProgressIndicator(),
         const Gap(3),
-
-        if(displayCategories.isNotEmpty)
-        CategoryGlider(
+        if (displayCategories.isNotEmpty)
+          CategoryGlider(
             categories: displayCategories,
-            selectedCategoryId: selectedCategoryId,
+            selectedCategoryId: widget.selectedCategoryId,
+            scrollController: _scrollController,
             onSelectCategory: (id) {
-              final selected = displayCategories.firstWhere((category) => category.id == id);
+              final selected =
+                  displayCategories.firstWhere((category) => category.id == id);
 
-              setState(() {
-                selectedCategoryId = id;
-              });
+              // setState(() {
+              //   selectedCategoryId = id;
+              // });
 
+              //Only scroll if the category has changed
+              if (id !=_previousSelectedId) {
+                _previousSelectedId = id;
+                _scrollToStart();
+              }
 
               widget.onSelected(selected);
               controller.clear();
-              ref.invalidate(productAdapterProvider(productAdapterFamilyKey));
+              setState(() {});
             },
-        ),
+          ),
         /*ListView.builder(
           shrinkWrap: true,
             itemCount: displayCategories.length,

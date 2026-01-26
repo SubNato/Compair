@@ -12,7 +12,6 @@ import 'package:compair_hub/src/product/domain/entities/category.dart';
 import 'package:compair_hub/src/product/presentation/widgets/category_search_box.dart';
 import 'package:compair_hub/src/upload/product/presentation/app/adapter/upload_adapter.dart';
 import 'package:compair_hub/src/upload/product/presentation/app/category/category_adapter.dart';
-import 'package:compair_hub/src/upload/product/presentation/widgets/category_glider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -146,7 +145,9 @@ class _UploadFormState extends ConsumerState<UploadForm> {
       //TODO: Check how backend wants it. To be changed
       category: selectedCategoryId,
       countInStock: int.tryParse(countInStockController.text.trim()) ?? 0,
-      model: modelController.text.trim().isEmpty
+      model: modelController.text
+          .trim()
+          .isEmpty
           ? null
           : modelController.text.trim(),
       //sizes: sizesController.text.split(',').map((e) => e.trim()).toList(),
@@ -236,21 +237,13 @@ class _UploadFormState extends ConsumerState<UploadForm> {
           ),*/
           const Gap(10),
           CategorySearchBox(
+              selectedCategoryId: selectedCategoryId,
               tag: false,
-              onSelected: (selectedCategory) {
+              onSelected: (newCategory) {
                 setState(() {
-                  selectedCategoryId = selectedCategory.id;
+                  selectedCategoryId = newCategory.id;
                 });
               }),
-          // CategoryGlider(
-          //   categories: categories,
-          //   selectedCategoryId: selectedCategoryId,
-          //   onSelectCategory: (id) {
-          //     setState(() {
-          //       selectedCategoryId = id;
-          //     });
-          //   },
-          // ),
           const Gap(30),
           VerticalLabelField(
             label: 'Count In Stock',
@@ -351,64 +344,65 @@ class _UploadFormState extends ConsumerState<UploadForm> {
           //When there is already a main image, then choose multiple images.
           mainImage != null
               ? ElevatedButton.icon(
-                  onPressed: () {
-                    pickMultipleImages();
-                  },
-                  label: Text(
-                    'Select More Images',
-                    style: TextStyle(
-                      color: Colours.classicAdaptiveTextColour(context),
-                    ),
-                  ),
-                  icon: Icon(
-                    additionalImages == null
-                        ? IconlyBroken.image_2
-                        : IconlyBold.image_2,
-                    color: Colours.classicAdaptiveTextColour(context),
-                  ),
-                )
+            onPressed: () {
+              pickMultipleImages();
+            },
+            label: Text(
+              'Select More Images',
+              style: TextStyle(
+                color: Colours.classicAdaptiveTextColour(context),
+              ),
+            ),
+            icon: Icon(
+              additionalImages == null
+                  ? IconlyBroken.image_2
+                  : IconlyBold.image_2,
+              color: Colours.classicAdaptiveTextColour(context),
+            ),
+          )
               : const SizedBox.shrink(),
           const Gap(10),
           additionalImages != null
               ? Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: List.generate(additionalImages.length, (index) {
-                    final imageFile = additionalImages[index];
-                    return Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.file(imageFile,
-                              width: 100, height: 100, fit: BoxFit.cover),
+            spacing: 8,
+            runSpacing: 8,
+            children: List.generate(additionalImages.length, (index) {
+              final imageFile = additionalImages[index];
+              return Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(imageFile,
+                        width: 100, height: 100, fit: BoxFit.cover),
+                  ),
+                  Positioned(
+                    top: 2,
+                    right: 2,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() => additionalImages.removeAt(index));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black54,
+                          shape: BoxShape.circle,
                         ),
-                        Positioned(
-                          top: 2,
-                          right: 2,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() => additionalImages.removeAt(index));
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.black54,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(Icons.close,
-                                  size: 18, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
-                )
+                        child: const Icon(Icons.close,
+                            size: 18, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }),
+          )
               : const SizedBox.shrink(),
           const Gap(20),
           if (additionalImages.length > 10)
             Text(
-              'Only 10 More Images can be selected. ${additionalImages.length} Selected',
+              'Only 10 More Images can be selected. ${additionalImages
+                  .length} Selected',
               style: const TextStyle(color: Colors.red),
             ),
           ElevatedButton.icon(
@@ -441,17 +435,17 @@ class _UploadFormState extends ConsumerState<UploadForm> {
             ),
             label: state is UploadLoading
                 ? const SizedBox(
-                    height: 25,
-                    width: 25,
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colours.lightThemeStockColour,
-                    ))
+                height: 25,
+                width: 25,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colours.lightThemeStockColour,
+                ))
                 : Text(
-                    'Upload',
-                    style: TextStyle(
-                      color: Colours.classicAdaptiveTextColour(context),
-                    ),
-                  ),
+              'Upload',
+              style: TextStyle(
+                color: Colours.classicAdaptiveTextColour(context),
+              ),
+            ),
           ),
         ],
       ),
