@@ -278,16 +278,16 @@ class _CurrentProductCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.keyboard_double_arrow_down_outlined,
-                color: Colours.lightThemePrimaryColour.withOpacity(0.7),
-                size: 24,
-              ),
-              const Gap(8),
+              // Icon(
+              //   Icons.keyboard_double_arrow_down_outlined,
+              //   color: Colours.lightThemePrimaryColour.withOpacity(0.7),
+              //   size: 24,
+              // ),
+              const Gap(5),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 5,
-                  vertical: 6,
+                  horizontal: 4,
+                  vertical: 5,
                 ),
                 decoration: BoxDecoration(
                   color: Colours.lightThemePrimaryColour,
@@ -295,13 +295,15 @@ class _CurrentProductCard extends StatelessWidget {
                 ),
                 child: Text(
                   'CURRENT PRODUCT',
-                  style: TextStyles.paragraphSubTextRegular2.white,
+                  style: TextStyles.paragraphSubTextRegular2.white.copyWith(
+                    fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
             ],
           ),
 
-          const Gap(10),
+          const Gap(7),
 
           // Main content in vertical layout for better space utilization
           Expanded(
@@ -349,7 +351,8 @@ class _CurrentProductCard extends StatelessWidget {
                         style: TextStyles.headingMedium4
                             .adaptiveColour(context)
                             .copyWith(
-                              fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                              fontSize: 15,
                             ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -363,13 +366,13 @@ class _CurrentProductCard extends StatelessWidget {
                           const Icon(
                             Icons.star_rounded,
                             color: Colours.lightThemeYellowColour,
-                            size: 20,
+                            size: 15,
                           ),
                           const Gap(6),
                           Text(
                             product.rating.toStringAsFixed(1),
-                            style: TextStyles.headingMedium4
-                                .adaptiveColour(context).copyWith(fontSize: 15),
+                            style: TextStyles.paragraphSubTextRegular2
+                                .adaptiveColour(context).copyWith(fontSize: 12),
                           ),
                           const Gap(15),
                           Flexible(
@@ -378,7 +381,7 @@ class _CurrentProductCard extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyles.headingMedium.copyWith(
-                                fontSize: 20,
+                                fontSize: 15,
                                 color: Colours.lightThemePrimaryColour,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -386,27 +389,6 @@ class _CurrentProductCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      //const Gap(16),
-                      // Category badge
-                      // Container(
-                      //   padding: const EdgeInsets.symmetric(
-                      //     horizontal: 12,
-                      //     vertical: 6,
-                      //   ),
-                      //   decoration: BoxDecoration(
-                      //     color: Colours.lightThemePrimaryColour.withOpacity(0.1),
-                      //     borderRadius: BorderRadius.circular(20),
-                      //     border: Border.all(
-                      //       color: Colours.lightThemePrimaryColour.withOpacity(0.3),
-                      //     ),
-                      //   ),
-                      //   child: Text(
-                      //     product.category.name ?? 'Uncategorized',
-                      //     style: TextStyles.paragraphSubTextRegular3.copyWith(
-                      //       color: Colours.lightThemePrimaryColour,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
@@ -438,12 +420,12 @@ class _RelatedProductsList extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.compare_arrows,
-              color: Colours.lightThemePrimaryColour.withOpacity(0.7),
-              size: 24,
-            ),
-            const Gap(8),
+            // Icon(
+            //   Icons.compare_arrows,
+            //   color: Colours.lightThemePrimaryColour.withOpacity(0.7),
+            //   size: 24,
+            // ),
+            const Gap(12),
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 5,
@@ -455,13 +437,15 @@ class _RelatedProductsList extends StatelessWidget {
               ),
               child: Text(
                 'SIMILAR PRODUCTS',
-                style: TextStyles.paragraphSubTextRegular2.white,
+                style: TextStyles.paragraphSubTextRegular2.white.copyWith(
+                  fontWeight: FontWeight.bold
+                ),
               ),
             ),
             const Gap(5),
           ],
         ),
-        const Gap(16),
+        const Gap(5),
 
         // Products list
         Expanded(
@@ -597,59 +581,45 @@ class _RelatedProductItem extends StatelessWidget {
                 ),
               ),
 
-              const Gap(12),
+              const Gap(4),
 
               // Product Info
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Gap(5),
-                        Text(
-                          product.name,
-                          style:
-                              TextStyles.headingMedium4.adaptiveColour(context),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
+              Text(
+                product.name,
+                style:
+                    TextStyles.headingMedium4.adaptiveColour(context),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
 
-                    // Rating and action
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.star_rounded,
-                          color: Colours.lightThemeYellowColour,
-                          size: 14,
-                        ),
-                        const Gap(4),
-                        Text(
-                          product.rating.toStringAsFixed(1),
-                          style: TextStyles.paragraphSubTextRegular2.grey.copyWith(fontSize: 15),
-                        ),
-                        const Gap(15),
-                        Flexible(
-                          child: Text(
-                            '\$${product.price.toStringAsFixed(2)}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyles.headingMedium3.copyWith(
-                              color: Colours.lightThemePrimaryColour,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+              // Rating and action
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.star_rounded,
+                    color: Colours.lightThemeYellowColour,
+                    size: 15,
+                  ),
+                  const Gap(4),
+                  Text(
+                    product.rating.toStringAsFixed(1),
+                    style: TextStyles.paragraphSubTextRegular2.adaptiveColour(context).copyWith(fontSize: 12),
+                  ),
+                  const Gap(15),
+                  Flexible(
+                    child: Text(
+                      '\$${product.price.toStringAsFixed(2)}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyles.headingMedium3.copyWith(
+                        color: Colours.lightThemePrimaryColour,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
