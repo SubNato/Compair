@@ -75,7 +75,7 @@ Bugs:
 
 Check if you have to buy lottie to continue using them?
 
-FIX: Add the address to the profile view so that they can change it as well.
+FIX: Add the address to the profile view so that they can change it as well. 
 
 FIX THE PAGINATEDPRODUCTSVIEW for the proper assertions. refer to line 24-27. Make updates to add in the parish assersions.
 
