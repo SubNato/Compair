@@ -346,17 +346,22 @@ class _CurrentProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(
-                        product.name,
-                        style: TextStyles.headingMedium4
-                            .adaptiveColour(context)
-                            .copyWith(
-                          fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
+                      Tooltip(
+                        message: product.name,
+                        waitDuration: const Duration(milliseconds: 300),
+                        showDuration: const Duration(seconds: 3),
+                        child: Text(
+                          product.name,
+                          style: TextStyles.headingMedium4
+                              .adaptiveColour(context)
+                              .copyWith(
+                            fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                       const Gap(1),
                       //it was here
@@ -584,12 +589,17 @@ class _RelatedProductItem extends StatelessWidget {
               const Gap(4),
 
               // Product Info
-              Text(
-                product.name,
-                style:
-                    TextStyles.headingMedium4.adaptiveColour(context),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Tooltip(
+                message: product.name,
+                waitDuration: const Duration(milliseconds: 300),
+                showDuration: const Duration(seconds: 3),
+                child: Text(
+                  product.name,
+                  style:
+                      TextStyles.headingMedium4.adaptiveColour(context),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
 
               // Rating and action

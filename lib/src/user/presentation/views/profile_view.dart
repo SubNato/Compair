@@ -228,13 +228,18 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
 
                         const Gap(15),
                         Center(
-                          child: Text(
-                            name,
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyles.headingMedium
-                                .adaptiveColour(context),
+                          child: Tooltip(
+                            message: name,
+                            waitDuration: const Duration(milliseconds: 300),
+                            showDuration: const Duration(seconds: 3),
+                            child: Text(
+                              name,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyles.headingMedium
+                                  .adaptiveColour(context),
+                            ),
                           ),
                         ),
                         // IF user is a vendor, Place the vendor's products here for them to be able to edit the product details here.

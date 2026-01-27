@@ -67,9 +67,15 @@ extra is sent to the GoRouter through the 'categories section' and 'compare_view
 TOP PRIORITY
 -------------
 Work on fetching Appliances-Furniture vs. autoparts. ✅
-    - A pop up message on every app turn on reminding them that they can search also for the other IF you allow persisting states.
+    - A pop up message on every app turn on reminding them that they can shop autopart OR furniture. So on app turn on ask, and an option to stop asking for 10 - 14 days. also for the other IF you allow persisting states.
+
+Also, work on tutorials on app install that tells them about comparing, switching to furniture/hardware etc. Tutorial would be awesome with an option to redo the tutorial.
 Bugs:
     - The type does not persist after you navigate to somewhere. Probably navigating from wishlist to somewhere else. Probably, not sure tho.
+
+Check if you have to buy lottie to continue using them?
+
+FIX: Add the address to the profile view so that they can change it as well.
 
 FIX THE PAGINATEDPRODUCTSVIEW for the proper assertions. refer to line 24-27. Make updates to add in the parish assersions.
 
@@ -99,15 +105,9 @@ Look into is the CRON Job on backend actually being used? You added the delete p
 
 #### **_BUGS FOUND ON MOBILE TESTING:_**
 
-FIX: Add a tooltip on the user profile name view for long names. Helps teh user to be able to view their full business name.
-
-FIX: Wrap compare product's name with a tooltip.
-
-Fix the remove from cart. Pixel overflow.
-
-Fix the business name on dashboard drawer. Pixel overflow.
-
 Fix the 500 error message. Like instead of :ERROR 500: IT'S......." Remove the 500?
+
+FIX: I think when you switch to the wishlist from home, then switch back to home, if you are in furniture, then it just goes to the default autopart without the user doing it. Check if it still happens then fix it.
 
 FIX: What is the default for the images when they cannot be displayed for whatever reason on frontend.
 
@@ -364,3 +364,13 @@ Fix compare the yellow lines are on all of the words and numbers at current, and
 No need for a fix, it is a developer thing to show what the words are on for designing purposes
 
 FIX: Let the comparing products be randomized, and not the same products everytime. ✅
+
+FIX: Add a tooltip on the user profile name view for long names. Helps the user to be able to view their full business name. ✅
+
+FIX: Add a tooltip on the dashboard drawer for the user's name for long names. Helps the user to be able to view their full business name. ✅
+
+FIX: Wrap compare product's name (current and similar products) with a tooltip. ✅
+
+Fix the business name on dashboard drawer. Pixel overflow. ✅
+
+Fix the remove from cart. Pixel overflow. ✅

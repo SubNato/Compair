@@ -38,7 +38,7 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
   final productAdapterFamilyKey = GlobalKey();
   final cartAdapterFamilyKey = GlobalKey();
 
-  /// The main product this wishlist product was formed from
+  // The main product this wishlist product was formed from
   Product? originalProduct;
 
   void removeFromWishlist() {
@@ -184,11 +184,7 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
       cartItems = cartAdapter.cart;
     }
 
-    for(final items in cartItems){
-      print('Product Id: ${items.productId}------------------- id: ${items.id}');
-    }
     bool isInCart = cartItems.any((items) => items.productId == product.productId);
-    print('In Cart Value: $isInCart || Wishlist product Id: ${product.productId}');
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -238,12 +234,17 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            product.productName,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyles.headingMedium4
-                                .adaptiveColour(context),
+                          Tooltip(
+                            message: product.productName,
+                            waitDuration: const Duration(milliseconds: 300),
+                            showDuration: const Duration(seconds: 3),
+                            child: Text(
+                              product.productName,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyles.headingMedium4
+                                  .adaptiveColour(context),
+                            ),
                           ),
                           const Gap(5),
                           Text(
@@ -273,7 +274,8 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
                   ).loading(
                     wishlistAdapter is RemovingFromWishlist &&
                         product.productExists,
-                  ), isInCart ? TextButton(
+                  ), isInCart ? TextButton.icon(
+                    icon: const Icon(Icons.shopping_bag, size: 16,),
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.green.shade400,//.withOpacity(1),
                       foregroundColor: Colours.lightThemeWhiteColour,
@@ -281,8 +283,8 @@ class _WishlistProductTileState extends ConsumerState<WishlistProductTile> {
                         borderRadius: BorderRadius.circular(8),
                       )
                     ),
-                    onPressed: null,
-                    child: const Text('IN CART!', style: TextStyle(color: Colours.lightThemeWhiteColour),),
+                    onPressed: () => context.push('/cart'),
+                    label: const Text('View in Cart'),
                   )
                   : TextButton(
                     style: TextButton.styleFrom(

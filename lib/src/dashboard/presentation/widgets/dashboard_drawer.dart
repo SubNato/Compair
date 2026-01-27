@@ -98,9 +98,15 @@ class _DashboardDrawerState extends ConsumerState<DashboardDrawer> {
                     ),
                   ),
                   const Gap(15),
-                  Text(
-                    user.name,
-                    style: TextStyles.headingMedium.adaptiveColour(context),
+                  Tooltip(
+                    message: user.name,
+                    waitDuration: const Duration(milliseconds: 300),
+                    showDuration: const Duration(seconds: 3),
+                    child: Text(
+                      user.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyles.headingMedium.adaptiveColour(context),
+                    ),
                   ),
                 ],
               ),

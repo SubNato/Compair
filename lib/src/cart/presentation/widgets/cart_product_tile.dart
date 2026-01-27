@@ -153,12 +153,17 @@ class _CartProductTileState extends ConsumerState<CartProductTile> {
                         children: [
                           GestureDetector(
                             onTap: goToProductDetails,
-                            child: Text(
-                              product.productName,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyles.buttonTextHeadingSemiBold
-                                  .adaptiveColour(context),
+                            child: Tooltip(
+                              message: product.productName,
+                              waitDuration: const Duration(milliseconds: 300),
+                              showDuration: const Duration(seconds: 3),
+                              child: Text(
+                                product.productName,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyles.buttonTextHeadingSemiBold
+                                    .adaptiveColour(context),
+                              ),
                             ),
                           ),
                           Row(

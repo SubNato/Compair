@@ -60,7 +60,7 @@ class BottomSheetCard extends StatelessWidget {
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                 ),
-                const Spacer(),
+                const Gap(12),
                 Expanded(
                   flex: 3,
                   child: RoundedButton(
